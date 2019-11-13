@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface EquipementFacadeLocal {
 
-    void create(Equipement equipement);
+    Equipement create(Equipement equipement);
 
     void edit(Equipement equipement);
 

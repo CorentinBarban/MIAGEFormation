@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface SalleFacadeLocal {
 
-    void create(Salle salle);
+    Salle create(Salle salle);
 
     void edit(Salle salle);
 
