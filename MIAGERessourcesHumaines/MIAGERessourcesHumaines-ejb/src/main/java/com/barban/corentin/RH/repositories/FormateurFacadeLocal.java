@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface FormateurFacadeLocal {
 
-    void create(Formateur formateur);
+    Formateur create(Formateur formateur);
 
     void edit(Formateur formateur);
 

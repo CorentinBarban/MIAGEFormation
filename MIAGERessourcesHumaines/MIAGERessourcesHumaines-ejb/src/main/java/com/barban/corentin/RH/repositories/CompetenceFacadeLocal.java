@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface CompetenceFacadeLocal {
 
-    void create(Competence competence);
+    Competence create(Competence competence);
 
     void edit(Competence competence);
 

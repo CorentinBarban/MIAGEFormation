@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface CalendrierFormateurFacadeLocal {
 
-    void create(CalendrierFormateur calendrierFormateur);
+    CalendrierFormateur create(CalendrierFormateur calendrierFormateur);
 
     void edit(CalendrierFormateur calendrierFormateur);
 
