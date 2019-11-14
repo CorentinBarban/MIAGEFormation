@@ -21,4 +21,5 @@ public interface gestionCommercialeLocal {
     
     void demanderStatutFormation(int idFormation);
     
+    void validerExistenceFormation(int code);
 }

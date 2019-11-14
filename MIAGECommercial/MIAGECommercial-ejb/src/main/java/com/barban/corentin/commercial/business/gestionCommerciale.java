@@ -33,5 +33,10 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     public void demanderStatutFormation(int idFormation) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void validerExistenceFormation(int code) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
