@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface DemandedeformationFacadeLocal {
 
-    void create(Demandedeformation demandedeformation);
+    Demandedeformation create(Demandedeformation demandedeformation);
 
     void edit(Demandedeformation demandedeformation);
 
