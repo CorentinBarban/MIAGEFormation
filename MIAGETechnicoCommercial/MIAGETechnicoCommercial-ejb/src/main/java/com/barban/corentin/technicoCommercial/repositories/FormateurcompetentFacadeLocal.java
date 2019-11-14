@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface FormateurcompetentFacadeLocal {
 
-    void create(Formateurcompetent formateurcompetent);
+    Formateurcompetent create(Formateurcompetent formateurcompetent);
 
     void edit(Formateurcompetent formateurcompetent);
 

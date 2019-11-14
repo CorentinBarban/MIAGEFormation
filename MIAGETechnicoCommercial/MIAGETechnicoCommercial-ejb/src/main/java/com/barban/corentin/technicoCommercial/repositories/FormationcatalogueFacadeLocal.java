@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface FormationcatalogueFacadeLocal {
 
-    void create(Formationcatalogue formationcatalogue);
+    Formationcatalogue create(Formationcatalogue formationcatalogue);
 
     void edit(Formationcatalogue formationcatalogue);
 
