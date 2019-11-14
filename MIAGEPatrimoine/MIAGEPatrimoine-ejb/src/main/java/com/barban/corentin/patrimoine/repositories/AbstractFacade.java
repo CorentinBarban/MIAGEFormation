@@ -29,7 +29,7 @@ public abstract class AbstractFacade<T> {
         Object id = getEntityManager().getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
         return this.find(id);
     }
-    
+
     public void edit(T entity) {
         getEntityManager().merge(entity);
     }

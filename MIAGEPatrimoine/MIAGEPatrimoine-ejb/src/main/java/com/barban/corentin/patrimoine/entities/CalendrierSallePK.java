@@ -77,7 +77,7 @@ public class CalendrierSallePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.barban.corentin.entities.CalendrierSallePK[ calendrierkey=" + calendrierkey + ", sallekey=" + sallekey + " ]";
+        return "com.barban.corentin.patrimoine.entities.CalendrierSallePK[ calendrierkey=" + calendrierkey + ", sallekey=" + sallekey + " ]";
     }
     
 }

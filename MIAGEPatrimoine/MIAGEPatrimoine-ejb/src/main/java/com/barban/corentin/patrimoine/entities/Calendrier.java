@@ -103,7 +103,7 @@ public class Calendrier implements Serializable {
 
     @Override
     public String toString() {
-        return "com.barban.corentin.entities.Calendrier[ idcalendrier=" + idcalendrier + " ]";
+        return "com.barban.corentin.patrimoine.entities.Calendrier[ idcalendrier=" + idcalendrier + " ]";
     }
     
 }

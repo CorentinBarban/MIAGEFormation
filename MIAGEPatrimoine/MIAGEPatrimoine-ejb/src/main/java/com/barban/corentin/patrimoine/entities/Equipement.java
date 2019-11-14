@@ -100,7 +100,7 @@ public class Equipement implements Serializable {
 
     @Override
     public String toString() {
-        return "com.barban.corentin.entities.Equipement[ idequipement=" + idequipement + " ]";
+        return "com.barban.corentin.patrimoine.entities.Equipement[ idequipement=" + idequipement + " ]";
     }
     
 }

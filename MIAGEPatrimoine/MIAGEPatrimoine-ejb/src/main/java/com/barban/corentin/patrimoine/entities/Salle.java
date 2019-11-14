@@ -118,7 +118,7 @@ public class Salle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.barban.corentin.entities.Salle[ idsalle=" + idsalle + " ]";
+        return "com.barban.corentin.patrimoine.entities.Salle[ idsalle=" + idsalle + " ]";
     }
     
 }
