@@ -5,18 +5,16 @@
  */
 package com.barban.corentin.patrimoine.business;
 
-import DTO.SalleDTO;
-import java.util.Date;
-import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Singleton;
+
 
 /**
  *
  * @author Corentin
  */
-@Local
-public interface gestionPatrimoineLocal {
+@Singleton
+public class Test implements TestLocal {
 
-    void editerStatutSalle(Integer idSalle, String statut, Date date);
-    
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
 }
