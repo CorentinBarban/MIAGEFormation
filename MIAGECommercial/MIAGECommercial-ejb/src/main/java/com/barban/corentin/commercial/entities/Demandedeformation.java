@@ -65,6 +65,14 @@ public class Demandedeformation implements Serializable {
     public Demandedeformation(Integer iddemandeformation) {
         this.iddemandeformation = iddemandeformation;
     }
+    
+    public Demandedeformation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient){
+        this.nomclient = nomClient;
+        this.datededemande = dateDemande;
+        this.codeformation = codeFormation;
+        this.intituleformation = intituleFormation;
+        this.codeclient = codeclient;
+    }
 
     public Integer getIddemandeformation() {
         return iddemandeformation;
