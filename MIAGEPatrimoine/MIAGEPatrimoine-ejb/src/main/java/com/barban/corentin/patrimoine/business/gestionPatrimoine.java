@@ -34,9 +34,10 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
         Salle s = this.salleFacade.find(idSalle);
         Collection<CalendrierSalle> cs = s.getCalendrierSalleCollection();
         for (CalendrierSalle c : cs) {
-            if (c.getCalendrier().getDatecalendrier().equals(date)) {
-                c.setStatut(statut);
-            }
+            c.setStatut(statut);
+//            if (c.getCalendrier().getDatecalendrier().equals(date)) {
+//                
+//            }
         }
     }
 }
