@@ -6,6 +6,7 @@
 package com.barban.corentin.patrimoine.business;
 
 import DTO.SalleDTO;
+import Exceptions.SalleNotFoundException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -17,6 +18,8 @@ import javax.ejb.Local;
 @Local
 public interface gestionPatrimoineLocal {
 
-    void editerStatutSalle(Integer idSalle, String statut, Date date);
+    void editerStatutSalle(Integer idSalle, String statut, Date date) throws SalleNotFoundException;
+
+    List<SalleDTO> listerSalleDisponible(List<SalleDTO> listSallesDemandees, Date date);
     
 }

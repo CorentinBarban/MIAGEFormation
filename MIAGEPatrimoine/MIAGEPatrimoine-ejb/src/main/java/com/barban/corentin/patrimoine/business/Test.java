@@ -5,13 +5,15 @@
  */
 package com.barban.corentin.patrimoine.business;
 
+import DTO.SalleDTO;
+import Exceptions.SalleNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.DependsOn;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-
 
 /**
  *
@@ -21,21 +23,46 @@ import javax.ejb.Startup;
 @Singleton
 public class Test {
 
-    @EJB    
+    @EJB
     private gestionPatrimoineLocal gestionPatrimoine;
-    
+
     public Test() {
-        
-    }
-    
-    @PostConstruct
-    void init (){
-        Date date = new Date();
-        gestionPatrimoine.editerStatutSalle(1, "DISPONIBLE", date);
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    
-    
+    @PostConstruct
+    void init() {
+        testEditerStatutSalle();
+        testListerSalleDisponible();
+    }
+
+    void testEditerStatutSalle() {
+        Date date = new Date();
+        try {
+            gestionPatrimoine.editerStatutSalle(1, "PRESSENTIE", date);
+        } catch (SalleNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    void testListerSalleDisponible() {
+        Date date = new Date();
+        List<SalleDTO> listeSalle = new ArrayList<>();
+        SalleDTO s1 = new SalleDTO();
+        s1.setNom("Diamant");
+        s1.setIdsalle(1);
+        listeSalle.add(s1);
+        
+        SalleDTO s2 = new SalleDTO();
+        s1.setNom("Rubis");
+        s2.setIdsalle(3);
+        listeSalle.add(s2);
+        
+        SalleDTO s3 = new SalleDTO();
+        s1.setNom("Perle");
+        s3.setIdsalle(7);
+        listeSalle.add(s3);
+        
+        List<SalleDTO> listeSalleDisponibles = gestionPatrimoine.listerSalleDisponible(listeSalle,date);
+        System.out.println(listeSalleDisponibles.toString());
+    }
 }

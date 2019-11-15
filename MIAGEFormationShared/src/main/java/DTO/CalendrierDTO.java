@@ -9,6 +9,6 @@ package DTO;
  *
  * @author Corentin
  */
-public class CalendrierSalleDTO {
+class CalendrierDTO {
     
 }

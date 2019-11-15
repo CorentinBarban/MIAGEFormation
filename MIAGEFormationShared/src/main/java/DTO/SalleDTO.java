@@ -16,7 +16,6 @@ public class SalleDTO {
     private Integer idsalle;
     private String nom;
     private Collection<EquipementDTO> equipementCollection;
-    private Collection<CalendrierSalleDTO> calendrierSalleCollection;
 
     public Integer getIdsalle() {
         return idsalle;
@@ -42,18 +41,9 @@ public class SalleDTO {
         this.equipementCollection = equipementCollection;
     }
 
-    public Collection<CalendrierSalleDTO> getCalendrierSalleCollection() {
-        return calendrierSalleCollection;
-    }
-
-    public void setCalendrierSalleCollection(Collection<CalendrierSalleDTO> calendrierSalleCollection) {
-        this.calendrierSalleCollection = calendrierSalleCollection;
-    }
-
     @Override
     public String toString() {
-        return "SalleDTO{" + "idsalle=" + idsalle + ", nom=" + nom + ", equipementCollection=" + equipementCollection + ", calendrierSalleCollection=" + calendrierSalleCollection + '}';
+        return "SalleDTO{" + "idsalle=" + idsalle + ", nom=" + nom + ", equipementCollection=" + equipementCollection + '}';
     }
-    
-    
+   
 }
