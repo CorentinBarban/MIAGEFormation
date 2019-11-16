@@ -14,10 +14,21 @@ import java.util.Date;
 public class CompteRenduDTO {
     
     String intituleFormation;
-    Date dateFormation;
+    Date dateCompteRendu;
     String nomclient;
     String type;
     int nbpersonne;
+
+    public CompteRenduDTO() {
+    }
+
+    public CompteRenduDTO(String intituleFormation, Date dateFormation, String nomclient, String type, int nbpersonne) {
+        this.intituleFormation = intituleFormation;
+        this.dateCompteRendu = dateFormation;
+        this.nomclient = nomclient;
+        this.type = type;
+        this.nbpersonne = nbpersonne;
+    }
 
     public String getIntituleFormation() {
         return intituleFormation;
@@ -28,11 +39,11 @@ public class CompteRenduDTO {
     }
 
     public Date getDateFormation() {
-        return dateFormation;
+        return dateCompteRendu;
     }
 
     public void setDateFormation(Date dateFormation) {
-        this.dateFormation = dateFormation;
+        this.dateCompteRendu = dateFormation;
     }
 
     public String getNomclient() {

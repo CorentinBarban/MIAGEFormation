@@ -7,6 +7,7 @@ package com.barban.corentin.commercial.business;
 
 import DTO.CompteRenduDTO;
 import DTO.FormationDTO;
+import Exceptions.ListeFormationsVideException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -22,7 +23,7 @@ public interface gestionCommercialeLocal {
     
     void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient);
     
-    CompteRenduDTO editerCompteRendus();
+    CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException;
     
     CompteRenduDTO creerCompteRendu(FormationDTO formation);
     

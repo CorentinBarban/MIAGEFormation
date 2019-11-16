@@ -7,9 +7,13 @@ package com.barban.corentin.commercial.business;
 
 import DTO.CompteRenduDTO;
 import DTO.FormationDTO;
+import Exceptions.ListeFormationsVideException;
 import com.barban.corentin.commercial.entities.Demandedeformation;
 import com.barban.corentin.commercial.repositories.DemandedeformationFacadeLocal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -35,9 +39,34 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         Demandedeformation dfObjet = this.demandedeformationFacade.create(demandeFormation);
     }
 
-    @Override
-    public CompteRenduDTO editerCompteRendus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override 
+    public CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException {
+        List<FormationDTO> listeFormations = new ArrayList<FormationDTO>();
+        CompteRenduDTO compteRendu = null;
+        //traitement et récupération de la liste de formations
+        if (listeFormations.size() > 0) {
+            for (int i = 0; i < listeFormations.size(); i++) {
+                FormationDTO formation = listeFormations.get(i);
+                int nbPersonnes = formation.getNbpersonne();
+                int capaciteMin = 0;//TO-DO
+                Calendar calendier = new GregorianCalendar();
+                calendier.add(formation.getDateformation().getDate(), 30);
+                Date dateJour30 = calendier.getTime();
+                Date jour = new Date();
+                //Ici, on doit aller taper dans technico-commercial pour chopper la clé de la formation en question dans le formationcatalogue pour avoir la capacite (REST)
+                //Récupérer keycatalogue de la formation, check dans le REST de TC pour avoir la capacité correspondante
+                //Traitement REST : PostMan, et RESFTful Web Service Pattern
+                if (nbPersonnes < capaciteMin && jour == dateJour30) {
+                    compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Négatif", formation.getNbpersonne());
+                } else {
+                    compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Positif", formation.getNbpersonne());
+                }
+
+            }
+        } else {
+            throw new ListeFormationsVideException();
+        }
+        return compteRendu;
     }
 
     @Override
@@ -47,12 +76,13 @@ public class gestionCommerciale implements gestionCommercialeLocal {
 
     @Override
     public boolean validerExistenceFormation(int code) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Si formation existe
+        //Else
     }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
     @Override
     public CompteRenduDTO creerCompteRendu(FormationDTO formation) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
