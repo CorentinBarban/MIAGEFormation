@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,15 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Formation.findAll", query = "SELECT f FROM Formation f")
     , @NamedQuery(name = "Formation.findByIdformation", query = "SELECT f FROM Formation f WHERE f.idformation = :idformation")
-    , @NamedQuery(name = "Formation.findByIntitule", query = "SELECT f FROM Formation f WHERE f.intitule = :intitule")
     , @NamedQuery(name = "Formation.findByNomclient", query = "SELECT f FROM Formation f WHERE f.nomclient = :nomclient")
     , @NamedQuery(name = "Formation.findByNbpersonne", query = "SELECT f FROM Formation f WHERE f.nbpersonne = :nbpersonne")
     , @NamedQuery(name = "Formation.findByStatut", query = "SELECT f FROM Formation f WHERE f.statut = :statut")
     , @NamedQuery(name = "Formation.findByDateformation", query = "SELECT f FROM Formation f WHERE f.dateformation = :dateformation")
     , @NamedQuery(name = "Formation.findByKeyformationcatalogue", query = "SELECT f FROM Formation f WHERE f.keyformationcatalogue = :keyformationcatalogue")
     , @NamedQuery(name = "Formation.findByKeyformateur", query = "SELECT f FROM Formation f WHERE f.keyformateur = :keyformateur")
-    , @NamedQuery(name = "Formation.findByKeysalle", query = "SELECT f FROM Formation f WHERE f.keysalle = :keysalle")
-    , @NamedQuery(name = "Formation.findByKeydemandeformation", query = "SELECT f FROM Formation f WHERE f.keydemandeformation = :keydemandeformation")})
+    , @NamedQuery(name = "Formation.findByKeysalle", query = "SELECT f FROM Formation f WHERE f.keysalle = :keysalle")})
 public class Formation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,9 +48,6 @@ public class Formation implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDFORMATION")
     private Integer idformation;
-    @Size(max = 100)
-    @Column(name = "INTITULE")
-    private String intitule;
     @Size(max = 100)
     @Column(name = "NOMCLIENT")
     private String nomclient;
@@ -68,8 +65,9 @@ public class Formation implements Serializable {
     private Integer keyformateur;
     @Column(name = "KEYSALLE")
     private Integer keysalle;
-    @Column(name = "KEYDEMANDEFORMATION")
-    private Integer keydemandeformation;
+    @JoinColumn(name = "KEYSTOCKAGEDEMANDEFORMATION", referencedColumnName = "IDDEMANDEFORMATION")
+    @ManyToOne(optional = false)
+    private Stockagedemandeformation keystockagedemandeformation;
 
     public Formation() {
     }
@@ -84,14 +82,6 @@ public class Formation implements Serializable {
 
     public void setIdformation(Integer idformation) {
         this.idformation = idformation;
-    }
-
-    public String getIntitule() {
-        return intitule;
-    }
-
-    public void setIntitule(String intitule) {
-        this.intitule = intitule;
     }
 
     public String getNomclient() {
@@ -150,12 +140,12 @@ public class Formation implements Serializable {
         this.keysalle = keysalle;
     }
 
-    public Integer getKeydemandeformation() {
-        return keydemandeformation;
+    public Stockagedemandeformation getKeystockagedemandeformation() {
+        return keystockagedemandeformation;
     }
 
-    public void setKeydemandeformation(Integer keydemandeformation) {
-        this.keydemandeformation = keydemandeformation;
+    public void setKeystockagedemandeformation(Stockagedemandeformation keystockagedemandeformation) {
+        this.keystockagedemandeformation = keystockagedemandeformation;
     }
 
     @Override

@@ -22,7 +22,7 @@ public class FormationDTO {
     int keyformationcatalogue;
     int keyformateur;
     int keysalle;
-    int keydemandeformation;
+    int keyStockagedemandeformation;
     
     
     public FormationDTO() {
@@ -104,17 +104,19 @@ public class FormationDTO {
         this.keysalle = keysalle;
     }
 
-    public Integer getKeydemandeformation() {
-        return keydemandeformation;
+    public Integer getKeyStockagedemandeformation() {
+        return keyStockagedemandeformation;
     }
 
-    public void setKeydemandeformation(Integer keydemandeformation) {
-        this.keydemandeformation = keydemandeformation;
+    public void setKeyStockagedemandeformation(Integer keyStockagedemandeformation) {
+        this.keyStockagedemandeformation = keyStockagedemandeformation;
     }
 
     @Override
     public String toString() {
-        return "FormationDTO{" + "idformation=" + idformation + ", intitule=" + intitule + ", nomclient=" + nomclient + ", nbpersonne=" + nbpersonne + ", statut=" + statut + ", dateformation=" + dateformation + ", keyformationcatalogue=" + keyformationcatalogue + ", keyformateur=" + keyformateur + ", keysalle=" + keysalle + ", keydemandeformation=" + keydemandeformation + '}';
+        return "FormationDTO{" + "idformation=" + idformation + ", intitule=" + intitule + ", nomclient=" + nomclient + ", nbpersonne=" + nbpersonne + ", statut=" + statut + ", dateformation=" + dateformation + ", keyformationcatalogue=" + keyformationcatalogue + ", keyformateur=" + keyformateur + ", keysalle=" + keysalle + ", keyStockagedemandeformation=" + keyStockagedemandeformation + '}';
     }
+
+    
 
 }

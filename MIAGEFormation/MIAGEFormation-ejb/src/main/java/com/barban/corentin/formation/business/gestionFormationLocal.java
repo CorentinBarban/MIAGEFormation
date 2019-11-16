@@ -18,7 +18,7 @@ public interface gestionFormationLocal {
     
     void demanderFormation();
     
-    void stockerDemande();
+    void stockerDemande(String codeFormation,String intitule,Integer codeClient);
 
     String demanderEtatFormation(Integer idFormation);
 

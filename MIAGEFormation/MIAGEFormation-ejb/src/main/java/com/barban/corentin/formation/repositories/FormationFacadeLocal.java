@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface FormationFacadeLocal {
 
-    void create(Formation formation);
+    Formation create(Formation formation);
 
     void edit(Formation formation);
 
