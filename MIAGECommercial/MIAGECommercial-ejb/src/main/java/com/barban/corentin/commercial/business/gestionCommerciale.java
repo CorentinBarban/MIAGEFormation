@@ -56,6 +56,9 @@ public class gestionCommerciale implements gestionCommercialeLocal {
                 //Ici, on doit aller taper dans technico-commercial pour chopper la clé de la formation en question dans le formationcatalogue pour avoir la capacite (REST)
                 //Récupérer keycatalogue de la formation, check dans le REST de TC pour avoir la capacité correspondante
                 //Traitement REST : PostMan, et RESFTful Web Service Pattern
+                //Créer FormationResource pour le GET de l'état de la formation par le client
+                //Créer DemandeDeFormationResource pour l'interaction Commercial/GC
+                //Créer FormationCatalogueResource pour GET le catalogue de la part du TC
                 if (nbPersonnes < capaciteMin && jour == dateJour30) {
                     compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Négatif", formation.getNbpersonne());
                 } else {
