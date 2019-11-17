@@ -5,13 +5,14 @@
  */
 package DTO;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  *
  * @author Corentin
  */
-public class SalleDTO {
+public class SalleDTO implements Serializable{
     
     private Integer idsalle;
     private String nom;

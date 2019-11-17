@@ -5,11 +5,6 @@
  */
 package com.barban.corentin.formation.business;
 
-import DTO.SalleDTO;
-import Exceptions.SalleNotFoundException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
