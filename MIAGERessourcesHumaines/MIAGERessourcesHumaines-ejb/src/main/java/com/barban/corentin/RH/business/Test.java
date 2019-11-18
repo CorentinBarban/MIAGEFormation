@@ -7,6 +7,8 @@ package com.barban.corentin.RH.business;
 
 import Exceptions.FormateurNotFoundException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.DependsOn;
 import javax.ejb.EJB;
@@ -36,8 +38,8 @@ public class Test {
         Date date = new Date();
         try {
             gestionRH.editStatutFormateur(1, "INDISPONIBLE", date);
-        } catch (FormateurNotFoundException e) {
-            System.err.println(e.getMessage());
+        } catch (FormateurNotFoundException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
