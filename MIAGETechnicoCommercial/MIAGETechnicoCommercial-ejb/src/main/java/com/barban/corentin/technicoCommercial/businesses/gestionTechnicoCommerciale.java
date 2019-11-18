@@ -16,9 +16,9 @@ import Exceptions.SalleNotFoundException;
 import com.barban.corentin.technicoCommercial.entities.Formateurcompetent;
 import com.barban.corentin.technicoCommercial.entities.Formationcatalogue;
 import com.barban.corentin.technicoCommercial.entities.Salleadequate;
-import com.barban.corentin.technicoCommercial.repositories.FormateurcompetentFacade;
-import com.barban.corentin.technicoCommercial.repositories.FormationcatalogueFacade;
-import com.barban.corentin.technicoCommercial.repositories.SalleadequateFacade;
+import com.barban.corentin.technicoCommercial.repositories.FormateurcompetentFacadeLocal;
+import com.barban.corentin.technicoCommercial.repositories.FormationcatalogueFacadeLocal;
+import com.barban.corentin.technicoCommercial.repositories.SalleadequateFacadeLocal;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,17 +32,17 @@ import javax.ejb.Stateless;
 public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLocal {
 
     @EJB 
-    private FormateurcompetentFacade formateurF;
+    private FormateurcompetentFacadeLocal formateurF;
     
     @EJB
-    private FormationcatalogueFacade formationF;
+    private FormationcatalogueFacadeLocal formationF;
     
     @EJB
-    private SalleadequateFacade salleF;
+    private SalleadequateFacadeLocal salleF;
 
     @Override
     public Formationcatalogue ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException {
-        if (this.formationF.find(code) != null) {
+        if (this.formationF.findByCode(code) != null) {
             throw new FormationCatalogueException();
         }
         Formationcatalogue fc = new Formationcatalogue(code, intitule, niveau, typeduree, capacitemin, capacitemax, tarifforfaitaire);
@@ -52,30 +52,30 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
 
     @Override
     public boolean supprimerFormationCatalogue(String code) throws FormationCatalogueNotFoundException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         this.formationF.remove(fc);
         return true;
     }
 
     @Override
     public Formationcatalogue consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         return fc;
     }
 
     @Override
     public boolean ajouterFormateurAFormation(String code, int formateurkey) throws FormationCatalogueNotFoundException, FormateurNotFoundException, LienFormateurFormationException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
         //ajouter la verification via interrogation a gestion RH
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
         Formateurcompetent formateur = new Formateurcompetent(formateurkey);
         if (formateurs.contains(formateur)) {
@@ -89,11 +89,11 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
 
     @Override
     public boolean supprimerFormateurDeFormation(String code, int formateurkey) throws FormationCatalogueNotFoundException, FormateurNotFoundException, LienFormateurFormationNotFoundException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
         //ajouter la verification via interrogation a gestion RH
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
         Formateurcompetent formateur = new Formateurcompetent(formateurkey);
         if (!formateurs.contains(formateur)) {
@@ -107,10 +107,10 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
 
     @Override
     public Collection<Formateurcompetent> rechercherFormateursDeFormation(String code) throws FormationCatalogueNotFoundException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
         return formateurs;
     }
@@ -121,7 +121,7 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
             throw new FormationCatalogueNotFoundException();
         }
         //ajouter la verification via interrogation a gestion Patrimoine
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         Collection<Salleadequate> salles = fc.getSalleadequateCollection();
         Salleadequate salle = new Salleadequate(sallekey);
         if (salles.contains(salle)) {
@@ -135,11 +135,11 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
 
     @Override
     public boolean supprimerSalleDeFormation(String code, int sallekey) throws FormationCatalogueNotFoundException, SalleNotFoundException, LienSalleFormationNotFoundException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
         //ajouter la verification via interrogation a gestion Patrimoine
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         Collection<Salleadequate> salles = fc.getSalleadequateCollection();
         Salleadequate salle = new Salleadequate(sallekey);
         if (!salles.contains(salle)) {
@@ -153,10 +153,10 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
 
     @Override
     public Collection<Salleadequate> rechercherSallesDeFormation(String code) throws FormationCatalogueNotFoundException {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
-        Formationcatalogue fc = this.formationF.find(code);
+        Formationcatalogue fc = this.formationF.findByCode(code);
         Collection<Salleadequate> salles = fc.getSalleadequateCollection();
         return salles;
     }
@@ -169,13 +169,11 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
 
     @Override
     public boolean validerExistenceFormation(String code) {
-        if (this.formationF.find(code) == null) {
+        if (this.formationF.findByCode(code) == null) {
             return false;
         }
         else {
             return true;
         }
-    }
-    
-    
+    } 
 }

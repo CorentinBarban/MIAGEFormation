@@ -6,6 +6,7 @@
 package com.barban.corentin.technicoCommercial.repositories;
 
 import com.barban.corentin.technicoCommercial.entities.Formationcatalogue;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,16 @@ public class FormationcatalogueFacade extends AbstractFacade<Formationcatalogue>
     public FormationcatalogueFacade() {
         super(Formationcatalogue.class);
     }
-    
+
+    @Override
+    public Formationcatalogue findByCode(String code) {
+        Formationcatalogue result = null;
+        List<Formationcatalogue> formationCatalogue = em.createNamedQuery("Formationcatalogue.findByCode")
+                .setParameter("code", code).getResultList();
+        if (!formationCatalogue.isEmpty()) {
+            result = formationCatalogue.get(0);
+        }
+        return result;
+    }
+
 }

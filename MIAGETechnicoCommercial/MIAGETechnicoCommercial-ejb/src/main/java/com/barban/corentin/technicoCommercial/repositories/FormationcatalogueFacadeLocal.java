@@ -30,4 +30,6 @@ public interface FormationcatalogueFacadeLocal {
 
     int count();
     
+    Formationcatalogue findByCode(String code);
+    
 }
