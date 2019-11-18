@@ -50,6 +50,10 @@ public class Formateurcompetent implements Serializable {
     public Formateurcompetent() {
     }
 
+    public Formateurcompetent( int formateurkey) {
+        this.formateurkey = formateurkey;
+    }
+    
     public Formateurcompetent(Integer idformateurcompetent) {
         this.idformateurcompetent = idformateurcompetent;
     }

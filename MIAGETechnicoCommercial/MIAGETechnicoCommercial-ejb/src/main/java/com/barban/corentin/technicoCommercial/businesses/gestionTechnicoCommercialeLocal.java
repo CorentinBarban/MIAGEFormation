@@ -16,6 +16,7 @@ import Exceptions.SalleNotFoundException;
 import com.barban.corentin.technicoCommercial.entities.Formateurcompetent;
 import com.barban.corentin.technicoCommercial.entities.Formationcatalogue;
 import com.barban.corentin.technicoCommercial.entities.Salleadequate;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -84,7 +85,7 @@ public interface gestionTechnicoCommercialeLocal {
      * @return la liste des formateurs compétents pour la formation donnée
      * @throws FormationCatalogueNotFoundException
      */
-    List<Formateurcompetent> rechercherFormateursDeFormation(String code) throws FormationCatalogueNotFoundException ;
+    Collection<Formateurcompetent> rechercherFormateursDeFormation(String code) throws FormationCatalogueNotFoundException ;
 
         /**
      * Ajouter une salle adéquate pour une formation
@@ -114,7 +115,7 @@ public interface gestionTechnicoCommercialeLocal {
      * @return la liste des salles adéquates pour la formation donnée
      * @throws FormationCatalogueNotFoundException
      */
-    List<Salleadequate> rechercherSallesDeFormation(String code) throws FormationCatalogueNotFoundException ;
+    Collection<Salleadequate> rechercherSallesDeFormation(String code) throws FormationCatalogueNotFoundException ;
 
     /**
      * Lister les formations du catalogue

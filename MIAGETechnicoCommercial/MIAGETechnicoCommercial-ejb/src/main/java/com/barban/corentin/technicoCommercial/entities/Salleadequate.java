@@ -59,6 +59,10 @@ public class Salleadequate implements Serializable {
         this.idsalleadequat = idsalleadequat;
     }
 
+    public Salleadequate(int sallekey) {
+        this.sallekey = sallekey;
+    }
+    
     public Salleadequate(Integer idsalleadequat, int sallekey) {
         this.idsalleadequat = idsalleadequat;
         this.sallekey = sallekey;

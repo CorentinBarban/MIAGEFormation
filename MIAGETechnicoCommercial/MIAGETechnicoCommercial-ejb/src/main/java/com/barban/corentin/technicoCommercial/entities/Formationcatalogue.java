@@ -77,6 +77,16 @@ public class Formationcatalogue implements Serializable {
 
     public Formationcatalogue() {
     }
+    
+    public Formationcatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) {
+        this.code = code;
+        this.intitule = intitule;
+        this.niveau = niveau;
+        this.typeduree = typeduree;
+        this.capacitemin = capacitemin;
+        this.capacitemax = capacitemax;
+        this.tarifforfaitaire = tarifforfaitaire;
+    }
 
     public Formationcatalogue(Integer idformationcatalogue) {
         this.idformationcatalogue = idformationcatalogue;
