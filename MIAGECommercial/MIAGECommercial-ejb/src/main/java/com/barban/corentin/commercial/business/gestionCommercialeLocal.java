@@ -25,9 +25,7 @@ public interface gestionCommercialeLocal {
     
     CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException;
     
-    CompteRenduDTO creerCompteRendu(FormationDTO formation);
-    
-    String demanderStatutFormation(int idFormation);
+    String demanderEtatFormation(int idFormation);
     
     boolean validerExistenceFormation(int code);
 

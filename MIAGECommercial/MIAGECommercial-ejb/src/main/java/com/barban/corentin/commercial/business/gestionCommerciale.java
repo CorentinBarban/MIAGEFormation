@@ -39,8 +39,8 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         Demandedeformation dfObjet = this.demandedeformationFacade.create(demandeFormation);
     }
 
-    @Override 
-    public CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException {
+    @Override
+    public CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException { //Doit throw aussi CapaciteNotFound
         List<FormationDTO> listeFormations = new ArrayList<FormationDTO>();
         CompteRenduDTO compteRendu = null;
         //traitement et récupération de la liste de formations
@@ -55,26 +55,17 @@ public class gestionCommerciale implements gestionCommercialeLocal {
                 Date jour = new Date();
                 //Ici, on doit aller taper dans technico-commercial pour chopper la clé de la formation en question dans le formationcatalogue pour avoir la capacite (REST)
                 //Récupérer keycatalogue de la formation, check dans le REST de TC pour avoir la capacité correspondante
-                //Traitement REST : PostMan, et RESFTful Web Service Pattern
-                //Créer FormationResource pour le GET de l'état de la formation par le client
-                //Créer DemandeDeFormationResource pour l'interaction Commercial/GC
-                //Créer FormationCatalogueResource pour GET le catalogue de la part du TC
+
                 if (nbPersonnes < capaciteMin && jour == dateJour30) {
                     compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Négatif", formation.getNbpersonne());
                 } else {
                     compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Positif", formation.getNbpersonne());
                 }
-
             }
         } else {
             throw new ListeFormationsVideException();
         }
         return compteRendu;
-    }
-
-    @Override
-    public String demanderStatutFormation(int idFormation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -84,10 +75,13 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         //Else
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
     @Override
-    public CompteRenduDTO creerCompteRendu(FormationDTO formation) {
+    public String demanderEtatFormation(int idFormation) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    //Traitement REST : PostMan, et RESFTful Web Service Pattern
+    //Créer FormationResource pour le GET de l'état de la formation par le client
+    //Créer DemandeDeFormationResource pour l'interaction Commercial/GC
+    //Créer FormationCatalogueResource pour GET le catalogue de la part du TC
 }
