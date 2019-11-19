@@ -19,15 +19,18 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
- * @author maths
+ * Classe métier de la gestion commerciale
+ * @author Mathieu Stivanin
  */
 @Stateless
 public class gestionCommerciale implements gestionCommercialeLocal {
 
     @EJB
     private DemandedeformationFacadeLocal demandedeformationFacade;
-
+/**
+ * 
+ * @return 
+ */
     @Override
     public List<FormationDTO> recupererCatalogueFormations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -67,17 +70,21 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         }
         return compteRendu;
     }
-
+/**
+ * Fonction permettant de valider l'existence d'une formation
+ * @param code code de la formation
+ * @return true si la formation existe, false si la formation n'existe pas
+ */
     @Override
     public boolean validerExistenceFormation(int code) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //Si formation existe
-        //Else
+        //Appel REST de la même méthode chez TC
     }
 
     @Override
     public String demanderEtatFormation(int idFormation) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Appel REST
     }
 
     //Traitement REST : PostMan, et RESFTful Web Service Pattern
