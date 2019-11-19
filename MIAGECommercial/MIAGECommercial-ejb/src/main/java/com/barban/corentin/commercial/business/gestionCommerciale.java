@@ -28,19 +28,33 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     @EJB
     private DemandedeformationFacadeLocal demandedeformationFacade;
 /**
- * 
- * @return 
+ * Méthode permettant de récupérer le catalogue de formations =.
+ * @return Une liste de formations DTO
  */
     @Override
     public List<FormationDTO> recupererCatalogueFormations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Méthode permettant de mémoriser une demande de formation
+     * @param nomClient
+     * @param dateDemande
+     * @param codeFormation
+     * @param intituleFormation
+     * @param codeclient 
+     */
     @Override
     public void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient) {
         Demandedeformation demandeFormation = new Demandedeformation(nomClient, dateDemande, codeFormation, intituleFormation, codeclient);
         Demandedeformation dfObjet = this.demandedeformationFacade.create(demandeFormation);
     }
+    
+    /**
+     * Méthode permettant de générer des comptes rendus, positifs ou négatifs.
+     * @return Une objet CompteRenduDTO représentant un compte rendu
+     * @throws ListeFormationsVideException 
+     */
 
     @Override
     public CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException { //Doit throw aussi CapaciteNotFound
@@ -80,6 +94,12 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         //Appel REST de la même méthode chez TC
     }
+    
+    /**
+     * Méthode permettant de demander l'état d'une formation
+     * @param idFormation l'id de la formation souhaitée
+     * @return une chaine contenant l'état de la formation
+     */
 
     @Override
     public String demanderEtatFormation(int idFormation) {
