@@ -43,7 +43,7 @@ public class Test {
     void init() {
 //        testEditerStatutSalle();
 //        testListerSalleDisponible();
-        sendMessage();
+//        sendMessage();
 //        try {
 //           
 //        } catch (InterruptedException ex) {
@@ -87,66 +87,5 @@ public class Test {
         SalleDTO s1 = new SalleDTO();
         s1.setNom("Diamant");
         s1.setIdsalle(1);
-
-        Context context = null;
-        ConnectionFactory factory = null;
-        Connection connection = null;
-        String factoryName = "ConnectionFactory";
-        String destName = null;
-        Destination dest = null;
-        Session session = null;
-        MessageProducer sender = null;
-        String text = "Message";
-        destName = "FileTest";
-
-        try {
-            // create the JNDI initial context.
-            context = new InitialContext();
-
-            // look up the ConnectionFactory
-            factory = (ConnectionFactory) context.lookup(factoryName);
-
-            // look up the Destination
-            dest = (Destination) context.lookup(destName);
-
-            // create the connection
-            connection = factory.createConnection();
-
-            // create the session
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-
-            // create the sender
-            sender = session.createProducer(dest);
-
-            // start the connection, to enable message sends
-            connection.start();
-            ObjectMessage message1 = session.createObjectMessage(s1);
-            message1.setJMSType("t1");
-            sender.send(message1);
-
-        } catch (JMSException exception) {
-            exception.printStackTrace();
-        } catch (NamingException exception) {
-            exception.printStackTrace();
-        } finally {
-            // close the context
-            if (context != null) {
-                try {
-                    context.close();
-                } catch (NamingException exception) {
-                    exception.printStackTrace();
-                }
-            }
-
-            // close the connection
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (JMSException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
     }
 }
