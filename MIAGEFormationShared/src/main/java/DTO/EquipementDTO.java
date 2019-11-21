@@ -46,4 +46,6 @@ public class EquipementDTO {
         return "EquipementDTO{" + "idequipement=" + idequipement + ", nomequipement=" + nomequipement + ", salleCollection=" + salleCollection + '}';
     }
     
+    
+    
 }
