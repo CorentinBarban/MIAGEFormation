@@ -5,8 +5,11 @@
  */
 package com.barban.corentin.RH.business;
 
+import DTO.FormateurDTO;
 import Exceptions.FormateurNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -31,16 +34,41 @@ public class Test {
 
     @PostConstruct
     void init() {
-        testEditStatutFormateur();
+        // testEditStatutFormateur();
+        testLstFormateurDispo();
     }
 
-    void testEditStatutFormateur() {
+    void testModifStatutFormateur() {
         Date date = new Date();
         try {
-            gestionRH.editStatutFormateur(1, "INDISPONIBLE", date);
+            gestionRH.modifierStatutFormateur(1, "TEST", date);
         } catch (FormateurNotFoundException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    void testLstFormateurDispo() {
+        Date date = new Date();
+        List<FormateurDTO> listeFormateur = new ArrayList<>();
+        List<FormateurDTO> listeFormateurDisponibles;
+        
+        FormateurDTO f1 = new FormateurDTO();
+        f1.setNom("Diamant");
+        f1.setIdFormateur(1);
+        listeFormateur.add(f1);
+
+        FormateurDTO f2 = new FormateurDTO();
+        f2.setNom("Emeraude");
+        f2.setIdFormateur(2);
+        listeFormateur.add(f2);
+
+        FormateurDTO f3 = new FormateurDTO();
+        f1.setNom("Rubis");
+        f3.setIdFormateur(3);
+        listeFormateur.add(f3);
+
+        listeFormateurDisponibles = gestionRH.fournirPlanningFormateur(listeFormateur, date);
+        System.out.println(listeFormateurDisponibles.toString());
     }
 
 }
