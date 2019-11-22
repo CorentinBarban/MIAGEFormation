@@ -15,9 +15,15 @@ public class FormationDTO {
     
     Integer idformation;
     String intitule;
+    String code;
     String nomclient;
     int nbpersonne;
     String statut;
+    String niveau;
+    String typeduree;
+    int capacitemin;
+    int capacitemax;
+    double tarifforfaitaire;
     Date dateformation;
     int keyformationcatalogue;
     int keyformateur;
@@ -30,6 +36,16 @@ public class FormationDTO {
 
     public FormationDTO(Integer idformation) {
         this.idformation = idformation;
+    }
+
+    public FormationDTO(String intitule, String code, String niveau, String typeduree, int capacitemin, int capacitemax, double tarifforfaitaire) {
+        this.intitule = intitule;
+        this.code = code;
+        this.niveau = niveau;
+        this.typeduree = typeduree;
+        this.capacitemin = capacitemin;
+        this.capacitemax = capacitemax;
+        this.tarifforfaitaire = tarifforfaitaire;
     }
 
     public Integer getIdformation() {
@@ -56,11 +72,11 @@ public class FormationDTO {
         this.nomclient = nomclient;
     }
 
-    public Integer getNbpersonne() {
+    public int getNbpersonne() {
         return nbpersonne;
     }
 
-    public void setNbpersonne(Integer nbpersonne) {
+    public void setNbpersonne(int nbpersonne) {
         this.nbpersonne = nbpersonne;
     }
 
@@ -72,6 +88,46 @@ public class FormationDTO {
         this.statut = statut;
     }
 
+    public String getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
+    }
+
+    public String getTypeduree() {
+        return typeduree;
+    }
+
+    public void setTypeduree(String typeduree) {
+        this.typeduree = typeduree;
+    }
+
+    public int getCapacitemin() {
+        return capacitemin;
+    }
+
+    public void setCapacitemin(int capacitemin) {
+        this.capacitemin = capacitemin;
+    }
+
+    public int getCapacitemax() {
+        return capacitemax;
+    }
+
+    public void setCapacitemax(int capacitemax) {
+        this.capacitemax = capacitemax;
+    }
+
+    public double getTarifforfaitaire() {
+        return tarifforfaitaire;
+    }
+
+    public void setTarifforfaitaire(double tarifforfaitaire) {
+        this.tarifforfaitaire = tarifforfaitaire;
+    }
+
     public Date getDateformation() {
         return dateformation;
     }
@@ -80,38 +136,38 @@ public class FormationDTO {
         this.dateformation = dateformation;
     }
 
-    public Integer getKeyformationcatalogue() {
+    public int getKeyformationcatalogue() {
         return keyformationcatalogue;
     }
 
-    public void setKeyformationcatalogue(Integer keyformationcatalogue) {
+    public void setKeyformationcatalogue(int keyformationcatalogue) {
         this.keyformationcatalogue = keyformationcatalogue;
     }
 
-    public Integer getKeyformateur() {
+    public int getKeyformateur() {
         return keyformateur;
     }
 
-    public void setKeyformateur(Integer keyformateur) {
+    public void setKeyformateur(int keyformateur) {
         this.keyformateur = keyformateur;
     }
 
-    public Integer getKeysalle() {
+    public int getKeysalle() {
         return keysalle;
     }
 
-    public void setKeysalle(Integer keysalle) {
+    public void setKeysalle(int keysalle) {
         this.keysalle = keysalle;
     }
 
-    public Integer getKeyStockagedemandeformation() {
+    public int getKeyStockagedemandeformation() {
         return keyStockagedemandeformation;
     }
 
-    public void setKeyStockagedemandeformation(Integer keyStockagedemandeformation) {
+    public void setKeyStockagedemandeformation(int keyStockagedemandeformation) {
         this.keyStockagedemandeformation = keyStockagedemandeformation;
     }
-
+    
     @Override
     public String toString() {
         return "FormationDTO{" + "idformation=" + idformation + ", intitule=" + intitule + ", nomclient=" + nomclient + ", nbpersonne=" + nbpersonne + ", statut=" + statut + ", dateformation=" + dateformation + ", keyformationcatalogue=" + keyformationcatalogue + ", keyformateur=" + keyformateur + ", keysalle=" + keysalle + ", keyStockagedemandeformation=" + keyStockagedemandeformation + '}';
