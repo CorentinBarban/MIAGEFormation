@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.DependsOn;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -35,7 +34,8 @@ public class Test {
     @PostConstruct
     void init() {
         // testEditStatutFormateur();
-        testLstFormateurDispo();
+        //testLstFormateurDispo();
+        //testExistenceFormateur();
     }
 
     void testModifStatutFormateur() {
@@ -51,7 +51,7 @@ public class Test {
         Date date = new Date();
         List<FormateurDTO> listeFormateur = new ArrayList<>();
         List<FormateurDTO> listeFormateurDisponibles;
-        
+
         FormateurDTO f1 = new FormateurDTO();
         f1.setNom("Diamant");
         f1.setIdFormateur(1);
@@ -68,7 +68,13 @@ public class Test {
         listeFormateur.add(f3);
 
         listeFormateurDisponibles = gestionRH.fournirPlanningFormateur(listeFormateur, date);
-        System.out.println(listeFormateurDisponibles.toString());
+        System.out.println("Liste des formateurs --------------------------\n" + listeFormateurDisponibles.toString());
+    }
+
+    void testExistenceFormateur() {
+        boolean result;
+        result = gestionRH.verifierExistenceFormateur(1);
+        System.out.println("Le formateur avec l'id: 1 est : " + result);
     }
 
 }
