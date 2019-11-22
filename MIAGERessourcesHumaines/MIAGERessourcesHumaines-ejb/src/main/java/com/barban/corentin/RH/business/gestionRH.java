@@ -78,4 +78,19 @@ public class gestionRH implements gestionRHLocal {
         return listeFormateursDiponibles;
     }
 
+    /**
+     * Renvoie si le formateur existe
+     *
+     * @param IdFormateur
+     */
+    public boolean verifierExistenceFormateur(Integer IdFormateur) {
+        Formateur f = this.formateurFacade.find(IdFormateur);
+
+        if (f.equals(null)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

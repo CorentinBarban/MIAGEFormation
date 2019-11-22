@@ -21,4 +21,6 @@ public interface gestionRHLocal {
     void modifierStatutFormateur(Integer idFormateur, String statut, Date date) throws FormateurNotFoundException;
 
     List<FormateurDTO> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees, Date date);
+    
+    boolean verifierExistenceFormateur(Integer idFormateur);
 }
