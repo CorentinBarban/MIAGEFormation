@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 package com.barban.corentin.technicocommercial.rest;
+
+import Exceptions.FormationCatalogueNotFoundException;
 import com.barban.corentin.technicoCommercial.services.ServiceTechnicoCommercialLocal;
 import com.google.gson.Gson;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -19,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -26,9 +28,9 @@ import javax.ws.rs.core.MediaType;
  *
  * @author jdetr
  */
-@Path("formationsCatalogue")
+@Path("formationsCatalogue/{code}")
 @RequestScoped
-public class FormationsCatalogueResource {
+public class FormationCatalogueResource {
 
     ServiceTechnicoCommercialLocal serviceTC = lookupServiceTechnicoCommercialLocal();
     
@@ -37,24 +39,26 @@ public class FormationsCatalogueResource {
     private Gson gson;
 
     /**
-     * Creates a new instance of FormationsCatalogueResource
+     * Creates a new instance of FormationCatalogueResource
      */
-    public FormationsCatalogueResource() {
+    public FormationCatalogueResource() {
         this.gson = new Gson();
     }
 
     /**
-     * Retrieves representation of an instance of com.barban.corentin.technicocommercial.rest.FormationsCatalogueResource
+     * Retrieves representation of an instance of com.barban.corentin.technicocommercial.rest.FormationCatalogueResource
+     * @param code
      * @return an instance of java.lang.String
+     * @throws Exceptions.FormationCatalogueNotFoundException
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
-        return this.gson.toJson(this.serviceTC.listerCatalogueFormations());
+    public String getJson(@PathParam("code") String code) throws FormationCatalogueNotFoundException {
+        return this.gson.toJson(this.serviceTC.consulterFormationCatalogue(code));
     }
 
     /**
-     * PUT method for updating or creating an instance of FormationsCatalogueResource
+     * PUT method for updating or creating an instance of FormationCatalogueResource
      * @param content representation for the resource
      */
     @PUT
