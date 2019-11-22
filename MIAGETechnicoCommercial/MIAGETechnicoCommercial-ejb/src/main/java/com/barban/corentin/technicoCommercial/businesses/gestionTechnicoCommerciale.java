@@ -5,6 +5,7 @@
  */
 package com.barban.corentin.technicoCommercial.businesses;
 
+import DTO.FormationDTO;
 import Exceptions.FormateurNotFoundException;
 import Exceptions.FormationCatalogueException;
 import Exceptions.FormationCatalogueNotFoundException;
@@ -19,6 +20,7 @@ import com.barban.corentin.technicoCommercial.entities.Salleadequate;
 import com.barban.corentin.technicoCommercial.repositories.FormateurcompetentFacadeLocal;
 import com.barban.corentin.technicoCommercial.repositories.FormationcatalogueFacadeLocal;
 import com.barban.corentin.technicoCommercial.repositories.SalleadequateFacadeLocal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -60,13 +62,15 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
         return true;
     }
 
+    // go commercial
     @Override
-    public Formationcatalogue consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException {
+    public FormationDTO consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException {
         if (this.formationF.findByCode(code) == null) {
             throw new FormationCatalogueNotFoundException();
         }
         Formationcatalogue fc = this.formationF.findByCode(code);
-        return fc;
+        FormationDTO fDTO = new FormationDTO(fc.getIntitule(), fc.getCode(), fc.getNiveau(), fc.getTypeduree(), fc.getCapacitemin(), fc.getCapacitemax(), fc.getTarifforfaitaire());
+        return fDTO;
     }
 
     @Override
@@ -81,6 +85,7 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
         if (formateurs.contains(formateur)) {
             throw new LienFormateurFormationException();
         }
+        this.formateurF.create(formateur);
         formateurs.add(formateur);
         fc.setFormateurcompetentCollection(formateurs);
         this.formationF.edit(fc);
@@ -162,18 +167,14 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
     }
 
     @Override
-    public List<Formationcatalogue> listerCatalogueFormations() {
+    public List<FormationDTO> listerCatalogueFormations() {
         List<Formationcatalogue> catalogue = this.formationF.findAll();
-        return catalogue;
+        List<FormationDTO> catalogueDTO = new ArrayList<>();
+        for (Formationcatalogue f : catalogue) {
+            FormationDTO fDTO = new FormationDTO(f.getIntitule(), f.getCode(), f.getNiveau(), f.getTypeduree(), f.getCapacitemin(), f.getCapacitemax(), f.getTarifforfaitaire());
+            catalogueDTO.add(fDTO);
+        }
+        return catalogueDTO;
     }
 
-    @Override
-    public boolean validerExistenceFormation(String code) {
-        if (this.formationF.findByCode(code) == null) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    } 
 }

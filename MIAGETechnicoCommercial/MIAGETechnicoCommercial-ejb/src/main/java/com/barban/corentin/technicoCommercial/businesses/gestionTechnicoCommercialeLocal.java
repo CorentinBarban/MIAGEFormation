@@ -5,6 +5,7 @@
  */
 package com.barban.corentin.technicoCommercial.businesses;
 
+import DTO.FormationDTO;
 import Exceptions.FormateurNotFoundException;
 import Exceptions.FormationCatalogueException;
 import Exceptions.FormationCatalogueNotFoundException;
@@ -55,7 +56,7 @@ public interface gestionTechnicoCommercialeLocal {
      * @return la formation trouvée
      * @throws FormationCatalogueNotFoundException 
      */
-    Formationcatalogue consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException ; 
+    FormationDTO consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException ; 
 
     /**
      * Ajouter un formateur compétent pour une formation
@@ -121,13 +122,7 @@ public interface gestionTechnicoCommercialeLocal {
      * Lister les formations du catalogue
      * @return la liste des formations du catalogue
      */
-    List<Formationcatalogue> listerCatalogueFormations();
-    
-    /**
-     * Vérifier si une formation donnée est dans le catalogue
-     * @param code
-     * @return booléen de réponse
-     */
-    boolean validerExistenceFormation(String code);
+    List<FormationDTO> listerCatalogueFormations();
+
     
 }

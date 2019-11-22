@@ -21,9 +21,9 @@ public class FormationDTO {
     String statut;
     String niveau;
     String typeduree;
-    int capacitemin;
-    int capacitemax;
-    double tarifforfaitaire;
+    Integer capacitemin;
+    Integer capacitemax;
+    Double tarifforfaitaire;
     Date dateformation;
     int keyformationcatalogue;
     int keyformateur;
@@ -31,14 +31,14 @@ public class FormationDTO {
     int keyStockagedemandeformation;
     
     
-    public FormationDTO() {
+    /*public FormationDTO() {
     }
 
     public FormationDTO(Integer idformation) {
         this.idformation = idformation;
-    }
+    }*/
 
-    public FormationDTO(String intitule, String code, String niveau, String typeduree, int capacitemin, int capacitemax, double tarifforfaitaire) {
+    public FormationDTO(String intitule, String code, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) {
         this.intitule = intitule;
         this.code = code;
         this.niveau = niveau;
