@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jms.ConnectionFactory;
 
 /**
  *
@@ -24,6 +26,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class gestionPatrimoine implements gestionPatrimoineLocal {
+
+    @Resource(mappedName = "ConnectionFactory")
+    private ConnectionFactory connectionFactory;
 
     @EJB
     private SalleFacadeLocal salleFacade;
@@ -52,7 +57,9 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
     }
     
     /**
-     * Lister les salle disponibles parmis celles demandées pour une date données
+     * Lister les salle disponibles parmis celles demandées pour une date
+     * données
+     *
      * @param listSallesDemandees
      * @param date
      * @return 
@@ -64,7 +71,7 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
         for (SalleDTO salleDTO : listSallesDemandees) {
             Salle s = this.salleFacade.find(salleDTO.getIdsalle());
             Collection<CalendrierSalle> cs = s.getCalendrierSalleCollection();
-            for (CalendrierSalle c : cs ) {
+            for (CalendrierSalle c : cs) {
                 if ((dateFormat.format(c.getCalendrier().getDatecalendrier()).compareTo(dateFormat.format(date)) == 0) && c.getStatut().equals("DISPONIBLE")) {
                     listeSallesDiponibles.add(salleDTO);
                     break;
@@ -73,4 +80,16 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
         }
         return listeSallesDiponibles;
     }
+    
+    /**
+     * 
+     * @param salleKey
+     * @return 
+     */
+    @Override
+    public boolean validerExistenceSalle(Integer salleKey) {
+        Salle s = this.salleFacade.find(salleKey);
+        return s != null;
+}
+
 }

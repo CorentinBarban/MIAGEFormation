@@ -18,8 +18,27 @@ import javax.ejb.Local;
 @Local
 public interface gestionPatrimoineLocal {
 
+    /**
+     * 
+     * @param idSalle
+     * @param statut
+     * @param date
+     * @throws SalleNotFoundException 
+     */
     void editerStatutSalle(Integer idSalle, String statut, Date date) throws SalleNotFoundException;
 
+    /**
+     * Lister les salle disponibles parmis celles demandées pour une date données
+     * @param listSallesDemandees
+     * @param date
+     * @return 
+     */
     List<SalleDTO> listerSalleDisponible(List<SalleDTO> listSallesDemandees, Date date);
     
+    /**
+     * Vérifier si une salle existe
+     * @param salleKey
+     * @return booléen de réponse
+     */
+    boolean validerExistenceSalle(Integer salleKey);
 }
