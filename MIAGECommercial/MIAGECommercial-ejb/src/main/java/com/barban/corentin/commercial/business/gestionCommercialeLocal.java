@@ -19,7 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface gestionCommercialeLocal {
     
-    List<FormationDTO> recupererCatalogueFormations(); 
+    void recupererCatalogueFormations(); 
     
     void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient);
     
@@ -27,7 +27,7 @@ public interface gestionCommercialeLocal {
     
     String demanderEtatFormation(int idFormation);
     
-    boolean validerExistenceFormation(int code);
+    boolean validerExistenceFormation(String code);
 
     
 }
