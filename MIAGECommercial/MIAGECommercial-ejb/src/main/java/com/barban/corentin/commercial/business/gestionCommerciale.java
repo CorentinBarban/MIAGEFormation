@@ -38,7 +38,8 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     private DemandedeformationFacadeLocal demandedeformationFacade;
 
     private List<FormationDTO> listeFormations;
-
+    
+    final String host = "http://localhost:8085/MIAGETechnicoCommercial-web/webresources/";
     /**
      * Méthode permettant de récupérer le catalogue de formations.
      *
@@ -153,7 +154,8 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     public boolean validerExistenceFormation(String code) {
         boolean existe = false;
         try {
-            URL url = new URL("/formationsCatalogue/" + (code));
+           
+            URL url = new URL(host + "formationsCatalogue/" + code);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();

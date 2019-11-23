@@ -30,7 +30,6 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
         //Mémorisation de la demande de formation
         Date dateDemande = new Date();
         this.gestionCommerciale.memoriserDemandeFormation(nomClient, dateDemande, codeFormation, intitule, codeclient);
-        
         //Validation de la demande de formation
         boolean existenceFormation = this.gestionCommerciale.validerExistenceFormation(codeFormation);
         if(existenceFormation == true){

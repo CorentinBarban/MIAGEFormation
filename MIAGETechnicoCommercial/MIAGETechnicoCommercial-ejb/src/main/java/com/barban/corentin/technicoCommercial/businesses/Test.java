@@ -30,7 +30,7 @@ public class Test {
 
     @PostConstruct
     void init() {
-        testCreateFormationCatalogue();
+//        testCreateFormationCatalogue();
     }
 
     void testCreateFormationCatalogue() {
