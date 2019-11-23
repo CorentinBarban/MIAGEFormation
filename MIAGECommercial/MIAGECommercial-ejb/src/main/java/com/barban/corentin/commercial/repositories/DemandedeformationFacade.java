@@ -28,10 +28,5 @@ public class DemandedeformationFacade extends AbstractFacade<Demandedeformation>
     public DemandedeformationFacade() {
         super(Demandedeformation.class);
     }
-
-    @Override
-    public Demandedeformation create(Demandedeformation demandedeformation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }

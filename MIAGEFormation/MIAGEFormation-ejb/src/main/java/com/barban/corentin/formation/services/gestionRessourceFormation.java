@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.barban.corentin.patrimoine.services;
+package com.barban.corentin.formation.services;
 
-import DTO.SalleDTO;
+import DTO.DemandeFormationDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
-import org.apache.activemq.broker.BrokerService;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
@@ -26,34 +25,29 @@ import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.apache.activemq.broker.BrokerService;
 
 /**
  *
  * @author Corentin
  */
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "clientId", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "QUEUE_FORMATION_DEMANDEE")
     ,
-        @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
-    ,
-        @ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable")
-    ,
-        @ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
-    ,
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
-public class gestionRessourcePatrimoine implements MessageListener {
+public class gestionRessourceFormation implements MessageListener {
 
     Context context = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
-    String destName = "FileTest";
+    String destName = "QUEUE_FORMATION_DEMANDEE";
     Destination dest = null;
     Session session = null;
     MessageProducer replyProducer = null;
 
-    public gestionRessourcePatrimoine() {
+    public gestionRessourceFormation() {
         try {
             BrokerService broker = new BrokerService();
             broker.setPersistent(false);
@@ -65,7 +59,7 @@ public class gestionRessourcePatrimoine implements MessageListener {
         }
         this.setupMessageQueueConsumer();
     }
-
+    
     private void setupMessageQueueConsumer() {
         try {
             this.context = new InitialContext();
@@ -80,20 +74,18 @@ public class gestionRessourcePatrimoine implements MessageListener {
             consumer.setMessageListener(this);
 
         } catch (NamingException ex) {
-            Logger.getLogger(gestionRessourcePatrimoine.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(gestionRessourceFormation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
-            Logger.getLogger(gestionRessourcePatrimoine.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(gestionRessourceFormation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     @Override
     public void onMessage(Message message) {
         try {
             TextMessage response = this.session.createTextMessage();
             ObjectMessage text = (ObjectMessage) message;
-            if (text.getObject() instanceof SalleDTO) {
-                SalleDTO t = (SalleDTO) text.getObject();
-                System.out.println("Received: " + t.getNom());
+            if (text.getObject() instanceof DemandeFormationDTO) {
+                DemandeFormationDTO demandeFormation = (DemandeFormationDTO) text.getObject();
                 response.setText("Blablabla");
             }
             response.setJMSCorrelationID(message.getJMSCorrelationID());

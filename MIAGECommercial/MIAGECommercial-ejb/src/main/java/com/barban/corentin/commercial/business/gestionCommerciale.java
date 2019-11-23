@@ -36,14 +36,13 @@ public class gestionCommerciale implements gestionCommercialeLocal {
 
     @EJB
     private DemandedeformationFacadeLocal demandedeformationFacade;
-    
+
     private List<FormationDTO> listeFormations;
 
     /**
      * Méthode permettant de récupérer le catalogue de formations.
      *
      */
-    
     @Override
     public void recupererCatalogueFormations() {
         try {
@@ -82,7 +81,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * @param codeclient
      */
     @Override
-    public void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient) {
+    public void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, Integer codeclient) {
         Demandedeformation demandeFormation = new Demandedeformation(nomClient, dateDemande, codeFormation, intituleFormation, codeclient);
         Demandedeformation dfObjet = this.demandedeformationFacade.create(demandeFormation);
     }
@@ -98,7 +97,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
 
         //Refaire appel REST pour récupérer + stocker la liste de formations à partir du catalogue
         CompteRenduDTO compteRendu = null;
-        
+
         try {
             URL url = new URL("/formationsCatalogue");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -122,7 +121,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         } catch (IOException ex) {
             Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (listeFormations.size() > 0) {
             for (int i = 0; i < listeFormations.size(); i++) {
                 FormationDTO formation = listeFormations.get(i);
@@ -188,7 +187,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         String etat = null;
         FormationDTO formation = null;
         try {
-            URL url = new URL("/formationsCatalogue/");
+            URL url = new URL("/formations/" + idFormation);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
@@ -208,7 +207,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         } catch (IOException ex) {
             Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return etat;
     }
 

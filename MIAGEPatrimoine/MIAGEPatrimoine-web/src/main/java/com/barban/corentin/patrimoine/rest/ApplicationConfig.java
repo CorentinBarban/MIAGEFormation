@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.barban.corentin.patrimoine.rest.SalleResource.class);
+        resources.add(com.barban.corentin.patrimoine.rest.SallesResource.class);
     }
     
 }

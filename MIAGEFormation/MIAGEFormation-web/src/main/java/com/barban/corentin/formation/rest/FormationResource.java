@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.barban.corentin.patrimoine.rest;
+package com.barban.corentin.formation.rest;
 
-import com.barban.corentin.patrimoine.services.ServicePatrimoineLocal;
+import com.barban.corentin.formation.services.serviceFormationLocal;
 import com.google.gson.Gson;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,39 +27,37 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Corentin
  */
-@Path("salles/{id}")
+@Path("formations/{id}")
 @RequestScoped
-public class SalleResource {
+public class FormationResource {
 
-    ServicePatrimoineLocal servicePatrimoine = lookupServicePatrimoineLocal();
-
-    
-
+    serviceFormationLocal serviceFormation = lookupserviceFormationLocal();
+    private Gson gson;
     @Context
     private UriInfo context;
-    private Gson gson;
-    
 
     /**
-     * Creates a new instance of SalleResource
+     * Creates a new instance of FormationResource
      */
-    public SalleResource() {
+    public FormationResource() {
         this.gson = new Gson();
     }
 
     /**
-     * Retrieves representation of an instance of com.toulouse.miage.m1.CorentinBarban.LaTEM.SalleResource
+     * Retrieves representation of an instance of
+     * com.barban.corentin.formation.rest.FormationResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson(@PathParam("id") String id) {
-
-         return this.gson.toJson(this.servicePatrimoine.verifierExistenceSalle(Integer.parseInt(id)));
+        return this.gson.toJson(this.serviceFormation.demanderEtatFormation(Integer.parseInt(id)));
     }
 
     /**
-     * PUT method for updating or creating an instance of SalleResource
+     * PUT method for updating or creating an instance of FormationResource
+     *
      * @param content representation for the resource
      */
     @PUT
@@ -67,14 +65,13 @@ public class SalleResource {
     public void putJson(String content) {
     }
 
-    private ServicePatrimoineLocal lookupServicePatrimoineLocal() {
+    private com.barban.corentin.formation.services.serviceFormationLocal lookupserviceFormationLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (ServicePatrimoineLocal) c.lookup("java:global/MIAGEPatrimoine-ear/MIAGEPatrimoine-ejb-1.0-SNAPSHOT/ServicePatrimoine!com.barban.corentin.patrimoine.services.ServicePatrimoineLocal");
+            return (com.barban.corentin.formation.services.serviceFormationLocal) c.lookup("java:global/MIAGEFormation-ear/MIAGEFormation-ejb-1.0-SNAPSHOT/serviceFormation!com.barban.corentin.formation.services.serviceFormationLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
-   
 }

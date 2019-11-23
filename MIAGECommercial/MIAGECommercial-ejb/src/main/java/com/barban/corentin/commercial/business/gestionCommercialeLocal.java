@@ -21,7 +21,7 @@ public interface gestionCommercialeLocal {
     
     void recupererCatalogueFormations(); 
     
-    void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient);
+    void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, Integer codeclient);
     
     CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException;
     
