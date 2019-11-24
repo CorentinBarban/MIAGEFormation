@@ -7,6 +7,7 @@ package DTO;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,8 @@ public class DemandeFormationDTO implements Serializable {
     private Date date;
     private String codeFormation;
     private int codeClient;
+    private List<FormateurDTO> listFormateursPressentis;
+    private List<SalleDTO> listSallesPressenties;
 
     public DemandeFormationDTO() {
 
@@ -46,9 +49,25 @@ public class DemandeFormationDTO implements Serializable {
         this.codeClient = codeClient;
     }
 
+    public List<FormateurDTO> getListFormateursPressentis() {
+        return listFormateursPressentis;
+    }
+
+    public void setListFormateursPressentis(List<FormateurDTO> listFormateursPressentis) {
+        this.listFormateursPressentis = listFormateursPressentis;
+    }
+
+    public List<SalleDTO> getListSallesPressenties() {
+        return listSallesPressenties;
+    }
+
+    public void setListSallesPressenties(List<SalleDTO> listSallesPressenties) {
+        this.listSallesPressenties = listSallesPressenties;
+    }
+
     @Override
     public String toString() {
-        return "DemandeFormationDTO{" + "date=" + date + ", codeFormation=" + codeFormation + ", codeClient=" + codeClient + '}';
+        return "DemandeFormationDTO{" + "date=" + date + ", codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + '}';
     }
 
 }

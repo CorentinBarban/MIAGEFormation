@@ -6,7 +6,9 @@
 package com.barban.corentin.commercial.business;
 
 import DTO.CompteRenduDTO;
+import DTO.FormateurDTO;
 import DTO.FormationDTO;
+import DTO.SalleDTO;
 import Exceptions.ListeFormationsVideException;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +30,12 @@ public interface gestionCommercialeLocal {
     String demanderEtatFormation(int idFormation);
     
     boolean validerExistenceFormation(String code);
+
+    List<FormateurDTO> recupererListeFormateurCompetent(String Code);
+    
+    List<SalleDTO> recupererListeSallesAdequates(String Code);
+    
+    
 
     
 }

@@ -5,7 +5,9 @@
  */
 package com.barban.corentin.technicoCommercial.businesses;
 
+import DTO.FormateurDTO;
 import DTO.FormationDTO;
+import DTO.SalleDTO;
 import Exceptions.FormateurNotFoundException;
 import Exceptions.FormationCatalogueException;
 import Exceptions.FormationCatalogueNotFoundException;
@@ -14,9 +16,7 @@ import Exceptions.LienFormateurFormationNotFoundException;
 import Exceptions.LienSalleFormationException;
 import Exceptions.LienSalleFormationNotFoundException;
 import Exceptions.SalleNotFoundException;
-import com.barban.corentin.technicoCommercial.entities.Formateurcompetent;
 import com.barban.corentin.technicoCommercial.entities.Formationcatalogue;
-import com.barban.corentin.technicoCommercial.entities.Salleadequate;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;
@@ -86,7 +86,7 @@ public interface gestionTechnicoCommercialeLocal {
      * @return la liste des formateurs compétents pour la formation donnée
      * @throws FormationCatalogueNotFoundException
      */
-    Collection<Formateurcompetent> rechercherFormateursDeFormation(String code) throws FormationCatalogueNotFoundException ;
+    List<FormateurDTO> rechercherFormateursDeFormation(String code) throws FormationCatalogueNotFoundException ;
 
         /**
      * Ajouter une salle adéquate pour une formation
@@ -116,7 +116,7 @@ public interface gestionTechnicoCommercialeLocal {
      * @return la liste des salles adéquates pour la formation donnée
      * @throws FormationCatalogueNotFoundException
      */
-    Collection<Salleadequate> rechercherSallesDeFormation(String code) throws FormationCatalogueNotFoundException ;
+    List<SalleDTO> rechercherSallesDeFormation(String code) throws FormationCatalogueNotFoundException ;
 
     /**
      * Lister les formations du catalogue

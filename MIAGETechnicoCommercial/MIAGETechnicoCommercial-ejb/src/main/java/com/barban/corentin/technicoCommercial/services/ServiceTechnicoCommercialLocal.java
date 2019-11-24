@@ -5,7 +5,9 @@
  */
 package com.barban.corentin.technicoCommercial.services;
 
+import DTO.FormateurDTO;
 import DTO.FormationDTO;
+import DTO.SalleDTO;
 import Exceptions.FormationCatalogueNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -20,4 +22,8 @@ public interface ServiceTechnicoCommercialLocal {
     FormationDTO consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException;
     
     List<FormationDTO> listerCatalogueFormations();
+
+    List<SalleDTO> rechercherSallesAdequates(String code);
+
+    List<FormateurDTO> rechercherFormateurAdequats(String code);
 }

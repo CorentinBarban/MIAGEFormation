@@ -88,6 +88,7 @@ public class listennerDemandeFormation implements MessageListener {
             ObjectMessage text = (ObjectMessage) message;
             if (text.getObject() instanceof DemandeFormationDTO) {
                 DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
+                df.toString();
                 System.out.println("Received: " + df.toString());
                 response.setText("bien recu, je te renvoi la balle");
             }

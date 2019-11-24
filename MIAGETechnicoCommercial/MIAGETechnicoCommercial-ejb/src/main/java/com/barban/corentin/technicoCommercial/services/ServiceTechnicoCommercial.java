@@ -5,7 +5,9 @@
  */
 package com.barban.corentin.technicoCommercial.services;
 
+import DTO.FormateurDTO;
 import DTO.FormationDTO;
+import DTO.SalleDTO;
 import Exceptions.FormationCatalogueNotFoundException;
 import com.barban.corentin.technicoCommercial.businesses.gestionTechnicoCommerciale;
 import com.barban.corentin.technicoCommercial.businesses.gestionTechnicoCommercialeLocal;
@@ -34,5 +36,27 @@ public class ServiceTechnicoCommercial implements ServiceTechnicoCommercialLocal
     public List<FormationDTO> listerCatalogueFormations() {
             return this.gestionTC.listerCatalogueFormations();
     }
+
+    @Override
+    public List<SalleDTO> rechercherSallesAdequates(String code) {
+        try {
+            return this.gestionTC.rechercherSallesDeFormation(code);
+        } catch (FormationCatalogueNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public List<FormateurDTO> rechercherFormateurAdequats(String code) {
+        try {
+            return this.gestionTC.rechercherFormateursDeFormation(code);
+        } catch (FormationCatalogueNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
     
 }

@@ -6,10 +6,13 @@
 package com.barban.corentin.commercial.services;
 
 import DTO.DemandeFormationDTO;
+import DTO.FormateurDTO;
+import DTO.SalleDTO;
 import Exceptions.FormationCatalogueNotFoundException;
 import com.barban.corentin.commercial.business.gestionCommercialeLocal;
 import com.barban.corentin.commercial.sender.senderDemandeFormationJMS;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -33,10 +36,18 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
         //Validation de la demande de formation
         boolean existenceFormation = this.gestionCommerciale.validerExistenceFormation(codeFormation);
         if(existenceFormation == true){
+            // Recuperer la liste de formateur pressentis
+            List<FormateurDTO> listeFormateur = this.gestionCommerciale.recupererListeFormateurCompetent(codeFormation);
+            System.out.println(listeFormateur.toString());
+            // Recuperer la liste de salles pressenties
+            List<SalleDTO> listeSalles = this.gestionCommerciale.recupererListeSallesAdequates(codeFormation);
+            
             DemandeFormationDTO df = new DemandeFormationDTO();
             df.setCodeClient(codeclient);
             df.setCodeFormation(codeFormation);
             df.setDate(dateFormation);
+            df.setListFormateursPressentis(listeFormateur);
+            df.setListSallesPressenties(listeSalles);
             senderDemandeFormationJMS sender = new senderDemandeFormationJMS();
             sender.sendMessageDemandeFormation(df);
         }else{
