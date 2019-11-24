@@ -6,6 +6,9 @@
 package com.barban.corentin.formation.business;
 
 import DTO.CompteRenduDTO;
+import com.barban.corentin.formation.entities.Formation;
+import com.barban.corentin.formation.entities.Stockagedemandeformation;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,9 +19,9 @@ import javax.ejb.Local;
 @Local
 public interface gestionFormationLocal {
     
-    void demanderFormation();
+    Formation demanderFormation(String nomClient,Integer nbPersonne,Date dateFormation,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation);
     
-    void stockerDemande(String codeFormation,String intitule,Integer codeClient);
+    Stockagedemandeformation stockerDemande(String codeFormation,String intitule,Integer codeClient);
 
     String demanderEtatFormation(Integer idFormation);
 

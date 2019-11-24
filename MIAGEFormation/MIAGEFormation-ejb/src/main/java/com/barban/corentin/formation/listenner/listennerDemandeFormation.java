@@ -7,9 +7,12 @@ package com.barban.corentin.formation.listenner;
 
 import DTO.DemandeFormationDTO;
 import DTO.SalleDTO;
+import com.barban.corentin.formation.business.gestionFormationLocal;
+import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -38,6 +41,11 @@ import org.apache.activemq.broker.BrokerService;
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
 public class listennerDemandeFormation implements MessageListener {
+
+    @EJB
+    private gestionFormationLocal gestionFormation;
+    
+    
 
     Context context = null;
     ConnectionFactory factory = null;
@@ -88,7 +96,12 @@ public class listennerDemandeFormation implements MessageListener {
             ObjectMessage text = (ObjectMessage) message;
             if (text.getObject() instanceof DemandeFormationDTO) {
                 DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
-                df.toString();
+                //Stocker la demande de formation
+                Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(),df.getIntitule(),df.getCodeClient());
+                System.out.println(sf.toString());
+                // Creation de la formation
+                this.gestionFormation.demanderFormation(df.getNomClient(),df.getNbPersonnes(),df.getDate(),df.getCodeFormation(),sf);
+                
                 System.out.println("Received: " + df.toString());
                 response.setText("bien recu, je te renvoi la balle");
             }

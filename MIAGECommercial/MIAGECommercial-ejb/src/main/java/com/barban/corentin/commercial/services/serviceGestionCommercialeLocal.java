@@ -16,6 +16,6 @@ import javax.ejb.Local;
 @Local
 public interface serviceGestionCommercialeLocal {
 
-    void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient, Date dateFormation) throws FormationCatalogueNotFoundException;
+    void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient, Date dateFormation,Integer nbPersonnes) throws FormationCatalogueNotFoundException;
     
 }

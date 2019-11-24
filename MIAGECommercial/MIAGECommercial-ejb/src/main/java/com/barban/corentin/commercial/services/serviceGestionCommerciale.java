@@ -29,7 +29,7 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
     
     
     @Override
-    public void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient, Date dateFormation) throws FormationCatalogueNotFoundException{
+    public void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient, Date dateFormation,Integer nbPersonnes) throws FormationCatalogueNotFoundException{
         //Mémorisation de la demande de formation
         Date dateDemande = new Date();
         this.gestionCommerciale.memoriserDemandeFormation(nomClient, dateDemande, codeFormation, intitule, codeclient);
@@ -44,10 +44,13 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
             
             DemandeFormationDTO df = new DemandeFormationDTO();
             df.setCodeClient(codeclient);
+            df.setNomClient(nomClient);
             df.setCodeFormation(codeFormation);
             df.setDate(dateFormation);
             df.setListFormateursPressentis(listeFormateur);
             df.setListSallesPressenties(listeSalles);
+            df.setIntitule(intitule);
+            df.setNbPersonnes(nbPersonnes);
             senderDemandeFormationJMS sender = new senderDemandeFormationJMS();
             sender.sendMessageDemandeFormation(df);
         }else{

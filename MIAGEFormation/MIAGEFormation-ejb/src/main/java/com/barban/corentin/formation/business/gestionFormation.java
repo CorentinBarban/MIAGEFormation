@@ -30,8 +30,15 @@ public class gestionFormation implements gestionFormationLocal {
     
     
     @Override
-    public void demanderFormation() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Formation demanderFormation(String nomClient,Integer nbPersonne,Date dateFormation,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation) {
+        Formation f = new Formation();
+        f.setNomclient(nomClient);
+        f.setNbpersonne(nbPersonne);
+        f.setCodeformationcatalogue(codeFormation);
+        f.setStatut("EN ATTENTE");
+        f.setDateformation(dateFormation);
+        f.setKeystockagedemandeformation(keyStockageDemandeFormation);
+        return this.formationFacade.create(f);
     }
     
     /**
@@ -41,10 +48,14 @@ public class gestionFormation implements gestionFormationLocal {
      * @param codeClient 
      */
     @Override
-    public void stockerDemande(String codeFormation,String intitule,Integer codeClient) {
+    public Stockagedemandeformation stockerDemande(String codeFormation,String intitule,Integer codeClient) {
         Date dateDemande = new Date();
-        Stockagedemandeformation demande = new Stockagedemandeformation(codeFormation,intitule,codeClient,dateDemande);
-        this.stockagedemandeformationFacade.create(demande);
+        Stockagedemandeformation demande = new Stockagedemandeformation();
+        demande.setCodeclient(codeClient);
+        demande.setCodeformation(codeFormation);
+        demande.setIntituleformation(codeFormation);
+        demande.setDatedemandeformation(dateDemande);
+        return this.stockagedemandeformationFacade.create(demande);
     }
     
     /**

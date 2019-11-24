@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Formation.findByNbpersonne", query = "SELECT f FROM Formation f WHERE f.nbpersonne = :nbpersonne")
     , @NamedQuery(name = "Formation.findByStatut", query = "SELECT f FROM Formation f WHERE f.statut = :statut")
     , @NamedQuery(name = "Formation.findByDateformation", query = "SELECT f FROM Formation f WHERE f.dateformation = :dateformation")
-    , @NamedQuery(name = "Formation.findByKeyformationcatalogue", query = "SELECT f FROM Formation f WHERE f.keyformationcatalogue = :keyformationcatalogue")
+    , @NamedQuery(name = "Formation.findByCodeformationcatalogue", query = "SELECT f FROM Formation f WHERE f.codeformationcatalogue = :codeformationcatalogue")
     , @NamedQuery(name = "Formation.findByKeyformateur", query = "SELECT f FROM Formation f WHERE f.keyformateur = :keyformateur")
     , @NamedQuery(name = "Formation.findByKeysalle", query = "SELECT f FROM Formation f WHERE f.keysalle = :keysalle")})
 public class Formation implements Serializable {
@@ -59,8 +59,9 @@ public class Formation implements Serializable {
     @Column(name = "DATEFORMATION")
     @Temporal(TemporalType.DATE)
     private Date dateformation;
-    @Column(name = "KEYFORMATIONCATALOGUE")
-    private Integer keyformationcatalogue;
+    @Size(max = 100)
+    @Column(name = "CODEFORMATIONCATALOGUE")
+    private String codeformationcatalogue;
     @Column(name = "KEYFORMATEUR")
     private Integer keyformateur;
     @Column(name = "KEYSALLE")
@@ -116,12 +117,12 @@ public class Formation implements Serializable {
         this.dateformation = dateformation;
     }
 
-    public Integer getKeyformationcatalogue() {
-        return keyformationcatalogue;
+    public String getCodeformationcatalogue() {
+        return codeformationcatalogue;
     }
 
-    public void setKeyformationcatalogue(Integer keyformationcatalogue) {
-        this.keyformationcatalogue = keyformationcatalogue;
+    public void setCodeformationcatalogue(String codeformationcatalogue) {
+        this.codeformationcatalogue = codeformationcatalogue;
     }
 
     public Integer getKeyformateur() {

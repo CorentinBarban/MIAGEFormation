@@ -68,13 +68,6 @@ public class Stockagedemandeformation implements Serializable {
         this.iddemandeformation = iddemandeformation;
     }
 
-    public Stockagedemandeformation(String codeFormation,String intitule,Integer codeClient, Date dateDemande) {
-        this.codeclient = codeClient;
-        this.codeformation = codeFormation;
-        this.datedemandeformation = dateDemande;
-        this.intituleformation = intitule;
-    }
-    
     public Integer getIddemandeformation() {
         return iddemandeformation;
     }

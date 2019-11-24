@@ -18,11 +18,38 @@ public class DemandeFormationDTO implements Serializable {
     private Date date;
     private String codeFormation;
     private int codeClient;
+    private String nomClient;
+    private String intitule;
+    private int nbPersonnes;
     private List<FormateurDTO> listFormateursPressentis;
     private List<SalleDTO> listSallesPressenties;
 
     public DemandeFormationDTO() {
 
+    }
+
+    public int getNbPersonnes() {
+        return nbPersonnes;
+    }
+
+    public void setNbPersonnes(int nbPersonnes) {
+        this.nbPersonnes = nbPersonnes;
+    }
+
+    public String getNomClient() {
+        return nomClient;
+    }
+
+    public void setNomClient(String nomClient) {
+        this.nomClient = nomClient;
+    }
+
+    public String getIntitule() {
+        return intitule;
+    }
+
+    public void setIntitule(String intitule) {
+        this.intitule = intitule;
     }
 
     public Date getDate() {
@@ -67,7 +94,8 @@ public class DemandeFormationDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "DemandeFormationDTO{" + "date=" + date + ", codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + '}';
+        return "DemandeFormationDTO{" + "date=" + date + ", codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", nomClient=" + nomClient + ", intitule=" + intitule + ", nbPersonnes=" + nbPersonnes + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + '}';
     }
 
+ 
 }

@@ -94,7 +94,6 @@ public class gestionRessourcePatrimoine implements MessageListener {
             if (text.getObject() instanceof SalleDTO) {
                 SalleDTO t = (SalleDTO) text.getObject();
                 System.out.println("Received: " + t.getNom());
-                response.setText("Blablabla");
             }
             response.setJMSCorrelationID(message.getJMSCorrelationID());
             this.replyProducer.send(message.getJMSReplyTo(), response);
