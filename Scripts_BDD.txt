@@ -18,7 +18,7 @@ CREATE TABLE formation (
   nbPersonne                  integer, 
   statut                      varchar(100), 
   dateFormation               date, 
-  keyFormationCatalogue       integer, 
+  codeFormationCatalogue      varchar(100), 
   keyFormateur                integer, 
   keySalle                    integer, 
   keyStockageDemandeFormation integer NOT NULL, 
