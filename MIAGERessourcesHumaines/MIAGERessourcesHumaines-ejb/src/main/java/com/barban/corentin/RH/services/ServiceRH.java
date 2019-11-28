@@ -5,6 +5,7 @@
  */
 package com.barban.corentin.RH.services;
 
+import com.barban.corentin.RH.business.gestionRHLocal;
 import javax.ejb.Stateless;
 
 /**
@@ -13,8 +14,11 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ServiceRH implements ServiceRHLocal {
+    
+    private gestionRHLocal gestionRH;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    //insert code comme on a fait dans le buisiness 
+    @Override
+    public boolean verifierExistenceFormateur(Integer idFormateur){
+        return this.gestionRH.verifierExistenceFormateur(idFormateur);
+    }
 }

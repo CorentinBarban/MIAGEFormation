@@ -14,4 +14,6 @@ import javax.ejb.Local;
 @Local
 public interface ServiceRHLocal {
     
+    boolean verifierExistenceFormateur(Integer idFormateur);
+    
 }
