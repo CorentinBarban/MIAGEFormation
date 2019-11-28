@@ -10,7 +10,7 @@ import DTO.FormateurDTO;
 import DTO.SalleDTO;
 import Exceptions.FormationCatalogueNotFoundException;
 import com.barban.corentin.commercial.business.gestionCommercialeLocal;
-import com.barban.corentin.commercial.sender.senderDemandeFormationJMS;
+import com.barban.corentin.commercial.sender.SenderDemandeFormationJMS;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -51,7 +51,7 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
             df.setListSallesPressenties(listeSalles);
             df.setIntitule(intitule);
             df.setNbPersonnes(nbPersonnes);
-            senderDemandeFormationJMS sender = new senderDemandeFormationJMS();
+            SenderDemandeFormationJMS sender = new SenderDemandeFormationJMS();
             sender.sendMessageDemandeFormation(df);
         }else{
             throw new FormationCatalogueNotFoundException();

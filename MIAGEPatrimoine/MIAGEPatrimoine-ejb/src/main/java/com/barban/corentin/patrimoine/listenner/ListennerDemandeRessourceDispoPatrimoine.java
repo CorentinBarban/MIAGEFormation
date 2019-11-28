@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.barban.corentin.formation.listenner;
+package com.barban.corentin.patrimoine.listenner;
 
-import DTO.DemandeFormationDTO;
 import DTO.SalleDTO;
-import com.barban.corentin.formation.business.gestionFormationLocal;
-import com.barban.corentin.formation.entities.Stockagedemandeformation;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
-import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
+import org.apache.activemq.broker.BrokerService;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
@@ -29,34 +27,34 @@ import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import org.apache.activemq.broker.BrokerService;
 
 /**
  *
  * @author Corentin
  */
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "QUEUE_FORMATION_DEMANDEE")
+    @ActivationConfigProperty(propertyName = "clientId", propertyValue = "TOPIC_RESSOURCES_RESERVEES_SALLES")
     ,
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
+        @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
+    ,
+        @ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable")
+    ,
+        @ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
+    ,
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
 })
-public class listennerDemandeFormation implements MessageListener {
-
-    @EJB
-    private gestionFormationLocal gestionFormation;
-    
-    
+public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener {
 
     Context context = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
-    String destName = "QUEUE_FORMATION_DEMANDEE";
+    String destName = "TOPIC_RESSOURCES_RESERVEES";
     Destination dest = null;
     Session session = null;
     MessageProducer replyProducer = null;
 
-    public listennerDemandeFormation() {
+    public ListennerDemandeRessourceDispoPatrimoine() {
         try {
             BrokerService broker = new BrokerService();
             broker.setPersistent(false);
@@ -79,31 +77,26 @@ public class listennerDemandeFormation implements MessageListener {
             this.session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             this.replyProducer = this.session.createProducer(null);
             this.replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            MessageConsumer consumer = this.session.createConsumer(dest);
+            MessageConsumer consumer = this.session.createConsumer(dest,"JMSType = 'SALLES'");
             consumer.setMessageListener(this);
 
         } catch (NamingException ex) {
-            Logger.getLogger(listennerDemandeFormation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListennerDemandeRessourceDispoPatrimoine.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
-            Logger.getLogger(listennerDemandeFormation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListennerDemandeRessourceDispoPatrimoine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public void onMessage(Message message) {
+        System.out.println("J'ai recu un message, je suis dans patrimoine");
         try {
             TextMessage response = this.session.createTextMessage();
             ObjectMessage text = (ObjectMessage) message;
-            if (text.getObject() instanceof DemandeFormationDTO) {
-                DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
-                //Stocker la demande de formation
-                Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(),df.getIntitule(),df.getCodeClient());
-                System.out.println(sf.toString());
-                // Creation de la formation
-                this.gestionFormation.demanderFormation(df.getNomClient(),df.getNbPersonnes(),df.getDate(),df.getCodeFormation(),sf);
-                
-                System.out.println("Received: " + df.toString());
-                response.setText("bien recu, je te renvoi la balle");
+            if (text.getObject() instanceof List) {
+                List<SalleDTO> listeSalle = (List<SalleDTO>) text.getObject();
+                response.setText("Received DEMANDE RESSOURCES PATRIMOINE: ");
+//                response.setText("Received DEMANDE RESSOURCES PATRIMOINE: " + t.getNom());
             }
             response.setJMSCorrelationID(message.getJMSCorrelationID());
             this.replyProducer.send(message.getJMSReplyTo(), response);

@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.barban.corentin.commercial.sender;
+package com.barban.corentin.formation.sender;
 
 import DTO.DemandeFormationDTO;
+import DTO.FormateurDTO;
+import DTO.SalleDTO;
+import java.io.Serializable;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,21 +32,21 @@ import javax.naming.NamingException;
  *
  * @author Corentin
  */
-public class senderDemandeFormationJMS implements MessageListener {
+public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
 
     Context context  = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
-    String destName = "QUEUE_FORMATION_DEMANDEE";
+    String destName = "TOPIC_RESSOURCES_RESERVEES";
     Destination dest = null;
     Session session = null;
     MessageProducer producer = null;
 
-    public senderDemandeFormationJMS() {
+    public SenderDemandeRessourceDisponiblesJMS() {
     }
     
-    public void sendMessageDemandeFormation(DemandeFormationDTO demandeFormation) {
+    public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
 
         try {
             // create the JNDI initial context.
@@ -60,20 +64,38 @@ public class senderDemandeFormationJMS implements MessageListener {
 
             // create the sender
             producer = session.createProducer(dest);
-
-            Destination tempDest = session.createTemporaryQueue();
-            MessageConsumer responseConsumer = session.createConsumer(tempDest);
-            responseConsumer.setMessageListener(this);
-
-            ObjectMessage message = session.createObjectMessage(demandeFormation);
-            message.setJMSReplyTo(tempDest);
-            String correlationId = this.createRandomString();
-            message.setJMSCorrelationID(correlationId);
-            producer.send(message);
+            
+            // Creation des files de retours
+            Destination tempDestFormateur = session.createTemporaryQueue();
+            MessageConsumer responseConsumerFormateur = session.createConsumer(tempDestFormateur);
+            responseConsumerFormateur.setMessageListener(this);
+            
+            Destination tempDestSalle = session.createTemporaryQueue();
+            MessageConsumer responseConsumerSalle = session.createConsumer(tempDestSalle);
+            responseConsumerSalle.setMessageListener(this);
+            
+            // Creation des objectMessage à envoyer
+            ObjectMessage messageFormateurs = session.createObjectMessage((Serializable) listDemandeFormateurDispo);
+            messageFormateurs.setJMSReplyTo(tempDestFormateur);
+            String correlationIdFormateur = this.createRandomString();
+            messageFormateurs.setJMSCorrelationID(correlationIdFormateur);
+            messageFormateurs.setJMSType("FORMATEURS");
+            
+            ObjectMessage messageSalles = session.createObjectMessage((Serializable) listDemandeSalleDispo);
+            messageSalles.setJMSReplyTo(tempDestSalle);
+            String correlationIdSalle = this.createRandomString();
+            messageSalles.setJMSCorrelationID(correlationIdSalle);
+            messageSalles.setJMSType("SALLES");
+            
+            
+            // Envoi des messages
+//            producer.send(messageFormateurs);
+//            producer.send(messageSalles);
+            
         } catch (NamingException ex) {
-            Logger.getLogger(senderDemandeFormationJMS.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
-            Logger.getLogger(senderDemandeFormationJMS.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -91,9 +113,9 @@ public class senderDemandeFormationJMS implements MessageListener {
             try {
                 TextMessage textMessage = (TextMessage) message;
                 messageText = textMessage.getText();
-                System.out.println("messageText = " + messageText);
+                System.out.println("messageTextRessources = " + messageText);
             } catch (JMSException ex) {
-                Logger.getLogger(senderDemandeFormationJMS.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

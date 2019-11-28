@@ -12,7 +12,7 @@ import javax.ejb.Local;
  * @author Corentin
  */
 @Local
-public interface serviceFormationLocal {
+public interface ServiceFormationLocal {
     
     /**
      * Demander l'état d'une formation

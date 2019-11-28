@@ -51,7 +51,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     @Override
     public void recupererCatalogueFormations() {
         try {
-            URL url = new URL("/formationsCatalogue");
+            URL url = new URL(hostTechnico + "/formationsCatalogue");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();

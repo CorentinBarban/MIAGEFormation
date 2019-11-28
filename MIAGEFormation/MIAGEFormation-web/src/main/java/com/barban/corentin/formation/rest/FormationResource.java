@@ -5,7 +5,6 @@
  */
 package com.barban.corentin.formation.rest;
 
-import com.barban.corentin.formation.services.serviceFormationLocal;
 import com.google.gson.Gson;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +20,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import com.barban.corentin.formation.services.ServiceFormationLocal;
 
 /**
  * REST Web Service
@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 public class FormationResource {
 
-    serviceFormationLocal serviceFormation = lookupserviceFormationLocal();
+    ServiceFormationLocal serviceFormation = lookupserviceFormationLocal();
     private Gson gson;
     @Context
     private UriInfo context;
@@ -65,10 +65,10 @@ public class FormationResource {
     public void putJson(String content) {
     }
 
-    private com.barban.corentin.formation.services.serviceFormationLocal lookupserviceFormationLocal() {
+    private com.barban.corentin.formation.services.ServiceFormationLocal lookupserviceFormationLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (com.barban.corentin.formation.services.serviceFormationLocal) c.lookup("java:global/MIAGEFormation-ear/MIAGEFormation-ejb-1.0-SNAPSHOT/serviceFormation!com.barban.corentin.formation.services.serviceFormationLocal");
+            return (com.barban.corentin.formation.services.ServiceFormationLocal) c.lookup("java:global/MIAGEFormation-ear/MIAGEFormation-ejb-1.0-SNAPSHOT/serviceFormation!com.barban.corentin.formation.services.serviceFormationLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

@@ -14,7 +14,7 @@ import javax.ejb.Stateless;
  * @author Corentin
  */
 @Stateless
-public class serviceFormation implements serviceFormationLocal {
+public class ServiceFormation implements ServiceFormationLocal {
 
     @EJB
     private gestionFormationLocal gestionFormation;
