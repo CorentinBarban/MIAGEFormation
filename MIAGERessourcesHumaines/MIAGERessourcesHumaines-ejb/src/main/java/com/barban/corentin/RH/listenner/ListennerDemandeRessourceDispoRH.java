@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.barban.corentin.formation.listenner;
+package com.barban.corentin.RH.listenner;
 
-import DTO.DemandeFormationDTO;
+import DTO.FormateurDTO;
 import DTO.SalleDTO;
-import com.barban.corentin.formation.business.gestionFormationLocal;
-import com.barban.corentin.formation.entities.Stockagedemandeformation;
-import com.barban.corentin.formation.sender.SenderDemandeRessourceDisponiblesJMS;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
-import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -37,30 +34,32 @@ import org.apache.activemq.broker.BrokerService;
  * @author Corentin
  */
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "QUEUE_FORMATION_DEMANDEE")
+    @ActivationConfigProperty(propertyName = "clientId", propertyValue = "TOPIC_RESSOURCES_RESERVEES_FORMATEURS")
     ,
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
+        @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
+    ,
+        @ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
+    ,
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
+    ,      
+        @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "JMSType = 'FORMATEURS'")
 })
-public class ListennerDemandeFormation implements MessageListener {
-
-    @EJB
-    private gestionFormationLocal gestionFormation;
+public class ListennerDemandeRessourceDispoRH implements MessageListener {
     
-    
-
-    Context context = null;
+     Context context = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
-    String destName = "QUEUE_FORMATION_DEMANDEE";
+    String destName = "TOPIC_RESSOURCES_RESERVEES";
     Destination dest = null;
     Session session = null;
     MessageProducer replyProducer = null;
-
-    public ListennerDemandeFormation() {
-               this.setupMessageQueueConsumer();
+    
+    public ListennerDemandeRessourceDispoRH() {
+       
+        this.setupMessageQueueConsumer();
     }
-
+    
     private void setupMessageQueueConsumer() {
         try {
             this.context = new InitialContext();
@@ -73,34 +72,28 @@ public class ListennerDemandeFormation implements MessageListener {
             this.replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
         } catch (NamingException ex) {
-            Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListennerDemandeRessourceDispoRH.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
-            Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListennerDemandeRessourceDispoRH.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public void onMessage(Message message) {
+        System.out.println("J'ai recu un message, je suis dans RH");
         try {
             TextMessage response = this.session.createTextMessage();
             ObjectMessage text = (ObjectMessage) message;
-            if (text.getObject() instanceof DemandeFormationDTO) {
-                DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
-                //Stocker la demande de formation
-                Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(),df.getIntitule(),df.getCodeClient());
-                // Creation de la formation
-                this.gestionFormation.demanderFormation(df.getNomClient(),df.getNbPersonnes(),df.getDate(),df.getCodeFormation(),sf);
-                
-                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS();
-                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
-                response.setText("Received DEMANDE FORMATION: " + df.toString());
-                
+            if (text.getObject() instanceof List) {
+                List<FormateurDTO> listeFormateur = (List<FormateurDTO>) text.getObject();
+                response.setText("Received DEMANDE RESSOURCES RH: ");
+//                response.setText("Received DEMANDE RESSOURCES PATRIMOINE: " + t.getNom());
             }
             response.setJMSCorrelationID(message.getJMSCorrelationID());
             this.replyProducer.send(message.getJMSReplyTo(), response);
         } catch (JMSException e) {
-             Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, e);
+            //Handle the exception appropriately
         }
     }
-
+    
 }

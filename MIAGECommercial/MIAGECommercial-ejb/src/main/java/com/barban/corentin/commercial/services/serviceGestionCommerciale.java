@@ -38,8 +38,7 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
         if(existenceFormation == true){
             // Recuperer la liste de formateur pressentis
             List<FormateurDTO> listeFormateur = this.gestionCommerciale.recupererListeFormateurCompetent(codeFormation);
-            System.out.println(listeFormateur.toString());
-            // Recuperer la liste de salles pressenties
+           // Recuperer la liste de salles pressenties
             List<SalleDTO> listeSalles = this.gestionCommerciale.recupererListeSallesAdequates(codeFormation);
             
             DemandeFormationDTO df = new DemandeFormationDTO();

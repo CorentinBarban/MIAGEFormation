@@ -89,8 +89,8 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
             
             
             // Envoi des messages
-//            producer.send(messageFormateurs);
-//            producer.send(messageSalles);
+            producer.send(messageFormateurs);
+            producer.send(messageSalles);
             
         } catch (NamingException ex) {
             Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);

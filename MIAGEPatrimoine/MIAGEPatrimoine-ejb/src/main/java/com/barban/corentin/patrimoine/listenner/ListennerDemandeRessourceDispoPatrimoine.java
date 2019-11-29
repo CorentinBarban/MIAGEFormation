@@ -37,11 +37,11 @@ import javax.naming.NamingException;
     ,
         @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
     ,
-        @ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable")
-    ,
         @ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
     ,
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
+    ,      
+        @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "JMSType='SALLES'")
 })
 public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener {
 
@@ -55,15 +55,6 @@ public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener
     MessageProducer replyProducer = null;
 
     public ListennerDemandeRessourceDispoPatrimoine() {
-        try {
-            BrokerService broker = new BrokerService();
-            broker.setPersistent(false);
-            broker.setUseJmx(false);
-            broker.addConnector(factoryName);
-            broker.start();
-        } catch (Exception e) {
-            //Handle the exception appropriately
-        }
         this.setupMessageQueueConsumer();
     }
 
@@ -77,9 +68,6 @@ public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener
             this.session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             this.replyProducer = this.session.createProducer(null);
             this.replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            MessageConsumer consumer = this.session.createConsumer(dest,"JMSType = 'SALLES'");
-            consumer.setMessageListener(this);
-
         } catch (NamingException ex) {
             Logger.getLogger(ListennerDemandeRessourceDispoPatrimoine.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
