@@ -7,6 +7,7 @@ package DTO;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
@@ -17,6 +18,7 @@ public class SalleDTO implements Serializable{
     private Integer idsalle;
     private String nom;
     private Collection<EquipementDTO> equipementCollection;
+    private Date date;
 
     public Integer getIdsalle() {
         return idsalle;
@@ -42,9 +44,17 @@ public class SalleDTO implements Serializable{
         this.equipementCollection = equipementCollection;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
-        return "SalleDTO{" + "idsalle=" + idsalle + ", nom=" + nom + ", equipementCollection=" + equipementCollection + '}';
+        return "SalleDTO{" + "idsalle=" + idsalle + ", nom=" + nom + ", equipementCollection=" + equipementCollection + ", date=" + date + '}';
     }
-   
+    
 }

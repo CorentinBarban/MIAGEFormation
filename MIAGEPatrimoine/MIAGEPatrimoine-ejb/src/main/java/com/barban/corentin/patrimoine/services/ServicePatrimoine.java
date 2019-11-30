@@ -5,9 +5,9 @@
  */
 package com.barban.corentin.patrimoine.services;
 
-import com.barban.corentin.patrimoine.business.gestionPatrimoineLocal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import com.barban.corentin.patrimoine.business.gestionPatrimoineLocal;
 
 /**
  *

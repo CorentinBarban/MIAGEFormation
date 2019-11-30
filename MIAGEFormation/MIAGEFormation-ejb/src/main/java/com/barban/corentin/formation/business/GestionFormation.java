@@ -20,7 +20,7 @@ import javax.ejb.Stateless;
  * @author Corentin
  */
 @Stateless
-public class gestionFormation implements gestionFormationLocal {
+public class GestionFormation implements GestionFormationLocal {
 
     @EJB
     private StockagedemandeformationFacadeLocal stockagedemandeformationFacade;
@@ -46,6 +46,7 @@ public class gestionFormation implements gestionFormationLocal {
      * @param codeFormation
      * @param intitule
      * @param codeClient 
+     * @return  
      */
     @Override
     public Stockagedemandeformation stockerDemande(String codeFormation,String intitule,Integer codeClient) {
@@ -72,6 +73,18 @@ public class gestionFormation implements gestionFormationLocal {
     @Override
     public List<CompteRenduDTO> retournerCompteRendus() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void ajouterFormateurFormation(int idFormation, int idFormateur) {
+        Formation f = this.formationFacade.find(idFormation);
+        f.setKeyformateur(idFormateur);
+    }
+
+    @Override
+    public void ajouterSalleFormation(int idFormation,int idSalle) {
+        Formation f = this.formationFacade.find(idFormation);
+        f.setKeysalle(idSalle);
     }
 
 }

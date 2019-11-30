@@ -3,15 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.barban.corentin.patrimoine.listenner;
+package com.barban.corentin.RH.listenner;
 
-import DTO.SalleDTO;
-import DTO.SallesDTO;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import DTO.FormateurDTO;
+import Exceptions.FormateurNotFoundException;
+import com.barban.corentin.RH.business.gestionRHLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
@@ -30,44 +26,36 @@ import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import com.barban.corentin.patrimoine.business.gestionPatrimoineLocal;
 
 /**
  *
  * @author Corentin
  */
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "clientId", propertyValue = "TOPIC_RESSOURCES_RESERVEES_SALLES")
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "QUEUE_RESERVATION_FORMATEUR")
     ,
-        @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
-    ,
-        @ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "TOPIC_RESSOURCES_RESERVEES")
-    ,
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
-    ,      
-        @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "JMSType='SALLES'")
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
-public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener {
+public class ListennerDemandeReservationFormateur implements MessageListener {
 
     @EJB
-    private gestionPatrimoineLocal gestionPatrimoine;
+    private gestionRHLocal gestionRH;
 
     Context context = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
-    String destName = "TOPIC_RESSOURCES_RESERVEES";
+    String destName = "QUEUE_RESERVATION_FORMATEUR";
     Destination dest = null;
     Session session = null;
     MessageProducer replyProducer = null;
 
-    public ListennerDemandeRessourceDispoPatrimoine() {
+    public ListennerDemandeReservationFormateur() {
         this.setupMessageQueueConsumer();
     }
 
     private void setupMessageQueueConsumer() {
         try {
-            // Creation de la session pour la réponse retours
             this.context = new InitialContext();
             this.factory = (ConnectionFactory) context.lookup(factoryName);
             this.dest = (Destination) context.lookup(destName);
@@ -76,31 +64,31 @@ public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener
             this.session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             this.replyProducer = this.session.createProducer(null);
             this.replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+
         } catch (NamingException ex) {
-            Logger.getLogger(ListennerDemandeRessourceDispoPatrimoine.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListennerDemandeReservationFormateur.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
-            Logger.getLogger(ListennerDemandeRessourceDispoPatrimoine.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListennerDemandeReservationFormateur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public void onMessage(Message message) {
         try {
+
             ObjectMessage object = (ObjectMessage) message;
-            if (object.getObject() instanceof HashMap) {
-                HashMap<Date, List<SalleDTO>> listeSalleDate = (HashMap<Date, List<SalleDTO>>) object.getObject();
-                Map.Entry<Date, List<SalleDTO>> entry = listeSalleDate.entrySet().iterator().next();
-                Date date = entry.getKey();
-                List<SalleDTO> listSalle = entry.getValue();
-                List<SalleDTO> listeSallesDispo = this.gestionPatrimoine.listerSalleDisponible(listSalle, date);
-                SallesDTO s = new SallesDTO();
-                s.setListeSalle(listSalle);
-                ObjectMessage response = session.createObjectMessage(s);
+            if (object.getObject() instanceof FormateurDTO) {
+                FormateurDTO f = (FormateurDTO) object.getObject();
+                System.out.println("Je suis dans resa formateur");
+                this.gestionRH.modifierStatutFormateur(f.getIdFormateur(), "PRESSENTIE", f.getDate());
+                ObjectMessage response = this.session.createObjectMessage(f);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);
             }
         } catch (JMSException e) {
-            //Handle the exception appropriately
+            Logger.getLogger(ListennerDemandeReservationFormateur.class.getName()).log(Level.SEVERE, null, e);
+        } catch (FormateurNotFoundException ex) {
+            Logger.getLogger(ListennerDemandeReservationFormateur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

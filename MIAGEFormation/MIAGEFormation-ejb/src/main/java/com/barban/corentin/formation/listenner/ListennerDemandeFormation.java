@@ -6,8 +6,7 @@
 package com.barban.corentin.formation.listenner;
 
 import DTO.DemandeFormationDTO;
-import DTO.SalleDTO;
-import com.barban.corentin.formation.business.gestionFormationLocal;
+import com.barban.corentin.formation.entities.Formation;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import com.barban.corentin.formation.sender.SenderDemandeRessourceDisponiblesJMS;
 import java.util.logging.Level;
@@ -21,7 +20,6 @@ import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
@@ -30,7 +28,7 @@ import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import org.apache.activemq.broker.BrokerService;
+import com.barban.corentin.formation.business.GestionFormationLocal;
 
 /**
  *
@@ -44,7 +42,7 @@ import org.apache.activemq.broker.BrokerService;
 public class ListennerDemandeFormation implements MessageListener {
 
     @EJB
-    private gestionFormationLocal gestionFormation;
+    private GestionFormationLocal gestionFormation;
     
     
 
@@ -89,15 +87,15 @@ public class ListennerDemandeFormation implements MessageListener {
                 //Stocker la demande de formation
                 Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(),df.getIntitule(),df.getCodeClient());
                 // Creation de la formation
-                this.gestionFormation.demanderFormation(df.getNomClient(),df.getNbPersonnes(),df.getDate(),df.getCodeFormation(),sf);
+                Formation f = this.gestionFormation.demanderFormation(df.getNomClient(),df.getNbPersonnes(),df.getDate(),df.getCodeFormation(),sf);
                 
-                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS();
-                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f);
+                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties(),df.getDate());
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 
             }
-            response.setJMSCorrelationID(message.getJMSCorrelationID());
-            this.replyProducer.send(message.getJMSReplyTo(), response);
+//            response.setJMSCorrelationID(message.getJMSCorrelationID());
+//            this.replyProducer.send(message.getJMSReplyTo(), response);
         } catch (JMSException e) {
              Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, e);
         }

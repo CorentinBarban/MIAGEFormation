@@ -53,23 +53,23 @@ public class gestionRH implements gestionRHLocal {
     }
 
     /**
-     * Lister les formateurs disponibles parmis ceux demandés pour une date
-     * données
+     * Lister les formateurs disponibles parmis ceux demandés pour une date données
      *
-     * @param listSallesDemandees
+     * @param listFormateurDemandees
      * @param date
      * @return
      */
     @Override
     public List<FormateurDTO> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees, Date date) {
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<FormateurDTO> listeFormateursDiponibles = new ArrayList();
-        for (FormateurDTO formateurDTO : listeFormateursDiponibles) {
+        for (FormateurDTO formateurDTO : listFormateurDemandees) {
             Formateur f = this.formateurFacade.find(formateurDTO.getIdFormateur());
             Collection<CalendrierFormateur> cs = f.getCalendrierFormateurCollection();
             for (CalendrierFormateur c : cs) {
                 if ((dateFormat.format(c.getCalendrier().getDatecalendrier()).compareTo(dateFormat.format(date)) == 0)
-                        && !c.getStatut().equals("INDISPONIBLE")) {
+                        && c.getStatut().equals("DISPONIBLE")) {
                     listeFormateursDiponibles.add(formateurDTO);
                     break;
                 }

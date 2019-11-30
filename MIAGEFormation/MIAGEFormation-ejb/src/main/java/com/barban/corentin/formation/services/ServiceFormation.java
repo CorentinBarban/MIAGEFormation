@@ -5,9 +5,9 @@
  */
 package com.barban.corentin.formation.services;
 
-import com.barban.corentin.formation.business.gestionFormationLocal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import com.barban.corentin.formation.business.GestionFormationLocal;
 
 /**
  *
@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
 public class ServiceFormation implements ServiceFormationLocal {
 
     @EJB
-    private gestionFormationLocal gestionFormation;
+    private GestionFormationLocal gestionFormation;
 
     
     

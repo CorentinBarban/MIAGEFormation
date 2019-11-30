@@ -17,7 +17,7 @@ import javax.ejb.Local;
  * @author Corentin
  */
 @Local
-public interface gestionFormationLocal {
+public interface GestionFormationLocal {
     
     Formation demanderFormation(String nomClient,Integer nbPersonne,Date dateFormation,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation);
     
@@ -26,6 +26,10 @@ public interface gestionFormationLocal {
     String demanderEtatFormation(Integer idFormation);
 
     List<CompteRenduDTO> retournerCompteRendus();
+
+    void ajouterFormateurFormation(int idFormation,int idFormateur);
+
+    void ajouterSalleFormation(int idFormation,int idSalle);
 
     
     

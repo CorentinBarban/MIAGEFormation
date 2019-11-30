@@ -6,11 +6,16 @@
 package com.barban.corentin.RH.listenner;
 
 import DTO.FormateurDTO;
-import DTO.SalleDTO;
+import DTO.FormateursDTO;
+import com.barban.corentin.RH.business.gestionRHLocal;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -18,7 +23,6 @@ import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
@@ -27,7 +31,6 @@ import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import org.apache.activemq.broker.BrokerService;
 
 /**
  *
@@ -45,8 +48,11 @@ import org.apache.activemq.broker.BrokerService;
         @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "JMSType = 'FORMATEURS'")
 })
 public class ListennerDemandeRessourceDispoRH implements MessageListener {
-    
-     Context context = null;
+
+    @EJB
+    private gestionRHLocal gestionRH;
+
+    Context context = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
@@ -54,12 +60,12 @@ public class ListennerDemandeRessourceDispoRH implements MessageListener {
     Destination dest = null;
     Session session = null;
     MessageProducer replyProducer = null;
-    
+
     public ListennerDemandeRessourceDispoRH() {
-       
+
         this.setupMessageQueueConsumer();
     }
-    
+
     private void setupMessageQueueConsumer() {
         try {
             this.context = new InitialContext();
@@ -80,20 +86,22 @@ public class ListennerDemandeRessourceDispoRH implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        System.out.println("J'ai recu un message, je suis dans RH");
         try {
-            TextMessage response = this.session.createTextMessage();
             ObjectMessage text = (ObjectMessage) message;
-            if (text.getObject() instanceof List) {
-                List<FormateurDTO> listeFormateur = (List<FormateurDTO>) text.getObject();
-                response.setText("Received DEMANDE RESSOURCES RH: ");
-//                response.setText("Received DEMANDE RESSOURCES PATRIMOINE: " + t.getNom());
+            if (text.getObject() instanceof HashMap) {
+                HashMap<Date, List<FormateurDTO>> listeFormateur = (HashMap<Date, List<FormateurDTO>>) text.getObject();
+                HashMap.Entry<Date, List<FormateurDTO>> entry = listeFormateur.entrySet().iterator().next();
+                Date date = entry.getKey();
+                List<FormateurDTO> listFormateur = entry.getValue();
+                List<FormateurDTO> listeFormateurDispo = this.gestionRH.fournirPlanningFormateur(listFormateur, date);
+                FormateursDTO f = new FormateursDTO();
+                f.setListeFormateur(listFormateur);
+                ObjectMessage response = session.createObjectMessage(f);
+                response.setJMSCorrelationID(message.getJMSCorrelationID());
+                this.replyProducer.send(message.getJMSReplyTo(), response);
             }
-            response.setJMSCorrelationID(message.getJMSCorrelationID());
-            this.replyProducer.send(message.getJMSReplyTo(), response);
         } catch (JMSException e) {
             //Handle the exception appropriately
         }
     }
-    
 }

@@ -7,6 +7,7 @@ package DTO;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
@@ -18,7 +19,9 @@ public class FormateurDTO implements Serializable{
     private String nom;
     private String prenom;
     private Collection<CompetenceDTO> competenceCollection;
-
+    
+    private Date date;
+    
     public int getIdFormateur() {
         return idFormateur;
     }
@@ -52,11 +55,19 @@ public class FormateurDTO implements Serializable{
         this.competenceCollection = competenceCollection;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
-        return "FormateurDTO{" + "idFormateur=" + idFormateur + ", nom=" + nom + ", prénom=" + prenom + 
-                ", competenceCollection=" + competenceCollection + '}';
+        return "FormateurDTO{" + "idFormateur=" + idFormateur + ", nom=" + nom + ", prenom=" + prenom + ", competenceCollection=" + competenceCollection + ", date=" + date + '}';
     }
-   
+
+    
 
 }
