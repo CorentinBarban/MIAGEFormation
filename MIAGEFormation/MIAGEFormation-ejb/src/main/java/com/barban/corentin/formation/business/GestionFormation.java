@@ -13,6 +13,7 @@ import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import com.barban.corentin.formation.repositories.FormationFacadeLocal;
 import com.barban.corentin.formation.repositories.FormationcomposeFacadeLocal;
 import com.barban.corentin.formation.repositories.StockagedemandeformationFacadeLocal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -33,15 +34,21 @@ public class GestionFormation implements GestionFormationLocal {
 
     @EJB
     private FormationFacadeLocal formationFacade;
+    
+    
 
     @Override
-    public Formationcompose demanderFormation(Stockagedemandeformation sf, Formation f, Integer nbPersonne, Date DateFormation, Integer salleKey, Integer formateurKey) {
-        FormationcomposePK fcPK = new FormationcomposePK(sf.getIddemandeformation(), f.getIdformation(), DateFormation, salleKey, formateurKey);
-        Formationcompose fc = new Formationcompose(fcPK);
-        fc.setNbpersonne(nbPersonne);
-        return this.formationcomposeFacade.create(fc);
+    public Formation ajouterFormation(Stockagedemandeformation demandeformation,int nbParticipants) {
+        Formation f = new Formation();
+        f.setStatut("EN ATTENTE");
+        Formation formationCree = this.formationFacade.create(f);
+        Formationcompose fc = new Formationcompose();
+        FormationcomposePK fcPK = new FormationcomposePK(formationCree.getIdformation(),demandeformation.getIddemandeformation());
+        fc.setFormationcomposePK(fcPK);
+        fc.setNbparticipants(nbParticipants);
+        this.formationcomposeFacade.create(fc);
+        return formationCree;
     }
-
 
     /**
      * Stocker une demande de formation lorsque le commercial fait la demande
@@ -49,29 +56,30 @@ public class GestionFormation implements GestionFormationLocal {
      * @param codeFormation
      * @param intitule
      * @param codeClient
+     * @param nbPersonneTotale
      * @return
      */
     @Override
-    public Stockagedemandeformation stockerDemande(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale) {
+    public Stockagedemandeformation stockerDemandeFormation(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale, String nomClient) {
         Date dateDemande = new Date();
         Stockagedemandeformation demande = new Stockagedemandeformation();
         demande.setCodeclient(codeClient);
-        demande.setCodeformation(codeFormation);
+        demande.setCodeformationcatalogue(codeFormation);
         demande.setIntituleformation(codeFormation);
         demande.setDatedemandeformation(dateDemande);
-        demande.setNbpersonnetotal(nbPersonneTotale);
+        demande.setNbpersonne(nbPersonneTotale);
+        demande.setNomclient(nomClient);
         return this.stockagedemandeformationFacade.create(demande);
     }
 
     /**
      * Fournir l'etat d'une formation (en attente, en projet, planifiée)
      *
-     * @param formationCompose
      * @return
      */
     @Override
-    public String demanderEtatFormation(Integer formationCompose) {
-        return this.formationcomposeFacade.find(formationCompose).getStatut();
+    public String demanderEtatFormation(Integer idFormation) {
+        return this.formationFacade.find(idFormation).getStatut();
     }
 
     @Override
@@ -80,32 +88,39 @@ public class GestionFormation implements GestionFormationLocal {
     }
 
     @Override
-    public void ajouterFormateurFormation(Formationcompose fc, int idFormateur) {
-        fc.getFormationcomposePK().setKeyformateur(idFormateur);
-
+    public void ajouterFormateurFormation(Formation f, int idFormateur) {
+        this.formationFacade.find(f.getIdformation()).setKeyformateur(idFormateur);
     }
 
     @Override
-    public void ajouterSalleFormation(Formationcompose fc, int idSalle) {
-//        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setKeysalle(idSalle);
+    public void ajouterSalleFormation(Formation f, int idSalle) {
+        this.formationFacade.find(f.getIdformation()).setKeysalle(idSalle);
     }
 
     @Override
-    public void ajouterDateFormation(Formationcompose fc, Date dateFormation) {
-//        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setDateformation(dateFormation);
+    public void ajouterDateFormation(Formation f, Date dateFormation) {
+        this.formationFacade.find(f.getIdformation()).setDateformation(dateFormation);
     }
 
     @Override
-    public void ajouterNbPersonne(Formationcompose fc, Integer nbPersonne) {
-//        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setNbpersonne(nbPersonne);
+    public void ajouterNbPersonne(Formation f, Integer nbPersonne) {
+//        this.formationFacade.find(f.getIdformation()).setNbparticipants(nbPersonne);
     }
 
     @Override
-    public Formation creationFormation(String nomClient, String codeFormation) {
-        Formation f = new Formation();
-        f.setNomclient(nomClient);
-        f.setCodeformationcatalogue(codeFormation);
-        return this.formationFacade.create(f);
+    public List<Formationcompose> listerFormationNonRemplie(String codeFormation, int capaciteMax) {
+        List<Formationcompose> listeFormation = this.formationcomposeFacade.findAll();
+        List<Formationcompose> listeFormationNonRemplie = new ArrayList<>();
+        if (listeFormation != null) {
+            for (Formationcompose formation : listeFormation) {
+                System.out.println(formation.toString());
+                if ((formation.getNbparticipants() < capaciteMax) && formation.getStockagedemandeformation().getCodeformationcatalogue().equals(codeFormation) && formation.getFormation().getDateformation().compareTo(new Date()) > 0) {
+                    listeFormationNonRemplie.add(formation);
+                }
+            }
+        }
+
+        return listeFormationNonRemplie;
     }
 
 }

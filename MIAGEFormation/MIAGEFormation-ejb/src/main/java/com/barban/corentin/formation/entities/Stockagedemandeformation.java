@@ -36,10 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Stockagedemandeformation.findAll", query = "SELECT s FROM Stockagedemandeformation s")
     , @NamedQuery(name = "Stockagedemandeformation.findByIddemandeformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.iddemandeformation = :iddemandeformation")
     , @NamedQuery(name = "Stockagedemandeformation.findByDatedemandeformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.datedemandeformation = :datedemandeformation")
-    , @NamedQuery(name = "Stockagedemandeformation.findByCodeformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.codeformation = :codeformation")
+    , @NamedQuery(name = "Stockagedemandeformation.findByCodeformationcatalogue", query = "SELECT s FROM Stockagedemandeformation s WHERE s.codeformationcatalogue = :codeformationcatalogue")
     , @NamedQuery(name = "Stockagedemandeformation.findByIntituleformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.intituleformation = :intituleformation")
     , @NamedQuery(name = "Stockagedemandeformation.findByCodeclient", query = "SELECT s FROM Stockagedemandeformation s WHERE s.codeclient = :codeclient")
-    , @NamedQuery(name = "Stockagedemandeformation.findByNbpersonnetotal", query = "SELECT s FROM Stockagedemandeformation s WHERE s.nbpersonnetotal = :nbpersonnetotal")})
+    , @NamedQuery(name = "Stockagedemandeformation.findByNbpersonne", query = "SELECT s FROM Stockagedemandeformation s WHERE s.nbpersonne = :nbpersonne")
+    , @NamedQuery(name = "Stockagedemandeformation.findByNomclient", query = "SELECT s FROM Stockagedemandeformation s WHERE s.nomclient = :nomclient")})
 public class Stockagedemandeformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,16 +52,19 @@ public class Stockagedemandeformation implements Serializable {
     @Column(name = "DATEDEMANDEFORMATION")
     @Temporal(TemporalType.DATE)
     private Date datedemandeformation;
-    @Size(max = 255)
-    @Column(name = "CODEFORMATION")
-    private String codeformation;
+    @Size(max = 100)
+    @Column(name = "CODEFORMATIONCATALOGUE")
+    private String codeformationcatalogue;
     @Size(max = 255)
     @Column(name = "INTITULEFORMATION")
     private String intituleformation;
     @Column(name = "CODECLIENT")
     private Integer codeclient;
-    @Column(name = "NBPERSONNETOTAL")
-    private Integer nbpersonnetotal;
+    @Column(name = "NBPERSONNE")
+    private Integer nbpersonne;
+    @Size(max = 100)
+    @Column(name = "NOMCLIENT")
+    private String nomclient;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "stockagedemandeformation")
     private Collection<Formationcompose> formationcomposeCollection;
 
@@ -87,12 +91,12 @@ public class Stockagedemandeformation implements Serializable {
         this.datedemandeformation = datedemandeformation;
     }
 
-    public String getCodeformation() {
-        return codeformation;
+    public String getCodeformationcatalogue() {
+        return codeformationcatalogue;
     }
 
-    public void setCodeformation(String codeformation) {
-        this.codeformation = codeformation;
+    public void setCodeformationcatalogue(String codeformationcatalogue) {
+        this.codeformationcatalogue = codeformationcatalogue;
     }
 
     public String getIntituleformation() {
@@ -111,12 +115,20 @@ public class Stockagedemandeformation implements Serializable {
         this.codeclient = codeclient;
     }
 
-    public Integer getNbpersonnetotal() {
-        return nbpersonnetotal;
+    public Integer getNbpersonne() {
+        return nbpersonne;
     }
 
-    public void setNbpersonnetotal(Integer nbpersonnetotal) {
-        this.nbpersonnetotal = nbpersonnetotal;
+    public void setNbpersonne(Integer nbpersonne) {
+        this.nbpersonne = nbpersonne;
+    }
+
+    public String getNomclient() {
+        return nomclient;
+    }
+
+    public void setNomclient(String nomclient) {
+        this.nomclient = nomclient;
     }
 
     @XmlTransient

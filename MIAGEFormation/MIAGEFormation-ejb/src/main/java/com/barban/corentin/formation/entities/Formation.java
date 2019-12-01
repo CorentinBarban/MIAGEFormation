@@ -7,6 +7,7 @@ package com.barban.corentin.formation.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,8 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Formation.findAll", query = "SELECT f FROM Formation f")
     , @NamedQuery(name = "Formation.findByIdformation", query = "SELECT f FROM Formation f WHERE f.idformation = :idformation")
-    , @NamedQuery(name = "Formation.findByNomclient", query = "SELECT f FROM Formation f WHERE f.nomclient = :nomclient")
-    , @NamedQuery(name = "Formation.findByCodeformationcatalogue", query = "SELECT f FROM Formation f WHERE f.codeformationcatalogue = :codeformationcatalogue")})
+    , @NamedQuery(name = "Formation.findByKeysalle", query = "SELECT f FROM Formation f WHERE f.keysalle = :keysalle")
+    , @NamedQuery(name = "Formation.findByKeyformateur", query = "SELECT f FROM Formation f WHERE f.keyformateur = :keyformateur")
+    , @NamedQuery(name = "Formation.findByDateformation", query = "SELECT f FROM Formation f WHERE f.dateformation = :dateformation")
+    , @NamedQuery(name = "Formation.findByStatut", query = "SELECT f FROM Formation f WHERE f.statut = :statut")})
 public class Formation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,12 +47,16 @@ public class Formation implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDFORMATION")
     private Integer idformation;
+    @Column(name = "KEYSALLE")
+    private Integer keysalle;
+    @Column(name = "KEYFORMATEUR")
+    private Integer keyformateur;
+    @Column(name = "DATEFORMATION")
+    @Temporal(TemporalType.DATE)
+    private Date dateformation;
     @Size(max = 100)
-    @Column(name = "NOMCLIENT")
-    private String nomclient;
-    @Size(max = 100)
-    @Column(name = "CODEFORMATIONCATALOGUE")
-    private String codeformationcatalogue;
+    @Column(name = "STATUT")
+    private String statut;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formation")
     private Collection<Formationcompose> formationcomposeCollection;
 
@@ -66,20 +75,36 @@ public class Formation implements Serializable {
         this.idformation = idformation;
     }
 
-    public String getNomclient() {
-        return nomclient;
+    public Integer getKeysalle() {
+        return keysalle;
     }
 
-    public void setNomclient(String nomclient) {
-        this.nomclient = nomclient;
+    public void setKeysalle(Integer keysalle) {
+        this.keysalle = keysalle;
     }
 
-    public String getCodeformationcatalogue() {
-        return codeformationcatalogue;
+    public Integer getKeyformateur() {
+        return keyformateur;
     }
 
-    public void setCodeformationcatalogue(String codeformationcatalogue) {
-        this.codeformationcatalogue = codeformationcatalogue;
+    public void setKeyformateur(Integer keyformateur) {
+        this.keyformateur = keyformateur;
+    }
+
+    public Date getDateformation() {
+        return dateformation;
+    }
+
+    public void setDateformation(Date dateformation) {
+        this.dateformation = dateformation;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
     @XmlTransient

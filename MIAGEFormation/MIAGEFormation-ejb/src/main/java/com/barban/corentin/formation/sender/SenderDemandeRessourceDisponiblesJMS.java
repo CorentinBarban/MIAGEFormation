@@ -30,7 +30,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
-import com.barban.corentin.formation.entities.Formationcompose;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -146,8 +145,10 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
 
             if (this.listeFormateurs != null && this.listeSalles != null) {
                 HashMap<FormateurDTO, SalleDTO> ressourceIdeal = trouverDateIdeale();
-                
-                Formationcompose fc = this.gestionFormation.demanderFormation(this.stockageDemandeFormation, this.formation, demandeFormationDTO.getNbPersonnes(), ressourceIdeal.entrySet().iterator().next().getValue().getDate(), ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle(), ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
+                this.gestionFormation.ajouterFormateurFormation(this.formation, ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
+                this.gestionFormation.ajouterDateFormation(this.formation, ressourceIdeal.entrySet().iterator().next().getValue().getDate());
+                this.gestionFormation.ajouterSalleFormation(this.formation, ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle());
+
                 SenderReservationSalleJMS senderResaSalle = new SenderReservationSalleJMS();
                 senderResaSalle.sendMessageDemandeReservation(ressourceIdeal.entrySet().iterator().next().getValue());
                 SenderReservationFormateurJMS senderResaFormateur = new SenderReservationFormateurJMS();

@@ -6,7 +6,6 @@
 package com.barban.corentin.formation.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,23 +25,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Formationcompose.findAll", query = "SELECT f FROM Formationcompose f")
-    , @NamedQuery(name = "Formationcompose.findByDemandeformationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.demandeformationkey = :demandeformationkey")
     , @NamedQuery(name = "Formationcompose.findByFormationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.formationkey = :formationkey")
-    , @NamedQuery(name = "Formationcompose.findByDateformation", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.dateformation = :dateformation")
-    , @NamedQuery(name = "Formationcompose.findByKeysalle", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.keysalle = :keysalle")
-    , @NamedQuery(name = "Formationcompose.findByKeyformateur", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.keyformateur = :keyformateur")
-    , @NamedQuery(name = "Formationcompose.findByStatut", query = "SELECT f FROM Formationcompose f WHERE f.statut = :statut")
-    , @NamedQuery(name = "Formationcompose.findByNbpersonne", query = "SELECT f FROM Formationcompose f WHERE f.nbpersonne = :nbpersonne")})
+    , @NamedQuery(name = "Formationcompose.findByDemandeformationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.demandeformationkey = :demandeformationkey")
+    , @NamedQuery(name = "Formationcompose.findByNbparticipants", query = "SELECT f FROM Formationcompose f WHERE f.nbparticipants = :nbparticipants")})
 public class Formationcompose implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FormationcomposePK formationcomposePK;
-    @Size(max = 100)
-    @Column(name = "STATUT")
-    private String statut;
-    @Column(name = "NBPERSONNE")
-    private Integer nbpersonne;
+    @Column(name = "NBPARTICIPANTS")
+    private Integer nbparticipants;
     @JoinColumn(name = "FORMATIONKEY", referencedColumnName = "IDFORMATION", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Formation formation;
@@ -58,8 +49,8 @@ public class Formationcompose implements Serializable {
         this.formationcomposePK = formationcomposePK;
     }
 
-    public Formationcompose(int demandeformationkey, int formationkey, Date dateformation, int keysalle, int keyformateur) {
-        this.formationcomposePK = new FormationcomposePK(demandeformationkey, formationkey, dateformation, keysalle, keyformateur);
+    public Formationcompose(int formationkey, int demandeformationkey) {
+        this.formationcomposePK = new FormationcomposePK(formationkey, demandeformationkey);
     }
 
     public FormationcomposePK getFormationcomposePK() {
@@ -70,20 +61,12 @@ public class Formationcompose implements Serializable {
         this.formationcomposePK = formationcomposePK;
     }
 
-    public String getStatut() {
-        return statut;
+    public Integer getNbparticipants() {
+        return nbparticipants;
     }
 
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
-
-    public Integer getNbpersonne() {
-        return nbpersonne;
-    }
-
-    public void setNbpersonne(Integer nbpersonne) {
-        this.nbpersonne = nbpersonne;
+    public void setNbparticipants(Integer nbparticipants) {
+        this.nbparticipants = nbparticipants;
     }
 
     public Formation getFormation() {

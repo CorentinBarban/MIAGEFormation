@@ -29,7 +29,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
-import com.barban.corentin.formation.entities.Formationcompose;
+import java.util.List;
 
 /**
  *
@@ -83,21 +83,26 @@ public class ListennerDemandeFormation implements MessageListener {
             ObjectMessage text = (ObjectMessage) message;
             if (text.getObject() instanceof DemandeFormationDTO) {
                 DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
-                // Creation de la formation et de la demande
-                Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(),df.getIntitule(),df.getCodeClient(),df.getNbPersonnes());
-                
-                //Lister les formations en statut pressentie avec le meme code de formation 
-                //Si la liste est vide on vient créer un nouvelle formation
-                Formation f = this.gestionFormation.creationFormation(df.getNomClient(),df.getCodeFormation());
-                               
-                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f,sf,df);
+                // Creation de la demande 
+                Stockagedemandeformation sf = this.gestionFormation.stockerDemandeFormation(df.getCodeFormation(), df.getIntitule(), df.getCodeClient(), df.getNbPersonnes(), df.getNomClient());
+                //Lister les formations en statut pressentie avec le meme code de formation
+
+                System.out.println("capacite" + df.getCapaciteMax());
+//                List<Formationcompose> formationNonRemplies = this.gestionFormation.listerFormationNonRemplie(df.getCodeFormation(), df.getCapaciteMax());
+//                for (Formation formationNr : formationNonRemplies) {
+////                    if(formationNr.getNbparticipants() < df.getCapaciteMax()){
+////                        formationNr.
+////                    }
+//                }
+                System.out.println(sf.toString());
+                System.out.println(df.getNbPersonnes());
+                Formation f = this.gestionFormation.ajouterFormation(sf, df.getNbPersonnes());
+                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
                 sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);
-                
-                
-                
+
             }
         } catch (JMSException e) {
             Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, e);

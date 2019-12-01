@@ -19,25 +19,23 @@ import javax.ejb.Local;
  */
 @Local
 public interface GestionFormationLocal {
-    
-    Formationcompose demanderFormation(Stockagedemandeformation sf, Formation f, Integer nbPersonne, Date DateFormation, Integer salleKey, Integer formateurKey);
-    
-    Stockagedemandeformation stockerDemande(String codeFormation,String intitule,Integer codeClient,Integer nbPersonneTotale);
+
+    Formation ajouterFormation(Stockagedemandeformation demandeformationkey,int nbParticipants);
+
+    Stockagedemandeformation stockerDemandeFormation(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale, String nomClient);
 
     String demanderEtatFormation(Integer idFormation);
 
     List<CompteRenduDTO> retournerCompteRendus();
 
-    void ajouterFormateurFormation(Formationcompose fc,int idFormateur);
+    void ajouterFormateurFormation(Formation f, int idFormateur);
 
-    void ajouterSalleFormation(Formationcompose fc, int idSalle);
+    void ajouterSalleFormation(Formation f, int idSalle);
 
-    void ajouterDateFormation(Formationcompose fc,Date dateFormation);
+    void ajouterDateFormation(Formation f, Date dateFormation);
 
-    void ajouterNbPersonne(Formationcompose fc,Integer nbPersonne);
+    void ajouterNbPersonne(Formation f, Integer nbPersonne);
 
-    Formation creationFormation(String nomClient, String codeFormation);
+    List<Formationcompose> listerFormationNonRemplie(String codeFormation, int capaciteMax);
 
-    
-    
 }
