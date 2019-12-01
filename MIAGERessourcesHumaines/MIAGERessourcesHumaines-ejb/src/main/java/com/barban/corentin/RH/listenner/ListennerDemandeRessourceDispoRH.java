@@ -95,7 +95,7 @@ public class ListennerDemandeRessourceDispoRH implements MessageListener {
                 List<FormateurDTO> listFormateur = entry.getValue();
                 List<FormateurDTO> listeFormateurDispo = this.gestionRH.fournirPlanningFormateur(listFormateur, date);
                 FormateursDTO f = new FormateursDTO();
-                f.setListeFormateur(listFormateur);
+                f.setListeFormateur(listeFormateurDispo);
                 ObjectMessage response = session.createObjectMessage(f);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);

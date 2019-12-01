@@ -15,10 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.jms.ConnectionFactory;
 
 /**
  *
@@ -26,9 +24,6 @@ import javax.jms.ConnectionFactory;
  */
 @Stateless
 public class gestionPatrimoine implements gestionPatrimoineLocal {
-
-    @Resource(mappedName = "ConnectionFactory")
-    private ConnectionFactory connectionFactory;
 
     @EJB
     private SalleFacadeLocal salleFacade;
@@ -39,6 +34,7 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
      * @param idSalle
      * @param statut
      * @param date
+     * @throws Exceptions.SalleNotFoundException
      */
     @Override
     public void editerStatutSalle(Integer idSalle, String statut, Date date) throws SalleNotFoundException {

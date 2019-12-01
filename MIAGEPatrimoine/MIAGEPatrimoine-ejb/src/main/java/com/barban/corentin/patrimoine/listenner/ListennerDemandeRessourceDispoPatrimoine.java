@@ -94,7 +94,7 @@ public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener
                 List<SalleDTO> listSalle = entry.getValue();
                 List<SalleDTO> listeSallesDispo = this.gestionPatrimoine.listerSalleDisponible(listSalle, date);
                 SallesDTO s = new SallesDTO();
-                s.setListeSalle(listSalle);
+                s.setListeSalle(listeSallesDispo);
                 ObjectMessage response = session.createObjectMessage(s);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);

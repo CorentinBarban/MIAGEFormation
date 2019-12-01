@@ -7,6 +7,7 @@ package com.barban.corentin.patrimoine.listenner;
 
 import DTO.SalleDTO;
 import Exceptions.SalleNotFoundException;
+import com.barban.corentin.patrimoine.business.gestionPatrimoineLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
@@ -25,7 +26,6 @@ import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import com.barban.corentin.patrimoine.business.gestionPatrimoineLocal;
 
 /**
  *
@@ -75,11 +75,10 @@ public class ListennerDemandeReservationSalle implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
-            
+            System.out.println("Je suis dans resa salle");
             ObjectMessage object = (ObjectMessage) message;
             if (object.getObject() instanceof SalleDTO) {
                 SalleDTO s = (SalleDTO) object.getObject();
-                System.out.println("sdsqd");
                 this.gestionPatrimoine.editerStatutSalle(s.getIdsalle(), "PRESSENTIE", s.getDate());
                 ObjectMessage response = this.session.createObjectMessage(s);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());

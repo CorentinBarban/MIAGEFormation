@@ -30,11 +30,6 @@ import javax.naming.NamingException;
  *
  * @author Corentin
  */
-@MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "QUEUE_RESERVATION_SALLE")
-    ,
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
-})
 public class SenderReservationSalleJMS implements MessageListener {
 
     Context context = null;
@@ -72,15 +67,12 @@ public class SenderReservationSalleJMS implements MessageListener {
             Destination tempDestSalle = session.createTemporaryQueue();
             MessageConsumer responseConsumerSalle = session.createConsumer(tempDestSalle);
             responseConsumerSalle.setMessageListener(this);
-
-            // Creation des objectMessage à envoyer
+            // Creation de l'bjectMessage à envoyer
             ObjectMessage messageSalles = session.createObjectMessage(SalleReservee);
             messageSalles.setJMSReplyTo(tempDestSalle);
             String correlationIdSalle = this.createRandomString();
             messageSalles.setJMSCorrelationID(correlationIdSalle);
-
             producer.send(messageSalles);
-
         } catch (NamingException ex) {
             Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {

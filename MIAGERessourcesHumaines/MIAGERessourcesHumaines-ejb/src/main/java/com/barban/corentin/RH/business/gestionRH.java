@@ -61,7 +61,7 @@ public class gestionRH implements gestionRHLocal {
      */
     @Override
     public List<FormateurDTO> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees, Date date) {
-        
+        System.out.println("Formateur Demande : " + listFormateurDemandees.toString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<FormateurDTO> listeFormateursDiponibles = new ArrayList();
         for (FormateurDTO formateurDTO : listFormateurDemandees) {
@@ -75,6 +75,7 @@ public class gestionRH implements gestionRHLocal {
                 }
             }
         }
+        System.out.println("Formateur Dispo : " + listeFormateursDiponibles.toString());
         return listeFormateursDiponibles;
     }
 
@@ -82,7 +83,9 @@ public class gestionRH implements gestionRHLocal {
      * Renvoie si le formateur existe
      *
      * @param IdFormateur
+     * @return 
      */
+    @Override
     public boolean verifierExistenceFormateur(Integer IdFormateur) {
         Formateur f = this.formateurFacade.find(IdFormateur);
 

@@ -122,6 +122,7 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
         ObjectMessage object = (ObjectMessage) message;
         try {
             if (object.getObject() instanceof SallesDTO) {
+                System.out.println("Reception des Salles dispos");
                 SallesDTO salles = (SallesDTO) object.getObject();
                 List<SalleDTO> listeSalles = salles.getListeSalle();
                 this.gestionFormation.ajouterSalleFormation(this.formation.getIdformation(), listeSalles.get(0).getIdsalle());
@@ -133,10 +134,10 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
                 senderResaSalle.sendMessageDemandeReservation(s);
 
             } else if (object.getObject() instanceof FormateursDTO) {
+                
+                System.out.println("Reception des formateurs dispos");
                 FormateursDTO formateurs = (FormateursDTO) object.getObject();
                 List<FormateurDTO> listeFormateurs = formateurs.getListeFormateur();
-                System.out.println(this.formation.getIdformation());
-                System.out.println(listeFormateurs.get(0).getIdFormateur());
                 this.gestionFormation.ajouterFormateurFormation(this.formation.getIdformation(), listeFormateurs.get(0).getIdFormateur());
                 FormateurDTO f = new FormateurDTO();
                 f.setDate(this.formation.getDateformation());

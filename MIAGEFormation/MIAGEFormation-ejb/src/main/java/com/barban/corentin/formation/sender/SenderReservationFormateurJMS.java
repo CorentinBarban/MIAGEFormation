@@ -29,14 +29,9 @@ import javax.naming.NamingException;
  *
  * @author Corentin
  */
-@MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "QUEUE_RESERVATION_FORMATEUR")
-    ,
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
-})
 public class SenderReservationFormateurJMS implements MessageListener {
     
-      Context context = null;
+    Context context = null;
     ConnectionFactory factory = null;
     Connection connection = null;
     String factoryName = "ConnectionFactory";
