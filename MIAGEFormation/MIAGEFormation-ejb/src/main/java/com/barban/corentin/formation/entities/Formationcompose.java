@@ -15,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,9 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Formationcompose.findAll", query = "SELECT f FROM Formationcompose f")
     , @NamedQuery(name = "Formationcompose.findByDemandeformationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.demandeformationkey = :demandeformationkey")
     , @NamedQuery(name = "Formationcompose.findByFormationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.formationkey = :formationkey")
-    , @NamedQuery(name = "Formationcompose.findByDateformation", query = "SELECT f FROM Formationcompose f WHERE f.dateformation = :dateformation")
-    , @NamedQuery(name = "Formationcompose.findByKeysalle", query = "SELECT f FROM Formationcompose f WHERE f.keysalle = :keysalle")
-    , @NamedQuery(name = "Formationcompose.findByKeyformateur", query = "SELECT f FROM Formationcompose f WHERE f.keyformateur = :keyformateur")
+    , @NamedQuery(name = "Formationcompose.findByDateformation", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.dateformation = :dateformation")
+    , @NamedQuery(name = "Formationcompose.findByKeysalle", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.keysalle = :keysalle")
+    , @NamedQuery(name = "Formationcompose.findByKeyformateur", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.keyformateur = :keyformateur")
     , @NamedQuery(name = "Formationcompose.findByStatut", query = "SELECT f FROM Formationcompose f WHERE f.statut = :statut")
     , @NamedQuery(name = "Formationcompose.findByNbpersonne", query = "SELECT f FROM Formationcompose f WHERE f.nbpersonne = :nbpersonne")})
 public class Formationcompose implements Serializable {
@@ -41,13 +39,6 @@ public class Formationcompose implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FormationcomposePK formationcomposePK;
-    @Column(name = "DATEFORMATION")
-    @Temporal(TemporalType.DATE)
-    private Date dateformation;
-    @Column(name = "KEYSALLE")
-    private Integer keysalle;
-    @Column(name = "KEYFORMATEUR")
-    private Integer keyformateur;
     @Size(max = 100)
     @Column(name = "STATUT")
     private String statut;
@@ -67,8 +58,8 @@ public class Formationcompose implements Serializable {
         this.formationcomposePK = formationcomposePK;
     }
 
-    public Formationcompose(int demandeformationkey, int formationkey) {
-        this.formationcomposePK = new FormationcomposePK(demandeformationkey, formationkey);
+    public Formationcompose(int demandeformationkey, int formationkey, Date dateformation, int keysalle, int keyformateur) {
+        this.formationcomposePK = new FormationcomposePK(demandeformationkey, formationkey, dateformation, keysalle, keyformateur);
     }
 
     public FormationcomposePK getFormationcomposePK() {
@@ -77,30 +68,6 @@ public class Formationcompose implements Serializable {
 
     public void setFormationcomposePK(FormationcomposePK formationcomposePK) {
         this.formationcomposePK = formationcomposePK;
-    }
-
-    public Date getDateformation() {
-        return dateformation;
-    }
-
-    public void setDateformation(Date dateformation) {
-        this.dateformation = dateformation;
-    }
-
-    public Integer getKeysalle() {
-        return keysalle;
-    }
-
-    public void setKeysalle(Integer keysalle) {
-        this.keysalle = keysalle;
-    }
-
-    public Integer getKeyformateur() {
-        return keyformateur;
-    }
-
-    public void setKeyformateur(Integer keyformateur) {
-        this.keyformateur = keyformateur;
     }
 
     public String getStatut() {

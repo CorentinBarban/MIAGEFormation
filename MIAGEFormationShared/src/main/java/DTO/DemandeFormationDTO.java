@@ -22,7 +22,8 @@ public class DemandeFormationDTO implements Serializable {
     private int nbPersonnes;
     private List<FormateurDTO> listFormateursPressentis;
     private List<SalleDTO> listSallesPressenties;
-
+    private int capaciteMax;
+    private int capaciteMin;
     public DemandeFormationDTO() {
 
     }
@@ -84,11 +85,27 @@ public class DemandeFormationDTO implements Serializable {
         this.listSallesPressenties = listSallesPressenties;
     }
 
-    @Override
-    public String toString() {
-        return "DemandeFormationDTO{" + "codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", nomClient=" + nomClient + ", intitule=" + intitule + ", nbPersonnes=" + nbPersonnes + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + '}';
+    public int getCapaciteMax() {
+        return capaciteMax;
     }
 
-    
+    public void setCapaciteMax(int capaciteMax) {
+        this.capaciteMax = capaciteMax;
+    }
+
+    public int getCapaciteMin() {
+        return capaciteMin;
+    }
+
+    public void setCapaciteMin(int capaciteMin) {
+        this.capaciteMin = capaciteMin;
+    }
+
+    @Override
+    public String toString() {
+        return "DemandeFormationDTO{" + "codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", nomClient=" + nomClient + ", intitule=" + intitule + ", nbPersonnes=" + nbPersonnes + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + ", capaciteMax=" + capaciteMax + ", capaciteMin=" + capaciteMin + '}';
+    }
+
+       
  
 }

@@ -41,6 +41,9 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
            // Recuperer la liste de salles pressenties
             List<SalleDTO> listeSalles = this.gestionCommerciale.recupererListeSallesAdequates(codeFormation);
             
+            Integer capaciteMax = this.gestionCommerciale.recupererCapaciteMax(codeFormation);
+            Integer capaciteMin = this.gestionCommerciale.recupererCapaciteMin(codeFormation);
+            
             DemandeFormationDTO df = new DemandeFormationDTO();
             df.setCodeClient(codeclient);
             df.setNomClient(nomClient);
@@ -49,6 +52,8 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
             df.setListSallesPressenties(listeSalles);
             df.setIntitule(intitule);
             df.setNbPersonnes(nbPersonnes);
+            df.setCapaciteMax(capaciteMax);
+            df.setCapaciteMin(capaciteMin);
             SenderDemandeFormationJMS sender = new SenderDemandeFormationJMS();
             sender.sendMessageDemandeFormation(df);
         }else{

@@ -35,23 +35,14 @@ public class GestionFormation implements GestionFormationLocal {
     private FormationFacadeLocal formationFacade;
 
     @Override
-    public Formationcompose demanderFormation(String nomClient, Integer nbPersonne, String codeFormation, String intitule,Integer codeClient) {
-        
-        Stockagedemandeformation sf = stockerDemande(codeFormation,intitule,codeClient);
-        Formation f = creationFormation(nomClient,codeFormation);
-        FormationcomposePK fcPK = new FormationcomposePK(sf.getIddemandeformation(),f.getIdformation());
+    public Formationcompose demanderFormation(Stockagedemandeformation sf, Formation f, Integer nbPersonne, Date DateFormation, Integer salleKey, Integer formateurKey) {
+        FormationcomposePK fcPK = new FormationcomposePK(sf.getIddemandeformation(), f.getIdformation(), DateFormation, salleKey, formateurKey);
         Formationcompose fc = new Formationcompose(fcPK);
         fc.setNbpersonne(nbPersonne);
-        return this.formationcomposeFacade.create(fc); 
+        return this.formationcomposeFacade.create(fc);
     }
-    
-    public Formation creationFormation(String nomClient, String codeFormation){
-        Formation f = new Formation();
-        f.setNomclient(nomClient);
-        f.setCodeformationcatalogue(codeFormation);
-        return this.formationFacade.create(f);
-    }
-    
+
+
     /**
      * Stocker une demande de formation lorsque le commercial fait la demande
      *
@@ -61,13 +52,14 @@ public class GestionFormation implements GestionFormationLocal {
      * @return
      */
     @Override
-    public Stockagedemandeformation stockerDemande(String codeFormation, String intitule, Integer codeClient) {
+    public Stockagedemandeformation stockerDemande(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale) {
         Date dateDemande = new Date();
         Stockagedemandeformation demande = new Stockagedemandeformation();
         demande.setCodeclient(codeClient);
         demande.setCodeformation(codeFormation);
         demande.setIntituleformation(codeFormation);
         demande.setDatedemandeformation(dateDemande);
+        demande.setNbpersonnetotal(nbPersonneTotale);
         return this.stockagedemandeformationFacade.create(demande);
     }
 
@@ -89,22 +81,31 @@ public class GestionFormation implements GestionFormationLocal {
 
     @Override
     public void ajouterFormateurFormation(Formationcompose fc, int idFormateur) {
-        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setKeyformateur(idFormateur);
+        fc.getFormationcomposePK().setKeyformateur(idFormateur);
+
     }
 
     @Override
     public void ajouterSalleFormation(Formationcompose fc, int idSalle) {
-        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setKeysalle(idSalle);
+//        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setKeysalle(idSalle);
     }
 
     @Override
     public void ajouterDateFormation(Formationcompose fc, Date dateFormation) {
-        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setDateformation(dateFormation);
+//        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setDateformation(dateFormation);
     }
 
     @Override
     public void ajouterNbPersonne(Formationcompose fc, Integer nbPersonne) {
-        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setNbpersonne(nbPersonne);
+//        this.formationcomposeFacade.find(fc.getFormationcomposePK()).setNbpersonne(nbPersonne);
+    }
+
+    @Override
+    public Formation creationFormation(String nomClient, String codeFormation) {
+        Formation f = new Formation();
+        f.setNomclient(nomClient);
+        f.setCodeformationcatalogue(codeFormation);
+        return this.formationFacade.create(f);
     }
 
 }

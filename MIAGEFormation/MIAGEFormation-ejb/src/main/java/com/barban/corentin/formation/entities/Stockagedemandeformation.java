@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Stockagedemandeformation.findByDatedemandeformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.datedemandeformation = :datedemandeformation")
     , @NamedQuery(name = "Stockagedemandeformation.findByCodeformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.codeformation = :codeformation")
     , @NamedQuery(name = "Stockagedemandeformation.findByIntituleformation", query = "SELECT s FROM Stockagedemandeformation s WHERE s.intituleformation = :intituleformation")
-    , @NamedQuery(name = "Stockagedemandeformation.findByCodeclient", query = "SELECT s FROM Stockagedemandeformation s WHERE s.codeclient = :codeclient")})
+    , @NamedQuery(name = "Stockagedemandeformation.findByCodeclient", query = "SELECT s FROM Stockagedemandeformation s WHERE s.codeclient = :codeclient")
+    , @NamedQuery(name = "Stockagedemandeformation.findByNbpersonnetotal", query = "SELECT s FROM Stockagedemandeformation s WHERE s.nbpersonnetotal = :nbpersonnetotal")})
 public class Stockagedemandeformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,6 +59,8 @@ public class Stockagedemandeformation implements Serializable {
     private String intituleformation;
     @Column(name = "CODECLIENT")
     private Integer codeclient;
+    @Column(name = "NBPERSONNETOTAL")
+    private Integer nbpersonnetotal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "stockagedemandeformation")
     private Collection<Formationcompose> formationcomposeCollection;
 
@@ -106,6 +109,14 @@ public class Stockagedemandeformation implements Serializable {
 
     public void setCodeclient(Integer codeclient) {
         this.codeclient = codeclient;
+    }
+
+    public Integer getNbpersonnetotal() {
+        return nbpersonnetotal;
+    }
+
+    public void setNbpersonnetotal(Integer nbpersonnetotal) {
+        this.nbpersonnetotal = nbpersonnetotal;
     }
 
     @XmlTransient

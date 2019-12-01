@@ -83,14 +83,21 @@ public class ListennerDemandeFormation implements MessageListener {
             ObjectMessage text = (ObjectMessage) message;
             if (text.getObject() instanceof DemandeFormationDTO) {
                 DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
-                // Creation de la formation
-                Formationcompose fc = this.gestionFormation.demanderFormation(df.getNomClient(), df.getNbPersonnes(), df.getCodeFormation(),df.getIntitule(),df.getCodeClient());
-                Formation f = fc.getFormation();
-                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, fc);
+                // Creation de la formation et de la demande
+                Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(),df.getIntitule(),df.getCodeClient(),df.getNbPersonnes());
+                
+                //Lister les formations en statut pressentie avec le meme code de formation 
+                //Si la liste est vide on vient créer un nouvelle formation
+                Formation f = this.gestionFormation.creationFormation(df.getNomClient(),df.getCodeFormation());
+                               
+                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f,sf,df);
                 sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);
+                
+                
+                
             }
         } catch (JMSException e) {
             Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, e);

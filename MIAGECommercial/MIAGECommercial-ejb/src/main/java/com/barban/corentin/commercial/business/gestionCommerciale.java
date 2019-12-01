@@ -241,7 +241,8 @@ public class gestionCommerciale implements gestionCommercialeLocal {
                 BufferedReader br = new BufferedReader(in);
                 String output;
                 while ((output = br.readLine()) != null) {
-                    listeFormateurDTOs = gson.fromJson(output, new TypeToken<List<FormateurDTO>>(){}.getType());
+                    listeFormateurDTOs = gson.fromJson(output, new TypeToken<List<FormateurDTO>>() {
+                    }.getType());
                 }
             }
             conn.disconnect();
@@ -255,7 +256,8 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * Méthode permettant de recuperer la liste des salles adequates pour une
      * formation
      *
-     * @param Code
+     * @param code
+     * @return
      */
     @Override
     public List<SalleDTO> recupererListeSallesAdequates(String code) {
@@ -283,6 +285,75 @@ public class gestionCommerciale implements gestionCommercialeLocal {
             Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listeSallesDTOs;
+    }
+    
+    /**
+     * Obtenir la capacité max d'une formation
+     * @param codeFormation
+     * @return 
+     */
+    @Override
+    public Integer recupererCapaciteMax(String codeFormation) {
+        try {
+            URL url = new URL(hostTechnico + "/formationsCatalogue/" + codeFormation);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            Gson gson = new Gson();
+            FormationDTO formationDTO = null;
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(in);
+                String output;
+
+                while ((output = br.readLine()) != null) {
+                    formationDTO = gson.fromJson(output, new TypeToken<FormationDTO>() {
+                    }.getType());
+                }
+
+            }
+            conn.disconnect();
+            return formationDTO.getCapacitemax();
+        } catch (IOException ex) {
+            Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    /**
+     * Obtenir la capacité min d'une formation
+     * @param codeFormation
+     * @return 
+     */
+    @Override
+    public Integer recupererCapaciteMin(String codeFormation) {
+        try {
+            URL url = new URL(hostTechnico + "/formationsCatalogue/" + codeFormation);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            Gson gson = new Gson();
+            FormationDTO formationDTO = null;
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(in);
+                String output;
+
+                while ((output = br.readLine()) != null) {
+                    formationDTO = gson.fromJson(output, new TypeToken<FormationDTO>() {
+                    }.getType());
+                }
+
+            }
+            conn.disconnect();
+            return formationDTO.getCapacitemin();
+        } catch (IOException ex) {
+            Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

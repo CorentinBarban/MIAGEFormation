@@ -5,6 +5,7 @@
  */
 package com.barban.corentin.formation.sender;
 
+import DTO.DemandeFormationDTO;
 import DTO.FormateurDTO;
 import DTO.FormateursDTO;
 import DTO.SalleDTO;
@@ -30,6 +31,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
 import com.barban.corentin.formation.entities.Formationcompose;
+import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,13 +53,15 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     Session session = null;
     MessageProducer producer = null;
     private Formation formation;
-    private Formationcompose formationCompose;
+    private Stockagedemandeformation stockageDemandeFormation;
+    private DemandeFormationDTO demandeFormationDTO;
     private HashMap<SalleDTO, List<Date>> listeSalles = null;
     private HashMap<FormateurDTO, List<Date>> listeFormateurs = null;
 
-    public SenderDemandeRessourceDisponiblesJMS(Formation f, Formationcompose fc) {
+    public SenderDemandeRessourceDisponiblesJMS(Formation f, Stockagedemandeformation sf, DemandeFormationDTO df) {
         this.formation = f;
-        this.formationCompose = fc;
+        this.stockageDemandeFormation = sf;
+        this.demandeFormationDTO = df;
     }
 
     public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
@@ -142,9 +146,8 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
 
             if (this.listeFormateurs != null && this.listeSalles != null) {
                 HashMap<FormateurDTO, SalleDTO> ressourceIdeal = trouverDateIdeale();
-                this.gestionFormation.ajouterSalleFormation(this.formationCompose, ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle());
-                this.gestionFormation.ajouterFormateurFormation(this.formationCompose, ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
-                this.gestionFormation.ajouterDateFormation(this.formationCompose, ressourceIdeal.entrySet().iterator().next().getValue().getDate());
+                
+                Formationcompose fc = this.gestionFormation.demanderFormation(this.stockageDemandeFormation, this.formation, demandeFormationDTO.getNbPersonnes(), ressourceIdeal.entrySet().iterator().next().getValue().getDate(), ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle(), ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
                 SenderReservationSalleJMS senderResaSalle = new SenderReservationSalleJMS();
                 senderResaSalle.sendMessageDemandeReservation(ressourceIdeal.entrySet().iterator().next().getValue());
                 SenderReservationFormateurJMS senderResaFormateur = new SenderReservationFormateurJMS();
@@ -154,10 +157,12 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
             Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
-     * Chercher la date ideal entre les formateurs disponibles et les salles disponibles
-     * @return 
+     * Chercher la date ideal entre les formateurs disponibles et les salles
+     * disponibles
+     *
+     * @return
      */
     private HashMap<FormateurDTO, SalleDTO> trouverDateIdeale() {
         HashMap<FormateurDTO, SalleDTO> hashmapRessourceChoisie = new HashMap<>();
