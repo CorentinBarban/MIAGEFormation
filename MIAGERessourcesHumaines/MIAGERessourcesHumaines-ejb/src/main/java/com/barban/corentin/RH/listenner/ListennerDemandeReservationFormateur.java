@@ -80,7 +80,7 @@ public class ListennerDemandeReservationFormateur implements MessageListener {
             System.out.println("Je suis dans resa formateur");
             if (object.getObject() instanceof FormateurDTO) {
                 FormateurDTO f = (FormateurDTO) object.getObject();
-                this.gestionRH.modifierStatutFormateur(f.getIdFormateur(), "PRESSENTIE", f.getDate());
+                this.gestionRH.modifierStatutFormateur(f.getIdFormateur(), f.getStatut(), f.getDate());
                 ObjectMessage response = this.session.createObjectMessage(f);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);

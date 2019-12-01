@@ -87,14 +87,14 @@ public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener
     public void onMessage(Message message) {
         try {
             ObjectMessage object = (ObjectMessage) message;
-            if (object.getObject() instanceof HashMap) {
-                HashMap<Date, List<SalleDTO>> listeSalleDate = (HashMap<Date, List<SalleDTO>>) object.getObject();
-                Map.Entry<Date, List<SalleDTO>> entry = listeSalleDate.entrySet().iterator().next();
-                Date date = entry.getKey();
-                List<SalleDTO> listSalle = entry.getValue();
-                List<SalleDTO> listeSallesDispo = this.gestionPatrimoine.listerSalleDisponible(listSalle, date);
+            if (object.getObject() instanceof List) {
+                List<SalleDTO> listeSalle = (List<SalleDTO>) object.getObject();
+                HashMap<SalleDTO,List<Date>> listeSallesDispo = this.gestionPatrimoine.listerSalleDisponible(listeSalle);
                 SallesDTO s = new SallesDTO();
-                s.setListeSalle(listeSallesDispo);
+                
+                // Creation de hashmap
+                
+                s.setHashMapDateSalle(listeSallesDispo);
                 ObjectMessage response = session.createObjectMessage(s);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);

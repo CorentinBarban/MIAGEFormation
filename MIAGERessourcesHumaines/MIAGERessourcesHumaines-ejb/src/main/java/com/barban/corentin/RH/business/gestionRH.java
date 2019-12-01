@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -53,29 +54,25 @@ public class gestionRH implements gestionRHLocal {
     }
 
     /**
-     * Lister les formateurs disponibles parmis ceux demandés pour une date données
+     * Lister toutes les dates pour lesquelles les formateurs sont disponibles
      *
      * @param listFormateurDemandees
-     * @param date
      * @return
      */
     @Override
-    public List<FormateurDTO> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees, Date date) {
-        System.out.println("Formateur Demande : " + listFormateurDemandees.toString());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        List<FormateurDTO> listeFormateursDiponibles = new ArrayList();
+    public HashMap<FormateurDTO, List<Date>> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees) {
+        HashMap<FormateurDTO, List<Date>> listeFormateursDiponibles = new HashMap();
         for (FormateurDTO formateurDTO : listFormateurDemandees) {
             Formateur f = this.formateurFacade.find(formateurDTO.getIdFormateur());
             Collection<CalendrierFormateur> cs = f.getCalendrierFormateurCollection();
+            List<Date> listeDateDispo = new ArrayList();
             for (CalendrierFormateur c : cs) {
-                if ((dateFormat.format(c.getCalendrier().getDatecalendrier()).compareTo(dateFormat.format(date)) == 0)
-                        && c.getStatut().equals("DISPONIBLE")) {
-                    listeFormateursDiponibles.add(formateurDTO);
-                    break;
+                if (c.getStatut().equals("DISPONIBLE")) {
+                    listeDateDispo.add(c.getCalendrier().getDatecalendrier());
                 }
             }
+            listeFormateursDiponibles.put(formateurDTO, listeDateDispo);
         }
-        System.out.println("Formateur Dispo : " + listeFormateursDiponibles.toString());
         return listeFormateursDiponibles;
     }
 
@@ -83,7 +80,7 @@ public class gestionRH implements gestionRHLocal {
      * Renvoie si le formateur existe
      *
      * @param IdFormateur
-     * @return 
+     * @return
      */
     @Override
     public boolean verifierExistenceFormateur(Integer IdFormateur) {

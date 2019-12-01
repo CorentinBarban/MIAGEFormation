@@ -6,6 +6,8 @@
 package DTO;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,16 +16,16 @@ import java.util.List;
  */
 public class FormateursDTO implements Serializable{
     
-    private List<FormateurDTO> listeFormateur;
+    private HashMap<FormateurDTO,List<Date>> listeFormateur;
 
     public FormateursDTO() {
     }
 
-    public List<FormateurDTO> getListeFormateur() {
+    public HashMap<FormateurDTO, List<Date>> getListeFormateur() {
         return listeFormateur;
     }
 
-    public void setListeFormateur(List<FormateurDTO> listeFormateur) {
+    public void setListeFormateur(HashMap<FormateurDTO, List<Date>> listeFormateur) {
         this.listeFormateur = listeFormateur;
     }
 
@@ -31,7 +33,5 @@ public class FormateursDTO implements Serializable{
     public String toString() {
         return "FormateursDTO{" + "listeFormateur=" + listeFormateur + '}';
     }
-    
-    
     
 }

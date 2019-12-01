@@ -19,6 +19,7 @@ public class SalleDTO implements Serializable{
     private String nom;
     private Collection<EquipementDTO> equipementCollection;
     private Date date;
+    private String statut;
 
     public Integer getIdsalle() {
         return idsalle;
@@ -52,9 +53,19 @@ public class SalleDTO implements Serializable{
         this.date = date;
     }
 
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+
     @Override
     public String toString() {
-        return "SalleDTO{" + "idsalle=" + idsalle + ", nom=" + nom + ", equipementCollection=" + equipementCollection + ", date=" + date + '}';
+        return "SalleDTO{" + "idsalle=" + idsalle + ", nom=" + nom + ", equipementCollection=" + equipementCollection + ", date=" + date + ", statut=" + statut + '}';
     }
+
+    
     
 }

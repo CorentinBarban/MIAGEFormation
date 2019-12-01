@@ -70,10 +70,9 @@ public class DemandeFormationResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(@QueryParam("nomClient") String nomClient, @QueryParam("codeFormation") String codeFormation, @QueryParam("intitule") String intitule,@QueryParam("codeClient") Integer codeClient ,@QueryParam("dateFormation") String dateFormation,@QueryParam("nbPersonnes") Integer nbPersonnes) throws FormationCatalogueNotFoundException, ParseException {
-        Date date1;
-        date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateFormation);
-        this.serviceGestionCommerciale.demanderFormation(nomClient, codeFormation, intitule, codeClient, date1,nbPersonnes);
+    public void putJson(@QueryParam("nomClient") String nomClient, @QueryParam("codeFormation") String codeFormation, @QueryParam("intitule") String intitule,@QueryParam("codeClient") Integer codeClient ,@QueryParam("nbPersonnes") Integer nbPersonnes) throws FormationCatalogueNotFoundException, ParseException {
+        
+        this.serviceGestionCommerciale.demanderFormation(nomClient, codeFormation, intitule, codeClient,nbPersonnes);
 
     }
 

@@ -30,13 +30,12 @@ public class GestionFormation implements GestionFormationLocal {
     
     
     @Override
-    public Formation demanderFormation(String nomClient,Integer nbPersonne,Date dateFormation,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation) {
+    public Formation demanderFormation(String nomClient,Integer nbPersonne,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation) {
         Formation f = new Formation();
         f.setNomclient(nomClient);
         f.setNbpersonne(nbPersonne);
         f.setCodeformationcatalogue(codeFormation);
         f.setStatut("EN ATTENTE");
-        f.setDateformation(dateFormation);
         f.setKeystockagedemandeformation(keyStockageDemandeFormation);
         return this.formationFacade.create(f);
     }

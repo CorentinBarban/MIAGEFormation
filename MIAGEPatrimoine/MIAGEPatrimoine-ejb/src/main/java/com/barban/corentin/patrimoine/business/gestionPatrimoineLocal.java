@@ -8,6 +8,7 @@ package com.barban.corentin.patrimoine.business;
 import DTO.SalleDTO;
 import Exceptions.SalleNotFoundException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,10 +31,9 @@ public interface gestionPatrimoineLocal {
     /**
      * Lister les salle disponibles parmis celles demandées pour une date données
      * @param listSallesDemandees
-     * @param date
      * @return 
      */
-    List<SalleDTO> listerSalleDisponible(List<SalleDTO> listSallesDemandees, Date date);
+    HashMap<SalleDTO,List<Date>>listerSalleDisponible(List<SalleDTO> listSallesDemandees);
     
     /**
      * Vérifier si une salle existe

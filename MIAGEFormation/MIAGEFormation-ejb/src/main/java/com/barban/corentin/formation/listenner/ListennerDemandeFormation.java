@@ -85,10 +85,10 @@ public class ListennerDemandeFormation implements MessageListener {
                 //Stocker la demande de formation
                 Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(), df.getIntitule(), df.getCodeClient());
                 // Creation de la formation
-                Formation f = this.gestionFormation.demanderFormation(df.getNomClient(), df.getNbPersonnes(), df.getDate(), df.getCodeFormation(), sf);
+                Formation f = this.gestionFormation.demanderFormation(df.getNomClient(), df.getNbPersonnes(), df.getCodeFormation(), sf);
 
                 SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f);
-                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties(), df.getDate());
+                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);

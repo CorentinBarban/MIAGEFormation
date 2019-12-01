@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class DemandeFormationDTO implements Serializable {
 
-    private Date date;
     private String codeFormation;
     private int codeClient;
     private String nomClient;
@@ -52,14 +51,7 @@ public class DemandeFormationDTO implements Serializable {
         this.intitule = intitule;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
+    
     public String getCodeFormation() {
         return codeFormation;
     }
@@ -94,8 +86,9 @@ public class DemandeFormationDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "DemandeFormationDTO{" + "date=" + date + ", codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", nomClient=" + nomClient + ", intitule=" + intitule + ", nbPersonnes=" + nbPersonnes + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + '}';
+        return "DemandeFormationDTO{" + "codeFormation=" + codeFormation + ", codeClient=" + codeClient + ", nomClient=" + nomClient + ", intitule=" + intitule + ", nbPersonnes=" + nbPersonnes + ", listFormateursPressentis=" + listFormateursPressentis + ", listSallesPressenties=" + listSallesPressenties + '}';
     }
 
+    
  
 }

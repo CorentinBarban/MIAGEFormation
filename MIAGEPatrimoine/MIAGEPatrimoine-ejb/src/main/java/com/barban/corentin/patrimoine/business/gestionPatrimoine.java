@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -51,41 +52,40 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
             }
         }
     }
-    
+
     /**
-     * Lister les salle disponibles parmis celles demandées pour une date
-     * données
+     * Lister toutes les dates pour lesquelles les salle sont disponibles
      *
      * @param listSallesDemandees
-     * @param date
-     * @return 
+     * @return
      */
     @Override
-    public List<SalleDTO> listerSalleDisponible(List<SalleDTO> listSallesDemandees, Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        List<SalleDTO> listeSallesDiponibles = new ArrayList(); 
+    public HashMap<SalleDTO, List<Date>> listerSalleDisponible(List<SalleDTO> listSallesDemandees) {
+
+        HashMap<SalleDTO, List<Date>> listeSallesDiponibles = new HashMap();
         for (SalleDTO salleDTO : listSallesDemandees) {
             Salle s = this.salleFacade.find(salleDTO.getIdsalle());
             Collection<CalendrierSalle> cs = s.getCalendrierSalleCollection();
+            List<Date> listeDateDispo = new ArrayList();
             for (CalendrierSalle c : cs) {
-                if ((dateFormat.format(c.getCalendrier().getDatecalendrier()).compareTo(dateFormat.format(date)) == 0) && c.getStatut().equals("DISPONIBLE")) {
-                    listeSallesDiponibles.add(salleDTO);
-                    break;
+                if (c.getStatut().equals("DISPONIBLE")) {
+                    listeDateDispo.add(c.getCalendrier().getDatecalendrier());
                 }
             }
+            listeSallesDiponibles.put(salleDTO, listeDateDispo);
         }
         return listeSallesDiponibles;
     }
-    
+
     /**
-     * 
+     *
      * @param salleKey
-     * @return 
+     * @return
      */
     @Override
     public boolean validerExistenceSalle(Integer salleKey) {
         Salle s = this.salleFacade.find(salleKey);
         return s != null;
-}
+    }
 
 }

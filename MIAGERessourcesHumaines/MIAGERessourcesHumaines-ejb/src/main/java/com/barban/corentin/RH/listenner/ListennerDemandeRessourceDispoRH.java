@@ -88,12 +88,9 @@ public class ListennerDemandeRessourceDispoRH implements MessageListener {
     public void onMessage(Message message) {
         try {
             ObjectMessage text = (ObjectMessage) message;
-            if (text.getObject() instanceof HashMap) {
-                HashMap<Date, List<FormateurDTO>> listeFormateur = (HashMap<Date, List<FormateurDTO>>) text.getObject();
-                HashMap.Entry<Date, List<FormateurDTO>> entry = listeFormateur.entrySet().iterator().next();
-                Date date = entry.getKey();
-                List<FormateurDTO> listFormateur = entry.getValue();
-                List<FormateurDTO> listeFormateurDispo = this.gestionRH.fournirPlanningFormateur(listFormateur, date);
+            if (text.getObject() instanceof List) {
+                List<FormateurDTO> listeFormateur = (List<FormateurDTO>) text.getObject();
+                HashMap<FormateurDTO,List<Date>> listeFormateurDispo = this.gestionRH.fournirPlanningFormateur(listeFormateur);
                 FormateursDTO f = new FormateursDTO();
                 f.setListeFormateur(listeFormateurDispo);
                 ObjectMessage response = session.createObjectMessage(f);

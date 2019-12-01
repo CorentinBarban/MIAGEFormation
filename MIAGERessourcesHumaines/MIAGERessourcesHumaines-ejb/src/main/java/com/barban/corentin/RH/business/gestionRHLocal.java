@@ -8,6 +8,7 @@ package com.barban.corentin.RH.business;
 import DTO.FormateurDTO;
 import Exceptions.FormateurNotFoundException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -20,7 +21,7 @@ public interface gestionRHLocal {
 
     void modifierStatutFormateur(Integer idFormateur, String statut, Date date) throws FormateurNotFoundException;
 
-    List<FormateurDTO> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees, Date date);
-    
+    HashMap<FormateurDTO, List<Date>> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees);
+
     boolean verifierExistenceFormateur(Integer idFormateur);
 }

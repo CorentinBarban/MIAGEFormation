@@ -10,15 +10,11 @@ import DTO.FormateursDTO;
 import DTO.SalleDTO;
 import DTO.SallesDTO;
 import com.barban.corentin.formation.entities.Formation;
-import com.barban.corentin.formation.repositories.FormationFacadeLocal;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -33,6 +29,10 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -50,12 +50,14 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     Session session = null;
     MessageProducer producer = null;
     private Formation formation;
+    private HashMap<SalleDTO, List<Date>> listeSalles = null;
+    private HashMap<FormateurDTO, List<Date>> listeFormateurs = null;
 
     public SenderDemandeRessourceDisponiblesJMS(Formation f) {
         this.formation = f;
     }
 
-    public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo, Date DateDipo) {
+    public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
 
         try {
             // create the JNDI initial context.
@@ -82,21 +84,18 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
             Destination tempDestSalle = session.createTemporaryQueue();
             MessageConsumer responseConsumerSalle = session.createConsumer(tempDestSalle);
             responseConsumerSalle.setMessageListener(this);
-            HashMap<Date, List<FormateurDTO>> hashmapFormateur = new HashMap<>();
-            hashmapFormateur.put(DateDipo, listDemandeFormateurDispo);
+
             // Creation des objectMessage à envoyer
-            ObjectMessage messageFormateurs = session.createObjectMessage((Serializable) hashmapFormateur);
+            ObjectMessage messageFormateurs = session.createObjectMessage((Serializable) listDemandeFormateurDispo);
             messageFormateurs.setJMSReplyTo(tempDestFormateur);
             String correlationIdFormateur = this.createRandomString();
             messageFormateurs.setJMSCorrelationID(correlationIdFormateur);
             messageFormateurs.setJMSType("FORMATEURS");
 
-            HashMap<Date, List<SalleDTO>> hashmapSalle = new HashMap<>();
-            hashmapSalle.put(DateDipo, listDemandeSalleDispo);
-            ObjectMessage messageSalles = session.createObjectMessage((Serializable) hashmapSalle);
-            messageSalles.setJMSReplyTo(tempDestSalle);
+            ObjectMessage messageSalles = session.createObjectMessage((Serializable) listDemandeSalleDispo);
+            messageSalles.setJMSReplyTo(tempDestFormateur);
             String correlationIdSalle = this.createRandomString();
-            messageSalles.setJMSCorrelationID(correlationIdSalle);
+            messageSalles.setJMSCorrelationID(correlationIdFormateur);
             messageSalles.setJMSType("SALLES");
 
             // Envoi des messages
@@ -120,36 +119,72 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     @Override
     public void onMessage(Message message) {
         ObjectMessage object = (ObjectMessage) message;
+
         try {
             if (object.getObject() instanceof SallesDTO) {
                 System.out.println("Reception des Salles dispos");
                 SallesDTO salles = (SallesDTO) object.getObject();
-                List<SalleDTO> listeSalles = salles.getListeSalle();
-                this.gestionFormation.ajouterSalleFormation(this.formation.getIdformation(), listeSalles.get(0).getIdsalle());
-                SalleDTO s = new SalleDTO();
-                s.setDate(this.formation.getDateformation());
-                s.setIdsalle(listeSalles.get(0).getIdsalle());
-                //Demande de changement de statut
-                SenderReservationSalleJMS senderResaSalle = new SenderReservationSalleJMS();
-                senderResaSalle.sendMessageDemandeReservation(s);
+                this.listeSalles = salles.getHashMapDateSalle();
+                System.out.println(listeSalles.toString());
+                System.out.println("-------------------------------");
 
             } else if (object.getObject() instanceof FormateursDTO) {
-                
                 System.out.println("Reception des formateurs dispos");
                 FormateursDTO formateurs = (FormateursDTO) object.getObject();
-                List<FormateurDTO> listeFormateurs = formateurs.getListeFormateur();
-                this.gestionFormation.ajouterFormateurFormation(this.formation.getIdformation(), listeFormateurs.get(0).getIdFormateur());
-                FormateurDTO f = new FormateurDTO();
-                f.setDate(this.formation.getDateformation());
-                f.setIdFormateur(listeFormateurs.get(0).getIdFormateur());
-                //Demande de changement de statut
+                this.listeFormateurs = formateurs.getListeFormateur();
+                System.out.println(listeFormateurs.toString());
+                System.out.println("-------------------------------");
+
+            }
+
+            if (this.listeFormateurs != null && this.listeSalles != null) {
+                HashMap<FormateurDTO, SalleDTO> ressourceIdeal = trouverDateIdeale();
+                this.gestionFormation.ajouterSalleFormation(this.formation.getIdformation(), ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle());
+                this.gestionFormation.ajouterFormateurFormation(this.formation.getIdformation(), ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
+                SenderReservationSalleJMS senderResaSalle = new SenderReservationSalleJMS();
+                senderResaSalle.sendMessageDemandeReservation(ressourceIdeal.entrySet().iterator().next().getValue());
                 SenderReservationFormateurJMS senderResaFormateur = new SenderReservationFormateurJMS();
-                senderResaFormateur.sendMessageDemandeReservation(f);
-                //Demande de change de statut
+                senderResaFormateur.sendMessageDemandeReservation(ressourceIdeal.entrySet().iterator().next().getKey());
             }
         } catch (JMSException ex) {
             Logger.getLogger(SenderDemandeRessourceDisponiblesJMS.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Chercher la date ideal entre les formateurs disponibles et les salles disponibles
+     * @return 
+     */
+    private HashMap<FormateurDTO, SalleDTO> trouverDateIdeale() {
+        HashMap<FormateurDTO, SalleDTO> hashmapRessourceChoisie = new HashMap<>();
+        Date dateActuelle = new Date();
+        for (Map.Entry<FormateurDTO, List<Date>> entry : this.listeFormateurs.entrySet()) {
+            FormateurDTO keyFormateur = entry.getKey();
+            List<Date> valueDateFormateur = entry.getValue();
+            for (Date dateDispoFormateur : valueDateFormateur) {
+
+                for (Map.Entry<SalleDTO, List<Date>> entrySalle : this.listeSalles.entrySet()) {
+                    SalleDTO keySalle = entrySalle.getKey();
+                    List<Date> valueDateSalle = entrySalle.getValue();
+
+                    for (Date dateDispoSalle : valueDateSalle) {
+                        if ((dateDispoFormateur.compareTo(dateDispoSalle) == 0) && dateDispoFormateur.compareTo(dateActuelle) > 0) {
+                            FormateurDTO f = new FormateurDTO();
+                            f.setIdFormateur(keyFormateur.getIdFormateur());
+                            f.setDate(dateDispoFormateur);
+                            f.setStatut("PRESSENTI");
+                            SalleDTO s = new SalleDTO();
+                            s.setIdsalle(keySalle.getIdsalle());
+                            s.setDate(dateDispoSalle);
+                            s.setStatut("PRESSENTIE");
+                            hashmapRessourceChoisie.put(f, s);
+                            return hashmapRessourceChoisie;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private GestionFormationLocal lookupgestionFormationLocal() {

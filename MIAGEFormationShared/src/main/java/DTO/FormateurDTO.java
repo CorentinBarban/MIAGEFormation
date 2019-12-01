@@ -19,8 +19,8 @@ public class FormateurDTO implements Serializable{
     private String nom;
     private String prenom;
     private Collection<CompetenceDTO> competenceCollection;
-    
     private Date date;
+    private String statut;
     
     public int getIdFormateur() {
         return idFormateur;
@@ -63,11 +63,18 @@ public class FormateurDTO implements Serializable{
         this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return "FormateurDTO{" + "idFormateur=" + idFormateur + ", nom=" + nom + ", prenom=" + prenom + ", competenceCollection=" + competenceCollection + ", date=" + date + '}';
+    public String getStatut() {
+        return statut;
     }
 
-    
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+
+    @Override
+    public String toString() {
+        return "FormateurDTO{" + "idFormateur=" + idFormateur + ", nom=" + nom + ", prenom=" + prenom + ", competenceCollection=" + competenceCollection + ", date=" + date + ", statut=" + statut + '}';
+    }
+   
 
 }

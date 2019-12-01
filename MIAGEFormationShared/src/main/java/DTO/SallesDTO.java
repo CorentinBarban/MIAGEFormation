@@ -6,6 +6,8 @@
 package DTO;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,25 +16,24 @@ import java.util.List;
  */
 public class SallesDTO implements Serializable{
     
-    private List<SalleDTO> listeSalle;
+    private HashMap<SalleDTO,List<Date>> HashMapDateSalle;
 
     public SallesDTO() {
     }
 
-    public List<SalleDTO> getListeSalle() {
-        return listeSalle;
+    public HashMap<SalleDTO, List<Date>> getHashMapDateSalle() {
+        return HashMapDateSalle;
     }
 
-    public void setListeSalle(List<SalleDTO> listeSalle) {
-        this.listeSalle = listeSalle;
+    public void setHashMapDateSalle(HashMap<SalleDTO, List<Date>> HashMapDateSalle) {
+        this.HashMapDateSalle = HashMapDateSalle;
     }
 
     @Override
     public String toString() {
-        return "SallesDTO{" + "listeSalle=" + listeSalle + '}';
+        return "SallesDTO{" + "HashMapDateSalle=" + HashMapDateSalle + '}';
     }
-    
-    
-    
+
+   
     
 }

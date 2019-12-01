@@ -19,7 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionFormationLocal {
     
-    Formation demanderFormation(String nomClient,Integer nbPersonne,Date dateFormation,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation);
+    Formation demanderFormation(String nomClient,Integer nbPersonne,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation);
     
     Stockagedemandeformation stockerDemande(String codeFormation,String intitule,Integer codeClient);
 

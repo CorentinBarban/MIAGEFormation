@@ -79,7 +79,7 @@ public class ListennerDemandeReservationSalle implements MessageListener {
             ObjectMessage object = (ObjectMessage) message;
             if (object.getObject() instanceof SalleDTO) {
                 SalleDTO s = (SalleDTO) object.getObject();
-                this.gestionPatrimoine.editerStatutSalle(s.getIdsalle(), "PRESSENTIE", s.getDate());
+                this.gestionPatrimoine.editerStatutSalle(s.getIdsalle(), s.getStatut(), s.getDate());
                 ObjectMessage response = this.session.createObjectMessage(s);
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);
