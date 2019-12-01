@@ -29,6 +29,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
+import com.barban.corentin.formation.entities.Formationcompose;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,11 +51,13 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     Session session = null;
     MessageProducer producer = null;
     private Formation formation;
+    private Formationcompose formationCompose;
     private HashMap<SalleDTO, List<Date>> listeSalles = null;
     private HashMap<FormateurDTO, List<Date>> listeFormateurs = null;
 
-    public SenderDemandeRessourceDisponiblesJMS(Formation f) {
+    public SenderDemandeRessourceDisponiblesJMS(Formation f, Formationcompose fc) {
         this.formation = f;
+        this.formationCompose = fc;
     }
 
     public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
@@ -93,9 +96,9 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
             messageFormateurs.setJMSType("FORMATEURS");
 
             ObjectMessage messageSalles = session.createObjectMessage((Serializable) listDemandeSalleDispo);
-            messageSalles.setJMSReplyTo(tempDestFormateur);
+            messageSalles.setJMSReplyTo(tempDestSalle);
             String correlationIdSalle = this.createRandomString();
-            messageSalles.setJMSCorrelationID(correlationIdFormateur);
+            messageSalles.setJMSCorrelationID(correlationIdSalle);
             messageSalles.setJMSType("SALLES");
 
             // Envoi des messages
@@ -139,8 +142,9 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
 
             if (this.listeFormateurs != null && this.listeSalles != null) {
                 HashMap<FormateurDTO, SalleDTO> ressourceIdeal = trouverDateIdeale();
-                this.gestionFormation.ajouterSalleFormation(this.formation.getIdformation(), ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle());
-                this.gestionFormation.ajouterFormateurFormation(this.formation.getIdformation(), ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
+                this.gestionFormation.ajouterSalleFormation(this.formationCompose, ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle());
+                this.gestionFormation.ajouterFormateurFormation(this.formationCompose, ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
+                this.gestionFormation.ajouterDateFormation(this.formationCompose, ressourceIdeal.entrySet().iterator().next().getValue().getDate());
                 SenderReservationSalleJMS senderResaSalle = new SenderReservationSalleJMS();
                 senderResaSalle.sendMessageDemandeReservation(ressourceIdeal.entrySet().iterator().next().getValue());
                 SenderReservationFormateurJMS senderResaFormateur = new SenderReservationFormateurJMS();

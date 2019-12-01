@@ -29,6 +29,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
+import com.barban.corentin.formation.entities.Formationcompose;
 
 /**
  *
@@ -82,12 +83,10 @@ public class ListennerDemandeFormation implements MessageListener {
             ObjectMessage text = (ObjectMessage) message;
             if (text.getObject() instanceof DemandeFormationDTO) {
                 DemandeFormationDTO df = (DemandeFormationDTO) text.getObject();
-                //Stocker la demande de formation
-                Stockagedemandeformation sf = this.gestionFormation.stockerDemande(df.getCodeFormation(), df.getIntitule(), df.getCodeClient());
                 // Creation de la formation
-                Formation f = this.gestionFormation.demanderFormation(df.getNomClient(), df.getNbPersonnes(), df.getCodeFormation(), sf);
-
-                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f);
+                Formationcompose fc = this.gestionFormation.demanderFormation(df.getNomClient(), df.getNbPersonnes(), df.getCodeFormation(),df.getIntitule(),df.getCodeClient());
+                Formation f = fc.getFormation();
+                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, fc);
                 sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 response.setJMSCorrelationID(message.getJMSCorrelationID());

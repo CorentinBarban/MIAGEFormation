@@ -6,22 +6,21 @@
 package com.barban.corentin.formation.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,12 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Formation.findAll", query = "SELECT f FROM Formation f")
     , @NamedQuery(name = "Formation.findByIdformation", query = "SELECT f FROM Formation f WHERE f.idformation = :idformation")
     , @NamedQuery(name = "Formation.findByNomclient", query = "SELECT f FROM Formation f WHERE f.nomclient = :nomclient")
-    , @NamedQuery(name = "Formation.findByNbpersonne", query = "SELECT f FROM Formation f WHERE f.nbpersonne = :nbpersonne")
-    , @NamedQuery(name = "Formation.findByStatut", query = "SELECT f FROM Formation f WHERE f.statut = :statut")
-    , @NamedQuery(name = "Formation.findByDateformation", query = "SELECT f FROM Formation f WHERE f.dateformation = :dateformation")
-    , @NamedQuery(name = "Formation.findByCodeformationcatalogue", query = "SELECT f FROM Formation f WHERE f.codeformationcatalogue = :codeformationcatalogue")
-    , @NamedQuery(name = "Formation.findByKeyformateur", query = "SELECT f FROM Formation f WHERE f.keyformateur = :keyformateur")
-    , @NamedQuery(name = "Formation.findByKeysalle", query = "SELECT f FROM Formation f WHERE f.keysalle = :keysalle")})
+    , @NamedQuery(name = "Formation.findByCodeformationcatalogue", query = "SELECT f FROM Formation f WHERE f.codeformationcatalogue = :codeformationcatalogue")})
 public class Formation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,24 +45,11 @@ public class Formation implements Serializable {
     @Size(max = 100)
     @Column(name = "NOMCLIENT")
     private String nomclient;
-    @Column(name = "NBPERSONNE")
-    private Integer nbpersonne;
-    @Size(max = 100)
-    @Column(name = "STATUT")
-    private String statut;
-    @Column(name = "DATEFORMATION")
-    @Temporal(TemporalType.DATE)
-    private Date dateformation;
     @Size(max = 100)
     @Column(name = "CODEFORMATIONCATALOGUE")
     private String codeformationcatalogue;
-    @Column(name = "KEYFORMATEUR")
-    private Integer keyformateur;
-    @Column(name = "KEYSALLE")
-    private Integer keysalle;
-    @JoinColumn(name = "KEYSTOCKAGEDEMANDEFORMATION", referencedColumnName = "IDDEMANDEFORMATION")
-    @ManyToOne(optional = false)
-    private Stockagedemandeformation keystockagedemandeformation;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formation")
+    private Collection<Formationcompose> formationcomposeCollection;
 
     public Formation() {
     }
@@ -93,30 +74,6 @@ public class Formation implements Serializable {
         this.nomclient = nomclient;
     }
 
-    public Integer getNbpersonne() {
-        return nbpersonne;
-    }
-
-    public void setNbpersonne(Integer nbpersonne) {
-        this.nbpersonne = nbpersonne;
-    }
-
-    public String getStatut() {
-        return statut;
-    }
-
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
-
-    public Date getDateformation() {
-        return dateformation;
-    }
-
-    public void setDateformation(Date dateformation) {
-        this.dateformation = dateformation;
-    }
-
     public String getCodeformationcatalogue() {
         return codeformationcatalogue;
     }
@@ -125,28 +82,13 @@ public class Formation implements Serializable {
         this.codeformationcatalogue = codeformationcatalogue;
     }
 
-    public Integer getKeyformateur() {
-        return keyformateur;
+    @XmlTransient
+    public Collection<Formationcompose> getFormationcomposeCollection() {
+        return formationcomposeCollection;
     }
 
-    public void setKeyformateur(Integer keyformateur) {
-        this.keyformateur = keyformateur;
-    }
-
-    public Integer getKeysalle() {
-        return keysalle;
-    }
-
-    public void setKeysalle(Integer keysalle) {
-        this.keysalle = keysalle;
-    }
-
-    public Stockagedemandeformation getKeystockagedemandeformation() {
-        return keystockagedemandeformation;
-    }
-
-    public void setKeystockagedemandeformation(Stockagedemandeformation keystockagedemandeformation) {
-        this.keystockagedemandeformation = keystockagedemandeformation;
+    public void setFormationcomposeCollection(Collection<Formationcompose> formationcomposeCollection) {
+        this.formationcomposeCollection = formationcomposeCollection;
     }
 
     @Override

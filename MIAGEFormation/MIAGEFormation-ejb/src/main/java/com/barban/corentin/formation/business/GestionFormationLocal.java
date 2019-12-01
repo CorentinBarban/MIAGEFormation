@@ -7,6 +7,8 @@ package com.barban.corentin.formation.business;
 
 import DTO.CompteRenduDTO;
 import com.barban.corentin.formation.entities.Formation;
+import com.barban.corentin.formation.entities.Formationcompose;
+import com.barban.corentin.formation.entities.FormationcomposePK;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionFormationLocal {
     
-    Formation demanderFormation(String nomClient,Integer nbPersonne,String codeFormation,Stockagedemandeformation keyStockageDemandeFormation);
+    Formationcompose demanderFormation(String nomClient, Integer nbPersonne, String codeFormation, String intitule,Integer codeClient);
     
     Stockagedemandeformation stockerDemande(String codeFormation,String intitule,Integer codeClient);
 
@@ -27,9 +29,13 @@ public interface GestionFormationLocal {
 
     List<CompteRenduDTO> retournerCompteRendus();
 
-    void ajouterFormateurFormation(int idFormation,int idFormateur);
+    void ajouterFormateurFormation(Formationcompose fc,int idFormateur);
 
-    void ajouterSalleFormation(int idFormation,int idSalle);
+    void ajouterSalleFormation(Formationcompose fc, int idSalle);
+
+    void ajouterDateFormation(Formationcompose fc,Date dateFormation);
+
+    void ajouterNbPersonne(Formationcompose fc,Integer nbPersonne);
 
     
     

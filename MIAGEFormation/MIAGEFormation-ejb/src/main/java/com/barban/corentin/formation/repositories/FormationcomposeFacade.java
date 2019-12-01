@@ -5,7 +5,7 @@
  */
 package com.barban.corentin.formation.repositories;
 
-import com.barban.corentin.formation.entities.Formation;
+import com.barban.corentin.formation.entities.Formationcompose;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Corentin
  */
 @Stateless
-public class FormationFacade extends AbstractFacade<Formation> implements FormationFacadeLocal {
+public class FormationcomposeFacade extends AbstractFacade<Formationcompose> implements FormationcomposeFacadeLocal {
 
     @PersistenceContext(unitName = "com.barban.corentin_MIAGEFormation-ejb_ejb_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class FormationFacade extends AbstractFacade<Formation> implements Format
         return em;
     }
 
-    public FormationFacade() {
-        super(Formation.class);
+    public FormationcomposeFacade() {
+        super(Formationcompose.class);
     }
     
 }

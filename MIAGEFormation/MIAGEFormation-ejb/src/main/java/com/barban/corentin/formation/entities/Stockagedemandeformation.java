@@ -58,8 +58,8 @@ public class Stockagedemandeformation implements Serializable {
     private String intituleformation;
     @Column(name = "CODECLIENT")
     private Integer codeclient;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "keystockagedemandeformation")
-    private Collection<Formation> formationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stockagedemandeformation")
+    private Collection<Formationcompose> formationcomposeCollection;
 
     public Stockagedemandeformation() {
     }
@@ -109,12 +109,12 @@ public class Stockagedemandeformation implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Formation> getFormationCollection() {
-        return formationCollection;
+    public Collection<Formationcompose> getFormationcomposeCollection() {
+        return formationcomposeCollection;
     }
 
-    public void setFormationCollection(Collection<Formation> formationCollection) {
-        this.formationCollection = formationCollection;
+    public void setFormationcomposeCollection(Collection<Formationcompose> formationcomposeCollection) {
+        this.formationcomposeCollection = formationcomposeCollection;
     }
 
     @Override
