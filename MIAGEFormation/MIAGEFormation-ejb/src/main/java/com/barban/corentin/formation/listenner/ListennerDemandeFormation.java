@@ -91,25 +91,46 @@ public class ListennerDemandeFormation implements MessageListener {
                 //Lister les formations en statut pressentie avec le meme code de formation
                 int nbParticipantsDemandee = df.getNbPersonnes();
                 int capaciteMaxFormation = df.getCapaciteMax();
-
-                System.out.println("capacite" + df.getCapaciteMax());
-                HashMap<Formation, Integer> formationNonRemplies = this.gestionFormation.listerFormationNonRemplie(df.getCodeFormation(), df.getCapaciteMax());
-                System.out.println("formation non remplies : " + formationNonRemplies.toString());
-                
+                int capaciteMinFormation = df.getCapaciteMin();
+                HashMap<Formation, Integer> formationNonRemplies = this.gestionFormation.compterEffectifFormation(df.getCodeFormation(), df.getCapaciteMax());
                 for (Map.Entry<Formation, Integer> formationNr : formationNonRemplies.entrySet()) {
                     Formation formation = formationNr.getKey();
                     Integer nbParticipantEnCours = formationNr.getValue();
                     if (nbParticipantEnCours < capaciteMaxFormation) {
                         int personnePouvantEtreAjoutees = capaciteMaxFormation - nbParticipantEnCours;
-                        this.gestionFormation.ajouterFormationCompose(formation, sf, personnePouvantEtreAjoutees);
-                        nbParticipantsDemandee = nbParticipantsDemandee - personnePouvantEtreAjoutees;
+                        if (nbParticipantsDemandee < personnePouvantEtreAjoutees) {
+                            this.gestionFormation.ajouterFormationCompose(formation, sf, nbParticipantsDemandee);
+                            if (nbParticipantEnCours + nbParticipantsDemandee <= (capaciteMinFormation / 2)) {
+                                this.gestionFormation.editerStatutFormation(formation, "EN ATTENTE");
+                            } else {
+                                this.gestionFormation.editerStatutFormation(formation, "EN PROJET");
+                                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(formation, sf, df);
+                                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                            }
+                            nbParticipantsDemandee = 0;
+                        } else {
+                            this.gestionFormation.ajouterFormationCompose(formation, sf, personnePouvantEtreAjoutees);
+                            nbParticipantsDemandee = nbParticipantsDemandee - personnePouvantEtreAjoutees;
+                            this.gestionFormation.editerStatutFormation(formation, "PLANNIFIEE");
+                            
+                        }
+
                     }
+
                 }
- 
-                if(nbParticipantsDemandee > 0){
-                    Formation f = this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee);
-                    SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
-                    sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                if (nbParticipantsDemandee > 0) {
+                    if (nbParticipantsDemandee <= (capaciteMinFormation / 2)) {
+                        this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee, "EN ATTENTE");
+                    } else if ((nbParticipantsDemandee >= capaciteMinFormation) && (nbParticipantsDemandee < capaciteMaxFormation)) {
+                        Formation f = this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee, "EN PROJET");
+                        SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
+                        sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                    } else {
+                        Formation f = this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee, "PLANNIFIEE");
+                        SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
+                        sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                    }
+
                 }
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 response.setJMSCorrelationID(message.getJMSCorrelationID());

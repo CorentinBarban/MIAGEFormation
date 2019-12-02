@@ -21,7 +21,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionFormationLocal {
 
-    Formation ajouterFormation(Stockagedemandeformation demandeformationkey,int nbParticipants);
+    Formation ajouterFormation(Stockagedemandeformation demandeformationkey,int nbParticipants,String statut);
 
     Stockagedemandeformation stockerDemandeFormation(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale, String nomClient);
 
@@ -37,8 +37,12 @@ public interface GestionFormationLocal {
 
     void ajouterNbPersonne(Formation f, Integer nbPersonne);
 
-     HashMap<Formation, Integer> listerFormationNonRemplie(String codeFormation, int capaciteMax);
+     HashMap<Formation, Integer> compterEffectifFormation(String codeFormation, int capaciteMax);
 
     Formationcompose ajouterFormationCompose(Formation formation, Stockagedemandeformation demandeFormation, int nbParticipants);
+
+    void editerStatutFormation(Formation formation,String statut);
+
+    Formation recupererInformationFormation(Formation f);
 
 }

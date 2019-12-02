@@ -36,9 +36,9 @@ public class GestionFormation implements GestionFormationLocal {
     private FormationFacadeLocal formationFacade;
 
     @Override
-    public Formation ajouterFormation(Stockagedemandeformation demandeformation, int nbParticipants) {
+    public Formation ajouterFormation(Stockagedemandeformation demandeformation, int nbParticipants,String statut) {
         Formation f = new Formation();
-        f.setStatut("EN ATTENTE");
+        f.setStatut(statut);
         Formation formationCree = this.formationFacade.create(f);
         ajouterFormationCompose(formationCree, demandeformation, nbParticipants);
         return formationCree;
@@ -112,12 +112,12 @@ public class GestionFormation implements GestionFormationLocal {
     }
 
     @Override
-    public HashMap<Formation, Integer> listerFormationNonRemplie(String codeFormation, int capaciteMax) {
+    public HashMap<Formation, Integer> compterEffectifFormation(String codeFormation, int capaciteMax) {
         List<Formationcompose> listeFormation = this.formationcomposeFacade.findAll();
         HashMap<Formation, Integer> listeFormationNonRemplie = new HashMap<>();
         if (listeFormation != null) {
             for (Formationcompose formationcompte : listeFormation) {
-                if ((formationcompte.getNbparticipants() < capaciteMax) && formationcompte.getStockagedemandeformation().getCodeformationcatalogue().equals(codeFormation) && formationcompte.getFormation().getDateformation().compareTo(new Date()) > 0) {
+                if ((formationcompte.getNbparticipants() < capaciteMax) && formationcompte.getStockagedemandeformation().getCodeformationcatalogue().equals(codeFormation)) {
                     if (!listeFormationNonRemplie.containsKey(formationcompte.getFormation())) {
                         listeFormationNonRemplie.put(formationcompte.getFormation(), formationcompte.getNbparticipants());
                     } else {
@@ -129,4 +129,17 @@ public class GestionFormation implements GestionFormationLocal {
         }
         return listeFormationNonRemplie;
     }
+
+    @Override
+    public void editerStatutFormation(Formation formation,String statut) {
+        this.formationFacade.find(formation.getIdformation()).setStatut(statut);
+    }
+
+    @Override
+    public Formation recupererInformationFormation(Formation f) {
+        return this.formationFacade.find(f.getIdformation());
+    }
+    
+    
+    
 }
