@@ -27,8 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Formationcompose.findAll", query = "SELECT f FROM Formationcompose f")
     , @NamedQuery(name = "Formationcompose.findByFormationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.formationkey = :formationkey")
     , @NamedQuery(name = "Formationcompose.findByDemandeformationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.demandeformationkey = :demandeformationkey")
-    , @NamedQuery(name = "Formationcompose.findByNbparticipants", query = "SELECT f FROM Formationcompose f WHERE f.nbparticipants = :nbparticipants")})
-public class Formationcompose implements Serializable {
+    , @NamedQuery(name = "Formationcompose.findByNbparticipants", query = "SELECT f FROM Formationcompose f WHERE f.nbparticipants = :nbparticipants")
+    , @NamedQuery(name = "Formationcompose.sumNbparticipant", query = "SELECT sum(f.nbparticipants), f.formationcomposePK.formationkey FROM Formationcompose f GROUP BY f.formationcomposePK.formationkey")})
+public class Formationcompose implements Serializable { 
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -107,7 +108,8 @@ public class Formationcompose implements Serializable {
 
     @Override
     public String toString() {
-        return "com.barban.corentin.formation.entities.Formationcompose[ formationcomposePK=" + formationcomposePK + " ]";
+        return "Formationcompose{" + "formationcomposePK=" + formationcomposePK + ", nbparticipants=" + nbparticipants + ", formation=" + formation + ", stockagedemandeformation=" + stockagedemandeformation + '}';
     }
+    
     
 }

@@ -6,9 +6,14 @@
 package com.barban.corentin.formation.repositories;
 
 import com.barban.corentin.formation.entities.Formationcompose;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +33,6 @@ public class FormationcomposeFacade extends AbstractFacade<Formationcompose> imp
     public FormationcomposeFacade() {
         super(Formationcompose.class);
     }
-    
+
+
 }

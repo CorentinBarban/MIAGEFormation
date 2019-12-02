@@ -29,7 +29,10 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
+import com.barban.corentin.formation.entities.Formationcompose;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -86,19 +89,28 @@ public class ListennerDemandeFormation implements MessageListener {
                 // Creation de la demande 
                 Stockagedemandeformation sf = this.gestionFormation.stockerDemandeFormation(df.getCodeFormation(), df.getIntitule(), df.getCodeClient(), df.getNbPersonnes(), df.getNomClient());
                 //Lister les formations en statut pressentie avec le meme code de formation
+                int nbParticipantsDemandee = df.getNbPersonnes();
+                int capaciteMaxFormation = df.getCapaciteMax();
 
                 System.out.println("capacite" + df.getCapaciteMax());
-//                List<Formationcompose> formationNonRemplies = this.gestionFormation.listerFormationNonRemplie(df.getCodeFormation(), df.getCapaciteMax());
-//                for (Formation formationNr : formationNonRemplies) {
-////                    if(formationNr.getNbparticipants() < df.getCapaciteMax()){
-////                        formationNr.
-////                    }
-//                }
-                System.out.println(sf.toString());
-                System.out.println(df.getNbPersonnes());
-                Formation f = this.gestionFormation.ajouterFormation(sf, df.getNbPersonnes());
-                SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
-                sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                HashMap<Formation, Integer> formationNonRemplies = this.gestionFormation.listerFormationNonRemplie(df.getCodeFormation(), df.getCapaciteMax());
+                System.out.println("formation non remplies : " + formationNonRemplies.toString());
+                
+                for (Map.Entry<Formation, Integer> formationNr : formationNonRemplies.entrySet()) {
+                    Formation formation = formationNr.getKey();
+                    Integer nbParticipantEnCours = formationNr.getValue();
+                    if (nbParticipantEnCours < capaciteMaxFormation) {
+                        int personnePouvantEtreAjoutees = capaciteMaxFormation - nbParticipantEnCours;
+                        this.gestionFormation.ajouterFormationCompose(formation, sf, personnePouvantEtreAjoutees);
+                        nbParticipantsDemandee = nbParticipantsDemandee - personnePouvantEtreAjoutees;
+                    }
+                }
+ 
+                if(nbParticipantsDemandee > 0){
+                    Formation f = this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee);
+                    SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
+                    sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
+                }
                 response.setText("Received DEMANDE FORMATION: " + df.toString());
                 response.setJMSCorrelationID(message.getJMSCorrelationID());
                 this.replyProducer.send(message.getJMSReplyTo(), response);

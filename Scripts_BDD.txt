@@ -17,7 +17,6 @@ CREATE TABLE formation (
   keySalle            integer, 
   keyFormateur        integer, 
   dateFormation       date, 
-  demandeFormationKey integer NOT NULL, 
   statut              varchar(100), 
   PRIMARY KEY (idFormation));
 CREATE TABLE formationCompose (

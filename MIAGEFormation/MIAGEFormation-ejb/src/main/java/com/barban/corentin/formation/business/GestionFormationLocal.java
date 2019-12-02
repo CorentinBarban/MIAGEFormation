@@ -10,6 +10,7 @@ import com.barban.corentin.formation.entities.Formation;
 import com.barban.corentin.formation.entities.Formationcompose;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -36,6 +37,8 @@ public interface GestionFormationLocal {
 
     void ajouterNbPersonne(Formation f, Integer nbPersonne);
 
-    List<Formationcompose> listerFormationNonRemplie(String codeFormation, int capaciteMax);
+     HashMap<Formation, Integer> listerFormationNonRemplie(String codeFormation, int capaciteMax);
+
+    Formationcompose ajouterFormationCompose(Formation formation, Stockagedemandeformation demandeFormation, int nbParticipants);
 
 }

@@ -13,8 +13,8 @@ import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import com.barban.corentin.formation.repositories.FormationFacadeLocal;
 import com.barban.corentin.formation.repositories.FormationcomposeFacadeLocal;
 import com.barban.corentin.formation.repositories.StockagedemandeformationFacadeLocal;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -34,21 +34,25 @@ public class GestionFormation implements GestionFormationLocal {
 
     @EJB
     private FormationFacadeLocal formationFacade;
-    
-    
 
     @Override
-    public Formation ajouterFormation(Stockagedemandeformation demandeformation,int nbParticipants) {
+    public Formation ajouterFormation(Stockagedemandeformation demandeformation, int nbParticipants) {
         Formation f = new Formation();
         f.setStatut("EN ATTENTE");
         Formation formationCree = this.formationFacade.create(f);
-        Formationcompose fc = new Formationcompose();
-        FormationcomposePK fcPK = new FormationcomposePK(formationCree.getIdformation(),demandeformation.getIddemandeformation());
-        fc.setFormationcomposePK(fcPK);
-        fc.setNbparticipants(nbParticipants);
-        this.formationcomposeFacade.create(fc);
+        ajouterFormationCompose(formationCree, demandeformation, nbParticipants);
         return formationCree;
     }
+    
+    @Override
+    public Formationcompose ajouterFormationCompose(Formation formation, Stockagedemandeformation demandeFormation, int nbParticipants) {
+        Formationcompose fc = new Formationcompose();
+        FormationcomposePK fcPK = new FormationcomposePK(formation.getIdformation(), demandeFormation.getIddemandeformation());
+        fc.setFormationcomposePK(fcPK);
+        fc.setNbparticipants(nbParticipants);
+        return this.formationcomposeFacade.create(fc);
+    }
+
 
     /**
      * Stocker une demande de formation lorsque le commercial fait la demande
@@ -108,19 +112,21 @@ public class GestionFormation implements GestionFormationLocal {
     }
 
     @Override
-    public List<Formationcompose> listerFormationNonRemplie(String codeFormation, int capaciteMax) {
+    public HashMap<Formation, Integer> listerFormationNonRemplie(String codeFormation, int capaciteMax) {
         List<Formationcompose> listeFormation = this.formationcomposeFacade.findAll();
-        List<Formationcompose> listeFormationNonRemplie = new ArrayList<>();
+        HashMap<Formation, Integer> listeFormationNonRemplie = new HashMap<>();
         if (listeFormation != null) {
-            for (Formationcompose formation : listeFormation) {
-                System.out.println(formation.toString());
-                if ((formation.getNbparticipants() < capaciteMax) && formation.getStockagedemandeformation().getCodeformationcatalogue().equals(codeFormation) && formation.getFormation().getDateformation().compareTo(new Date()) > 0) {
-                    listeFormationNonRemplie.add(formation);
+            for (Formationcompose formationcompte : listeFormation) {
+                if ((formationcompte.getNbparticipants() < capaciteMax) && formationcompte.getStockagedemandeformation().getCodeformationcatalogue().equals(codeFormation) && formationcompte.getFormation().getDateformation().compareTo(new Date()) > 0) {
+                    if (!listeFormationNonRemplie.containsKey(formationcompte.getFormation())) {
+                        listeFormationNonRemplie.put(formationcompte.getFormation(), formationcompte.getNbparticipants());
+                    } else {
+                        listeFormationNonRemplie.put(formationcompte.getFormation(), listeFormationNonRemplie.get(formationcompte.getFormation()) + formationcompte.getNbparticipants());
+                    }
                 }
             }
+           
         }
-
         return listeFormationNonRemplie;
     }
-
 }
