@@ -20,29 +20,95 @@ import javax.ejb.Local;
  */
 @Local
 public interface GestionFormationLocal {
-
-    Formation ajouterFormation(Stockagedemandeformation demandeformationkey,int nbParticipants,String statut);
-
+    
+    /**
+     * Ajouter une nouvelle formation
+     * 
+     * @param demandeformationkey
+     * @param nbParticipants
+     * @param statut
+     * @return 
+     */
+    Formation ajouterFormation(Stockagedemandeformation demandeformationkey, int nbParticipants, String statut);
+    
+    /**
+     * Stocker une demande de formation lorsque le commercial fait la demande
+     * 
+     * @param codeFormation
+     * @param intitule
+     * @param codeClient
+     * @param nbPersonneTotale
+     * @param nomClient
+     * @return 
+     */
     Stockagedemandeformation stockerDemandeFormation(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale, String nomClient);
-
+    
+    /**
+     * Recuperer l'etat d'une formation
+     * @param idFormation
+     * @return 
+     */
     String demanderEtatFormation(Integer idFormation);
-
+    
+    /**
+     * Retourner les informations pour le compte rendu
+     * @return 
+     */
     List<CompteRenduDTO> retournerCompteRendus();
-
+    
+    /**
+     * Ajouter un formateur à une formation
+     * @param f
+     * @param idFormateur 
+     */
     void ajouterFormateurFormation(Formation f, int idFormateur);
-
+    
+    /**
+     * Ajouter une salle à une formation
+     * @param f
+     * @param idSalle 
+     */
     void ajouterSalleFormation(Formation f, int idSalle);
-
+    
+    /**
+     * Ajouter une date à une formation
+     * @param f
+     * @param dateFormation 
+     */
     void ajouterDateFormation(Formation f, Date dateFormation);
-
-    void ajouterNbPersonne(Formation f, Integer nbPersonne);
-
-     HashMap<Formation, Integer> compterEffectifFormation(String codeFormation, int capaciteMax);
-
+    
+    /**
+     * Compter le nombre personne presentes sur une formation
+     * 
+     * @param codeFormation
+     * @param capaciteMax
+     * @return 
+     */
+    HashMap<Formation, Integer> compterEffectifFormation(String codeFormation, int capaciteMax);
+    
+    /**
+     * Liee une demande de formation avec une formation 
+     * 
+     * @param formation
+     * @param demandeFormation
+     * @param nbParticipants
+     * @return 
+     */
     Formationcompose ajouterFormationCompose(Formation formation, Stockagedemandeformation demandeFormation, int nbParticipants);
-
-    void editerStatutFormation(Formation formation,String statut);
-
+    
+    /**
+     * Editer le statut d'une formation
+     * 
+     * @param formation
+     * @param statut 
+     */
+    void editerStatutFormation(Formation formation, String statut);
+    
+    /**
+     * Recuperer les informations liées à une Formation
+     * @param f
+     * @return 
+     */
     Formation recupererInformationFormation(Formation f);
 
 }

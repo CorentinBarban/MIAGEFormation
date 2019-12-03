@@ -32,9 +32,9 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
     /**
      * Editer le statut d'une salle pour une date donnée
      *
-     * @param idSalle
-     * @param statut
-     * @param date
+     * @param idSalle identifiant d'une salle
+     * @param statut statut à modifier
+     * @param date date de la modification
      * @throws Exceptions.SalleNotFoundException
      */
     @Override
@@ -56,7 +56,7 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
     /**
      * Lister toutes les dates pour lesquelles les salle sont disponibles
      *
-     * @param listSallesDemandees
+     * @param listSallesDemandees Liste des salles pressenties
      * @return
      */
     @Override
@@ -78,8 +78,8 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
     }
 
     /**
-     *
-     * @param salleKey
+     * Verfier l'existance d'une salle
+     * @param salleKey Identifiant d'une salle
      * @return
      */
     @Override

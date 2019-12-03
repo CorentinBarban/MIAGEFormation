@@ -20,11 +20,11 @@ public class ServiceFormation implements ServiceFormationLocal {
     private GestionFormationLocal gestionFormation;
 
     
-    
-    
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-
+    /**
+     * Demander l'état d'une formation
+     * @param idFormation
+     * @return 
+     */
     @Override
     public String demanderEtatFormation(Integer idFormation) {
         return this.gestionFormation.demanderEtatFormation(idFormation);

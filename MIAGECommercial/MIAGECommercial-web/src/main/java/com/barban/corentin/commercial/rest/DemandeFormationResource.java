@@ -9,8 +9,6 @@ import Exceptions.FormationCatalogueNotFoundException;
 import com.barban.corentin.commercial.services.serviceGestionCommercialeLocal;
 import com.google.gson.Gson;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -66,7 +64,12 @@ public class DemandeFormationResource {
      * PUT method for updating or creating an instance of
      * DemandeFormationResource
      *
-     * @param content representation for the resource
+     * @param nomClient
+     * @param codeFormation
+     * @param intitule
+     * @param codeClient
+     * @param nbPersonnes
+     * @throws Exceptions.FormationCatalogueNotFoundException
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

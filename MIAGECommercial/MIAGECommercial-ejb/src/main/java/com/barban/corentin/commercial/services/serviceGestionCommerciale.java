@@ -28,7 +28,15 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
     private gestionCommercialeLocal gestionCommerciale;
 
     
-    
+    /**
+     * Realiser une demande de formation
+     * @param nomClient Nom du client
+     * @param codeFormation Code de la formation
+     * @param intitule Intitule de la formation
+     * @param codeclient Code du client
+     * @param nbPersonnes Nombre de personnes demandées pour la formation
+     * @throws FormationCatalogueNotFoundException 
+     */
     @Override
     public void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient,Integer nbPersonnes) throws FormationCatalogueNotFoundException{
         //Mémorisation de la demande de formation

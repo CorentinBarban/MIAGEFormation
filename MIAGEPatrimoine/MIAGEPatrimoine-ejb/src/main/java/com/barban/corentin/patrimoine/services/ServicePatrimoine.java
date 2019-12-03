@@ -19,6 +19,11 @@ public class ServicePatrimoine implements ServicePatrimoineLocal {
     @EJB
     private gestionPatrimoineLocal gestionPatrimoine;
     
+    /**
+     * Verifier l'existence d'une salle
+     * @param salleKey Identifiant d'une salle
+     * @return 
+     */
     @Override
     public boolean verifierExistenceSalle(Integer salleKey) {
         return this.gestionPatrimoine.validerExistenceSalle(salleKey);

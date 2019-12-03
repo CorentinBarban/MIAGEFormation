@@ -64,7 +64,12 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
         this.stockageDemandeFormation = sf;
         this.demandeFormationDTO = df;
     }
-
+    
+    /**
+     * Envoyer une demande de ressources
+     * @param listDemandeFormateurDispo
+     * @param listDemandeSalleDispo 
+     */
     public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
 
         try {
@@ -117,13 +122,22 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
         }
 
     }
-
+    
+    /**
+     * Creation d'une chaine de caractere random
+     * @return 
+     */
     private String createRandomString() {
         Random random = new Random(System.currentTimeMillis());
         long randomLong = random.nextLong();
         return Long.toHexString(randomLong);
     }
-
+    
+    
+    /**
+     * Attente de la réponse de demande de ressources
+     * @param message 
+     */
     @Override
     public void onMessage(Message message) {
         ObjectMessage object = (ObjectMessage) message;
@@ -204,11 +218,19 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
                         FormateurDTO f = new FormateurDTO();
                         f.setIdFormateur(key.getIdFormateur());
                         f.setDate(listDatePossibleFormateur.get(0));
-                        f.setStatut("PRESSENTI");
+                        
+                        
                         SalleDTO s = new SalleDTO();
                         s.setIdsalle(keyS.getIdsalle());
                         s.setDate(listDatePossibleFormateur.get(0));
-                        s.setStatut("PRESSENTIE");
+                        if(this.formation.getStatut().equals("PLANIFIEE")){
+                            f.setStatut("PLANIFIEE");
+                            s.setStatut("PLANIFIEE");
+                        }else{
+                            f.setStatut("PRESSENTI");
+                            s.setStatut("PRESSENTIE");
+                        }
+                        
                         hashmapRessourceChoisie.put(f, s);
                         return hashmapRessourceChoisie;
                     }

@@ -34,7 +34,14 @@ public class GestionFormation implements GestionFormationLocal {
 
     @EJB
     private FormationFacadeLocal formationFacade;
-
+    
+    /**
+     * Ajouter une nouvelle formation
+     * @param demandeformation
+     * @param nbParticipants
+     * @param statut
+     * @return 
+     */
     @Override
     public Formation ajouterFormation(Stockagedemandeformation demandeformation, int nbParticipants,String statut) {
         Formation f = new Formation();
@@ -44,6 +51,13 @@ public class GestionFormation implements GestionFormationLocal {
         return formationCree;
     }
     
+    /**
+     * Liee une demande de formation avec une formation 
+     * @param formation
+     * @param demandeFormation
+     * @param nbParticipants
+     * @return 
+     */
     @Override
     public Formationcompose ajouterFormationCompose(Formation formation, Stockagedemandeformation demandeFormation, int nbParticipants) {
         Formationcompose fc = new Formationcompose();
@@ -85,32 +99,52 @@ public class GestionFormation implements GestionFormationLocal {
     public String demanderEtatFormation(Integer idFormation) {
         return this.formationFacade.find(idFormation).getStatut();
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public List<CompteRenduDTO> retournerCompteRendus() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
+    /**
+     * Ajouter un formateur a une formation
+     * @param f Object Formation
+     * @param idFormateur Identifiant d'un formateur
+     */
     @Override
     public void ajouterFormateurFormation(Formation f, int idFormateur) {
         this.formationFacade.find(f.getIdformation()).setKeyformateur(idFormateur);
     }
-
+    
+    /**
+     * Ajouter une salle à une formation
+     * @param f Object Formation
+     * @param idSalle 
+     */
     @Override
     public void ajouterSalleFormation(Formation f, int idSalle) {
         this.formationFacade.find(f.getIdformation()).setKeysalle(idSalle);
     }
-
+    
+    /**
+     * Ajouter une date pour une formation
+     * @param f Object Formation
+     * @param dateFormation Date de formation
+     */
     @Override
     public void ajouterDateFormation(Formation f, Date dateFormation) {
         this.formationFacade.find(f.getIdformation()).setDateformation(dateFormation);
     }
-
-    @Override
-    public void ajouterNbPersonne(Formation f, Integer nbPersonne) {
-//        this.formationFacade.find(f.getIdformation()).setNbparticipants(nbPersonne);
-    }
-
+    
+    /**
+     * Compter le nombre personne presentes sur une formation
+     * @param codeFormation Code de la formation
+     * @param capaciteMax Capacite max de la formation
+     * @return 
+     */
     @Override
     public HashMap<Formation, Integer> compterEffectifFormation(String codeFormation, int capaciteMax) {
         List<Formationcompose> listeFormation = this.formationcomposeFacade.findAll();
@@ -129,12 +163,23 @@ public class GestionFormation implements GestionFormationLocal {
         }
         return listeFormationNonRemplie;
     }
-
+    
+    /**
+     * Editer le statut d'une formation
+     * 
+     * @param formation Object Formation
+     * @param statut Statut de la formation
+     */
     @Override
     public void editerStatutFormation(Formation formation,String statut) {
         this.formationFacade.find(formation.getIdformation()).setStatut(statut);
     }
-
+    
+    /**
+     * Recuperer les informations liées à une Formation
+     * @param f Object Formation
+     * @return 
+     */
     @Override
     public Formation recupererInformationFormation(Formation f) {
         return this.formationFacade.find(f.getIdformation());

@@ -42,6 +42,11 @@ public class SenderDemandeFormationJMS implements MessageListener {
     public SenderDemandeFormationJMS() {
     }
     
+    /**
+     * Envoyer une demande de formation via JMS
+     * 
+     * @param demandeFormation Demande de formation
+     */
     public void sendMessageDemandeFormation(DemandeFormationDTO demandeFormation) {
 
         try {
@@ -83,7 +88,11 @@ public class SenderDemandeFormationJMS implements MessageListener {
         long randomLong = random.nextLong();
         return Long.toHexString(randomLong);
     }
-
+    
+    /**
+     * Attente de la message de confirmation de la prise en compte de demande de formation
+     * @param message 
+     */
     @Override
     public void onMessage(Message message) {
         String messageText = null;

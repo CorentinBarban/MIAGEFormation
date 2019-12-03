@@ -10,8 +10,6 @@ import DTO.SalleDTO;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -43,7 +41,12 @@ public class SenderReservationSalleJMS implements MessageListener {
 
     public SenderReservationSalleJMS() {
     }
-
+    
+    /**
+     * Demander une resservation d'une salle
+     * 
+     * @param SalleReservee 
+     */
     public void sendMessageDemandeReservation(SalleDTO SalleReservee) {
 
         try {
@@ -86,7 +89,11 @@ public class SenderReservationSalleJMS implements MessageListener {
         long randomLong = random.nextLong();
         return Long.toHexString(randomLong);
     }
-
+    
+    /**
+     * Attente de la confirmation de reservation
+     * @param message 
+     */
     @Override
     public void onMessage(Message message) {
         ObjectMessage object = (ObjectMessage) message;

@@ -79,11 +79,11 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     /**
      * Méthode permettant de mémoriser une demande de formation
      *
-     * @param nomClient
-     * @param dateDemande
-     * @param codeFormation
-     * @param intituleFormation
-     * @param codeclient
+     * @param nomClient Nom d'un client
+     * @param dateDemande Date de la demande
+     * @param codeFormation Code de la formation
+     * @param intituleFormation Intitule de la formation
+     * @param codeclient Code du client
      */
     @Override
     public void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, Integer codeclient) {
@@ -221,7 +221,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * Méthode permettant de recuperer la liste des formateurs compétent pour
      * une formation
      *
-     * @param code
+     * @param code Code de la formation
      * @return
      */
     @Override
@@ -256,7 +256,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * Méthode permettant de recuperer la liste des salles adequates pour une
      * formation
      *
-     * @param code
+     * @param code Code de la formation
      * @return
      */
     @Override
@@ -289,7 +289,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
 
     /**
      * Obtenir la capacité min d'une formation
-     * @param codeFormation
+     * @param codeFormation Code de la formation
      * @return 
      */
     @Override

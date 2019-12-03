@@ -6,6 +6,8 @@
 package com.barban.corentin.formation.listenner;
 
 import DTO.DemandeFormationDTO;
+import DTO.FormateurDTO;
+import DTO.SalleDTO;
 import com.barban.corentin.formation.entities.Formation;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import com.barban.corentin.formation.sender.SenderDemandeRessourceDisponiblesJMS;
@@ -29,6 +31,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
+import com.barban.corentin.formation.sender.SenderReservationFormateurJMS;
+import com.barban.corentin.formation.sender.SenderReservationSalleJMS;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +62,10 @@ public class ListennerDemandeFormation implements MessageListener {
     public ListennerDemandeFormation() {
         this.setupMessageQueueConsumer();
     }
-
+    
+    /**
+     * Mise en place d'une file temporaire pour les retours d'informations
+     */
     private void setupMessageQueueConsumer() {
         try {
             this.context = new InitialContext();
@@ -76,7 +83,12 @@ public class ListennerDemandeFormation implements MessageListener {
             Logger.getLogger(ListennerDemandeFormation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Attente de l'arrivé d'un message
+     * Gestion de la demande avec les formations deja existantes
+     * @param message 
+     */
     @Override
     public void onMessage(Message message) {
         try {
@@ -109,8 +121,21 @@ public class ListennerDemandeFormation implements MessageListener {
                         } else {
                             this.gestionFormation.ajouterFormationCompose(formation, sf, personnePouvantEtreAjoutees);
                             nbParticipantsDemandee = nbParticipantsDemandee - personnePouvantEtreAjoutees;
-                            this.gestionFormation.editerStatutFormation(formation, "PLANNIFIEE");
+                            this.gestionFormation.editerStatutFormation(formation, "PLANIFIEE");
+                            // Changer le statut des ressources
+                            SenderReservationFormateurJMS senderResaFormateur = new SenderReservationFormateurJMS();
+                            FormateurDTO f = new FormateurDTO();
+                            f.setDate(formation.getDateformation());
+                            f.setIdFormateur(formation.getKeyformateur());
+                            f.setStatut("PLANIFIEE");
+                            senderResaFormateur.sendMessageDemandeReservation(f);
                             
+                            SenderReservationSalleJMS senderResaSalle = new SenderReservationSalleJMS();
+                            SalleDTO s = new SalleDTO();
+                            s.setDate(formation.getDateformation());
+                            s.setIdsalle(formation.getKeysalle());
+                            s.setStatut("PLANIFIEE");
+                            senderResaSalle.sendMessageDemandeReservation(s);
                         }
 
                     }
@@ -124,7 +149,7 @@ public class ListennerDemandeFormation implements MessageListener {
                         SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
                         sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
                     } else {
-                        Formation f = this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee, "PLANNIFIEE");
+                        Formation f = this.gestionFormation.ajouterFormation(sf, nbParticipantsDemandee, "PLANIFIEE");
                         SenderDemandeRessourceDisponiblesJMS sender = new SenderDemandeRessourceDisponiblesJMS(f, sf, df);
                         sender.sendMessageDemandeRessource(df.getListFormateursPressentis(), df.getListSallesPressenties());
                     }

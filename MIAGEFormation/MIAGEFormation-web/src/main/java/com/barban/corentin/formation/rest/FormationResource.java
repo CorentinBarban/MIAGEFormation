@@ -44,9 +44,9 @@ public class FormationResource {
     }
 
     /**
-     * Retrieves representation of an instance of
-     * com.barban.corentin.formation.rest.FormationResource
+     * REtourner le statut d'une formation
      *
+     * @param id idenfiant d'une formation
      * @return an instance of java.lang.String
      */
     @GET
