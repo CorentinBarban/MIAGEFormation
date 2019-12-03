@@ -167,12 +167,12 @@ public class FormationDTO {
     public void setKeyStockagedemandeformation(int keyStockagedemandeformation) {
         this.keyStockagedemandeformation = keyStockagedemandeformation;
     }
-    
+
     @Override
     public String toString() {
-        return "FormationDTO{" + "idformation=" + idformation + ", intitule=" + intitule + ", nomclient=" + nomclient + ", nbpersonne=" + nbpersonne + ", statut=" + statut + ", dateformation=" + dateformation + ", keyformationcatalogue=" + keyformationcatalogue + ", keyformateur=" + keyformateur + ", keysalle=" + keysalle + ", keyStockagedemandeformation=" + keyStockagedemandeformation + '}';
+        return "FormationDTO{" + "idformation=" + idformation + ", intitule=" + intitule + ", code=" + code + ", nomclient=" + nomclient + ", nbpersonne=" + nbpersonne + ", statut=" + statut + ", niveau=" + niveau + ", typeduree=" + typeduree + ", capacitemin=" + capacitemin + ", capacitemax=" + capacitemax + ", tarifforfaitaire=" + tarifforfaitaire + ", dateformation=" + dateformation + ", keyformationcatalogue=" + keyformationcatalogue + ", keyformateur=" + keyformateur + ", keysalle=" + keysalle + ", keyStockagedemandeformation=" + keyStockagedemandeformation + '}';
     }
-
+   
     
 
 }

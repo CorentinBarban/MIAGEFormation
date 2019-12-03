@@ -6,6 +6,7 @@
 package com.barban.corentin.RH.business;
 
 import DTO.FormateurDTO;
+import DTO.SalleDTO;
 import Exceptions.FormateurNotFoundException;
 import com.barban.corentin.RH.entities.CalendrierFormateur;
 import com.barban.corentin.RH.entities.Formateur;

@@ -29,9 +29,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
-import com.barban.corentin.formation.entities.Formationcompose;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

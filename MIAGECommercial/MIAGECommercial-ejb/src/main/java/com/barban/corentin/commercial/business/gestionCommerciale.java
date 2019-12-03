@@ -286,48 +286,14 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         }
         return listeSallesDTOs;
     }
-    
-    /**
-     * Obtenir la capacité max d'une formation
-     * @param codeFormation
-     * @return 
-     */
-    @Override
-    public Integer recupererCapaciteMax(String codeFormation) {
-        try {
-            URL url = new URL(hostTechnico + "/formationsCatalogue/" + codeFormation);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
-            Gson gson = new Gson();
-            FormationDTO formationDTO = null;
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            } else {
-                InputStreamReader in = new InputStreamReader(conn.getInputStream());
-                BufferedReader br = new BufferedReader(in);
-                String output;
 
-                while ((output = br.readLine()) != null) {
-                    formationDTO = gson.fromJson(output, new TypeToken<FormationDTO>() {
-                    }.getType());
-                }
-
-            }
-            conn.disconnect();
-            return formationDTO.getCapacitemax();
-        } catch (IOException ex) {
-            Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
     /**
      * Obtenir la capacité min d'une formation
      * @param codeFormation
      * @return 
      */
     @Override
-    public Integer recupererCapaciteMin(String codeFormation) {
+    public FormationDTO recupererInformationFormationCatalogue(String codeFormation) {
         try {
             URL url = new URL(hostTechnico + "/formationsCatalogue/" + codeFormation);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -349,11 +315,12 @@ public class gestionCommerciale implements gestionCommercialeLocal {
 
             }
             conn.disconnect();
-            return formationDTO.getCapacitemin();
+            return formationDTO;
         } catch (IOException ex) {
             Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+    
 
 }

@@ -34,12 +34,8 @@ public interface gestionCommercialeLocal {
     List<FormateurDTO> recupererListeFormateurCompetent(String Code);
     
     List<SalleDTO> recupererListeSallesAdequates(String Code);
-
-    Integer recupererCapaciteMax(String code);
-
-    Integer recupererCapaciteMin(String code);
     
-    
+    FormationDTO recupererInformationFormationCatalogue(String codeFormation);
 
     
 }

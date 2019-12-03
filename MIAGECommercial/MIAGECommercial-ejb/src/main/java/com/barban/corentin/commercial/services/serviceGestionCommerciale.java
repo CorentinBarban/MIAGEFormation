@@ -7,6 +7,7 @@ package com.barban.corentin.commercial.services;
 
 import DTO.DemandeFormationDTO;
 import DTO.FormateurDTO;
+import DTO.FormationDTO;
 import DTO.SalleDTO;
 import Exceptions.FormationCatalogueNotFoundException;
 import com.barban.corentin.commercial.business.gestionCommercialeLocal;
@@ -41,8 +42,13 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
            // Recuperer la liste de salles pressenties
             List<SalleDTO> listeSalles = this.gestionCommerciale.recupererListeSallesAdequates(codeFormation);
             
-            Integer capaciteMax = this.gestionCommerciale.recupererCapaciteMax(codeFormation);
-            Integer capaciteMin = this.gestionCommerciale.recupererCapaciteMin(codeFormation);
+            FormationDTO formationCatalogue = this.gestionCommerciale.recupererInformationFormationCatalogue(codeFormation);
+            
+            System.out.println(formationCatalogue.toString());
+            
+            Integer capaciteMax = formationCatalogue.getCapacitemax();
+            Integer capaciteMin = formationCatalogue.getCapacitemin();
+            String typeFormation = formationCatalogue.getTypeduree();
             
             DemandeFormationDTO df = new DemandeFormationDTO();
             df.setCodeClient(codeclient);
@@ -54,6 +60,7 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
             df.setNbPersonnes(nbPersonnes);
             df.setCapaciteMax(capaciteMax);
             df.setCapaciteMin(capaciteMin);
+            df.setTypeFormation(typeFormation);
             SenderDemandeFormationJMS sender = new SenderDemandeFormationJMS();
             sender.sendMessageDemandeFormation(df);
         }else{

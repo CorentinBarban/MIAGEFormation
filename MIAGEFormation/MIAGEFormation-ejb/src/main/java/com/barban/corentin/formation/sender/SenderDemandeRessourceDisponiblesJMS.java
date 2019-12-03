@@ -32,6 +32,8 @@ import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -131,20 +133,21 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
                 System.out.println("Reception des Salles dispos");
                 SallesDTO salles = (SallesDTO) object.getObject();
                 this.listeSalles = salles.getHashMapDateSalle();
-                System.out.println(listeSalles.toString());
+                System.out.println("Liste Salles dispo : " + listeSalles.toString());
                 System.out.println("-------------------------------");
 
             } else if (object.getObject() instanceof FormateursDTO) {
                 System.out.println("Reception des formateurs dispos");
                 FormateursDTO formateurs = (FormateursDTO) object.getObject();
                 this.listeFormateurs = formateurs.getListeFormateur();
-                System.out.println(listeFormateurs.toString());
+                System.out.println("Liste Formateur dispo" + listeFormateurs.toString());
                 System.out.println("-------------------------------");
 
             }
 
             if (this.listeFormateurs != null && this.listeSalles != null) {
-                HashMap<FormateurDTO, SalleDTO> ressourceIdeal = trouverDateIdeale();
+                HashMap<FormateurDTO, SalleDTO> ressourceIdeal = trouverDateIdeale(this.demandeFormationDTO.getTypeFormation());
+                System.out.println("DateIdeal = " + ressourceIdeal.entrySet().iterator().next().getValue().getDate());
                 this.gestionFormation.ajouterFormateurFormation(this.formation, ressourceIdeal.entrySet().iterator().next().getKey().getIdFormateur());
                 this.gestionFormation.ajouterDateFormation(this.formation, ressourceIdeal.entrySet().iterator().next().getValue().getDate());
                 this.gestionFormation.ajouterSalleFormation(this.formation, ressourceIdeal.entrySet().iterator().next().getValue().getIdsalle());
@@ -165,36 +168,82 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
      *
      * @return
      */
-    private HashMap<FormateurDTO, SalleDTO> trouverDateIdeale() {
+    private HashMap<FormateurDTO, SalleDTO> trouverDateIdeale(String typeFormation) {
+        int joursConsecutif = 0;
+        if (typeFormation.equals("court")) {
+            joursConsecutif = 3;
+        } else {
+            joursConsecutif = 5;
+        }
+        HashMap<FormateurDTO, List<List<Date>>> listDateConsecutiveFormateur = new HashMap<>();
+        HashMap<SalleDTO, List<List<Date>>> listDateConsecutiveSalle = new HashMap<>();
         HashMap<FormateurDTO, SalleDTO> hashmapRessourceChoisie = new HashMap<>();
-        Date dateActuelle = new Date();
+
+        // Recherche de la date de disponibilité au plus tot pour chaque formateur
         for (Map.Entry<FormateurDTO, List<Date>> entry : this.listeFormateurs.entrySet()) {
             FormateurDTO keyFormateur = entry.getKey();
             List<Date> valueDateFormateur = entry.getValue();
-            for (Date dateDispoFormateur : valueDateFormateur) {
+            List<List<Date>> l = consecutiveDates(valueDateFormateur, joursConsecutif);
+            listDateConsecutiveFormateur.put(keyFormateur, l);
+        }
 
-                for (Map.Entry<SalleDTO, List<Date>> entrySalle : this.listeSalles.entrySet()) {
-                    SalleDTO keySalle = entrySalle.getKey();
-                    List<Date> valueDateSalle = entrySalle.getValue();
+        for (Map.Entry<SalleDTO, List<Date>> entrySalle : this.listeSalles.entrySet()) {
+            SalleDTO keySalle = entrySalle.getKey();
+            List<Date> valueDateSalle = entrySalle.getValue();
+            listDateConsecutiveSalle.put(keySalle, consecutiveDates(valueDateSalle, joursConsecutif));
+        }
 
-                    for (Date dateDispoSalle : valueDateSalle) {
-                        if ((dateDispoFormateur.compareTo(dateDispoSalle) == 0) && dateDispoFormateur.compareTo(dateActuelle) > 0) {
-                            FormateurDTO f = new FormateurDTO();
-                            f.setIdFormateur(keyFormateur.getIdFormateur());
-                            f.setDate(dateDispoFormateur);
-                            f.setStatut("PRESSENTI");
-                            SalleDTO s = new SalleDTO();
-                            s.setIdsalle(keySalle.getIdsalle());
-                            s.setDate(dateDispoSalle);
-                            s.setStatut("PRESSENTIE");
-                            hashmapRessourceChoisie.put(f, s);
-                            return hashmapRessourceChoisie;
-                        }
+        for (Map.Entry<FormateurDTO, List<List<Date>>> entry : listDateConsecutiveFormateur.entrySet()) {
+            FormateurDTO key = entry.getKey();
+            List<List<Date>> value = entry.getValue();
+            for (List<Date> listDatePossibleFormateur : value) {
+                for (Map.Entry<SalleDTO, List<List<Date>>> entrySalle : listDateConsecutiveSalle.entrySet()) {
+                    SalleDTO keyS = entrySalle.getKey();
+                    List<List<Date>> valueSalle = entrySalle.getValue();
+                    if (valueSalle.contains(listDatePossibleFormateur) && listDatePossibleFormateur.get(0).compareTo(new Date()) > 0) {
+                        FormateurDTO f = new FormateurDTO();
+                        f.setIdFormateur(key.getIdFormateur());
+                        f.setDate(listDatePossibleFormateur.get(0));
+                        f.setStatut("PRESSENTI");
+                        SalleDTO s = new SalleDTO();
+                        s.setIdsalle(keyS.getIdsalle());
+                        s.setDate(listDatePossibleFormateur.get(0));
+                        s.setStatut("PRESSENTIE");
+                        hashmapRessourceChoisie.put(f, s);
+                        return hashmapRessourceChoisie;
                     }
                 }
             }
         }
         return null;
+    }
+
+    /**
+     * Obtenir la liste de toutes les n dates consecutives
+     *
+     * @param dates
+     * @param nbconsecutive
+     * @return
+     */
+    public List<List<Date>> consecutiveDates(List<Date> dates, Integer nbconsecutive) {
+        List<List<Date>> listJoursConsecutif = new ArrayList();
+        List<Date> consecutive = new ArrayList();
+        consecutive.add(new Date(0));
+        for (Date current : dates) {
+            Date previous = consecutive.get(consecutive.size() - 1);
+            if (previous.before(current) && (current.getTime() - previous.getTime() == 1000 * 60 * 60 * 24)) {
+                consecutive.add(current);
+            } else {
+                consecutive.clear();
+                consecutive.add(current);
+            }
+            if (consecutive.size() == nbconsecutive) {
+                listJoursConsecutif.add(new ArrayList(consecutive));
+                consecutive.clear();
+                consecutive.add(current);
+            }
+        }
+        return listJoursConsecutif;
     }
 
     private GestionFormationLocal lookupgestionFormationLocal() {

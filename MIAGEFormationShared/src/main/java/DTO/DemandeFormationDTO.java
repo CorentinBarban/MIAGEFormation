@@ -24,6 +24,8 @@ public class DemandeFormationDTO implements Serializable {
     private List<SalleDTO> listSallesPressenties;
     private int capaciteMax;
     private int capaciteMin;
+    private String typeFormation;
+    
     public DemandeFormationDTO() {
 
     }
@@ -99,6 +101,14 @@ public class DemandeFormationDTO implements Serializable {
 
     public void setCapaciteMin(int capaciteMin) {
         this.capaciteMin = capaciteMin;
+    }
+
+    public String getTypeFormation() {
+        return typeFormation;
+    }
+
+    public void setTypeFormation(String typeFormation) {
+        this.typeFormation = typeFormation;
     }
 
     @Override
