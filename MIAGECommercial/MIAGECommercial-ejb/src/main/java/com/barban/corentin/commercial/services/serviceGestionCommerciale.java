@@ -5,15 +5,19 @@
  */
 package com.barban.corentin.commercial.services;
 
+import DTO.CompteRenduDTO;
 import DTO.DemandeFormationDTO;
 import DTO.FormateurDTO;
 import DTO.FormationDTO;
 import DTO.SalleDTO;
 import Exceptions.FormationCatalogueNotFoundException;
+import Exceptions.ListeFormationsVideException;
 import com.barban.corentin.commercial.business.gestionCommercialeLocal;
 import com.barban.corentin.commercial.sender.SenderDemandeFormationJMS;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -51,9 +55,6 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
             List<SalleDTO> listeSalles = this.gestionCommerciale.recupererListeSallesAdequates(codeFormation);
             
             FormationDTO formationCatalogue = this.gestionCommerciale.recupererInformationFormationCatalogue(codeFormation);
-            
-            System.out.println(formationCatalogue.toString());
-            
             Integer capaciteMax = formationCatalogue.getCapacitemax();
             Integer capaciteMin = formationCatalogue.getCapacitemin();
             String typeFormation = formationCatalogue.getTypeduree();
@@ -74,6 +75,15 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
         }else{
             throw new FormationCatalogueNotFoundException();
         }        
+    }
+
+    @Override
+    public void demandeEditionComptesRendus() {
+        try {
+            this.gestionCommerciale.editerComptesRendus();
+        } catch (ListeFormationsVideException ex) {
+            Logger.getLogger(serviceGestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
   
     

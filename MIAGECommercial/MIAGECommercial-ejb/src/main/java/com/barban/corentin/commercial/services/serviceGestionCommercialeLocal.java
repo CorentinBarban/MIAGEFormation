@@ -5,8 +5,10 @@
  */
 package com.barban.corentin.commercial.services;
 
+import DTO.CompteRenduDTO;
 import Exceptions.FormationCatalogueNotFoundException;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -17,5 +19,7 @@ import javax.ejb.Local;
 public interface serviceGestionCommercialeLocal {
 
     void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient,Integer nbPersonnes) throws FormationCatalogueNotFoundException;
+
+    void demandeEditionComptesRendus();
     
 }

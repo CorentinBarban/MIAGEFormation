@@ -5,24 +5,26 @@
  */
 package DTO;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author maths
  */
-public class CompteRenduDTO {
+public class CompteRenduDTO implements Serializable{
     
     String intituleFormation;
     Date dateCompteRendu;
-    String nomclient;
+    List<String> nomclient;
     String type;
     int nbpersonne;
 
     public CompteRenduDTO() {
     }
 
-    public CompteRenduDTO(String intituleFormation, Date dateFormation, String nomclient, String type, int nbpersonne) {
+    public CompteRenduDTO(String intituleFormation, Date dateFormation, List<String> nomclient, String type, int nbpersonne) {
         this.intituleFormation = intituleFormation;
         this.dateCompteRendu = dateFormation;
         this.nomclient = nomclient;
@@ -46,14 +48,6 @@ public class CompteRenduDTO {
         this.dateCompteRendu = dateFormation;
     }
 
-    public String getNomclient() {
-        return nomclient;
-    }
-
-    public void setNomclient(String nomclient) {
-        this.nomclient = nomclient;
-    }
-
     public String getType() {
         return type;
     }
@@ -69,7 +63,28 @@ public class CompteRenduDTO {
     public void setNbpersonne(int nbpersonne) {
         this.nbpersonne = nbpersonne;
     }
-    
+
+    public Date getDateCompteRendu() {
+        return dateCompteRendu;
+    }
+
+    public void setDateCompteRendu(Date dateCompteRendu) {
+        this.dateCompteRendu = dateCompteRendu;
+    }
+
+    public List<String> getNomclient() {
+        return nomclient;
+    }
+
+    public void setNomclient(List<String> nomclient) {
+        this.nomclient = nomclient;
+    }
+
+    @Override
+    public String toString() {
+        return "CompteRenduDTO{" + "intituleFormation=" + intituleFormation + ", dateCompteRendu=" + dateCompteRendu + ", nomclient=" + nomclient + ", type=" + type + ", nbpersonne=" + nbpersonne + '}';
+    }
+      
     
 
 }

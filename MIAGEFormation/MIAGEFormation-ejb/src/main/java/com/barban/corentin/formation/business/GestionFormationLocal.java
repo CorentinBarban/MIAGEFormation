@@ -109,6 +109,6 @@ public interface GestionFormationLocal {
      * @param f
      * @return 
      */
-    Formation recupererInformationFormation(Formation f);
+    List<Formation> recupererInformationFormation();
 
 }

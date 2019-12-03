@@ -5,13 +5,15 @@
  */
 package DTO;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Corentin
  */
-public class FormationDTO {
+public class FormationDTO implements Serializable{
     
     Integer idformation;
     String intitule;
@@ -29,14 +31,13 @@ public class FormationDTO {
     int keyformateur;
     int keysalle;
     int keyStockagedemandeformation;
+    List<String> listeClient;
+    Date dateDemandeformation;
     
     
-    /*public FormationDTO() {
+    public FormationDTO() {
     }
 
-    public FormationDTO(Integer idformation) {
-        this.idformation = idformation;
-    }*/
 
     public FormationDTO(String intitule, String code, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) {
         this.intitule = intitule;
@@ -168,6 +169,32 @@ public class FormationDTO {
         this.keyStockagedemandeformation = keyStockagedemandeformation;
     }
 
+    public List<String> getListeClient() {
+        return listeClient;
+    }
+
+    public void setListeClient(List<String> listeClient) {
+        this.listeClient = listeClient;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Date getDateDemandeformation() {
+        return dateDemandeformation;
+    }
+
+    public void setDateDemandeformation(Date dateDemandeformation) {
+        this.dateDemandeformation = dateDemandeformation;
+    }
+
+       
+    
     @Override
     public String toString() {
         return "FormationDTO{" + "idformation=" + idformation + ", intitule=" + intitule + ", code=" + code + ", nomclient=" + nomclient + ", nbpersonne=" + nbpersonne + ", statut=" + statut + ", niveau=" + niveau + ", typeduree=" + typeduree + ", capacitemin=" + capacitemin + ", capacitemax=" + capacitemax + ", tarifforfaitaire=" + tarifforfaitaire + ", dateformation=" + dateformation + ", keyformationcatalogue=" + keyformationcatalogue + ", keyformateur=" + keyformateur + ", keysalle=" + keysalle + ", keyStockagedemandeformation=" + keyStockagedemandeformation + '}';

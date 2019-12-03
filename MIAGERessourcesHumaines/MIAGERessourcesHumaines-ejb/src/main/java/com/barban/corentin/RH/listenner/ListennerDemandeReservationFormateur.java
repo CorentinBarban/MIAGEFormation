@@ -77,7 +77,6 @@ public class ListennerDemandeReservationFormateur implements MessageListener {
         try {
 
             ObjectMessage object = (ObjectMessage) message;
-            System.out.println("Je suis dans resa formateur");
             if (object.getObject() instanceof FormateurDTO) {
                 FormateurDTO f = (FormateurDTO) object.getObject();
                 this.gestionRH.modifierStatutFormateur(f.getIdFormateur(), f.getStatut(), f.getDate());

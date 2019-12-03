@@ -31,9 +31,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import com.barban.corentin.formation.business.GestionFormationLocal;
 import com.barban.corentin.formation.entities.Stockagedemandeformation;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -144,19 +142,11 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
 
         try {
             if (object.getObject() instanceof SallesDTO) {
-                System.out.println("Reception des Salles dispos");
                 SallesDTO salles = (SallesDTO) object.getObject();
                 this.listeSalles = salles.getHashMapDateSalle();
-                System.out.println("Liste Salles dispo : " + listeSalles.toString());
-                System.out.println("-------------------------------");
-
             } else if (object.getObject() instanceof FormateursDTO) {
-                System.out.println("Reception des formateurs dispos");
                 FormateursDTO formateurs = (FormateursDTO) object.getObject();
                 this.listeFormateurs = formateurs.getListeFormateur();
-                System.out.println("Liste Formateur dispo" + listeFormateurs.toString());
-                System.out.println("-------------------------------");
-
             }
 
             if (this.listeFormateurs != null && this.listeSalles != null) {
@@ -183,12 +173,13 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
      * @return
      */
     private HashMap<FormateurDTO, SalleDTO> trouverDateIdeale(String typeFormation) {
-        int joursConsecutif = 0;
+        int joursConsecutif;
         if (typeFormation.equals("court")) {
             joursConsecutif = 3;
         } else {
             joursConsecutif = 5;
         }
+        
         HashMap<FormateurDTO, List<List<Date>>> listDateConsecutiveFormateur = new HashMap<>();
         HashMap<SalleDTO, List<List<Date>>> listDateConsecutiveSalle = new HashMap<>();
         HashMap<FormateurDTO, SalleDTO> hashmapRessourceChoisie = new HashMap<>();
@@ -218,7 +209,6 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
                         FormateurDTO f = new FormateurDTO();
                         f.setIdFormateur(key.getIdFormateur());
                         f.setDate(listDatePossibleFormateur.get(0));
-                        
                         
                         SalleDTO s = new SalleDTO();
                         s.setIdsalle(keyS.getIdsalle());

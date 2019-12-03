@@ -75,7 +75,6 @@ public class ListennerDemandeReservationSalle implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
-            System.out.println("Je suis dans resa salle");
             ObjectMessage object = (ObjectMessage) message;
             if (object.getObject() instanceof SalleDTO) {
                 SalleDTO s = (SalleDTO) object.getObject();

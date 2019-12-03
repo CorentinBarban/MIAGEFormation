@@ -25,7 +25,7 @@ public interface gestionCommercialeLocal {
     
     void memoriserDemandeFormation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, Integer codeclient);
     
-    CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException;
+    void editerComptesRendus() throws ListeFormationsVideException;
     
     String demanderEtatFormation(int idFormation);
     

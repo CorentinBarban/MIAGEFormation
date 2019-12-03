@@ -12,6 +12,7 @@ import DTO.SalleDTO;
 import Exceptions.ListeFormationsVideException;
 import com.barban.corentin.commercial.entities.Demandedeformation;
 import com.barban.corentin.commercial.repositories.DemandedeformationFacadeLocal;
+import com.barban.corentin.commercial.sender.SenderDemandeCompteRendu;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
@@ -98,54 +99,11 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * @throws ListeFormationsVideException
      */
     @Override
-    public CompteRenduDTO editerCompteRendus() throws ListeFormationsVideException {
+    public void editerComptesRendus() throws ListeFormationsVideException {
 
-        //Refaire appel REST pour récupérer + stocker la liste de formations à partir du catalogue
-        CompteRenduDTO compteRendu = null;
+        SenderDemandeCompteRendu sender = new SenderDemandeCompteRendu();
+        sender.sendMessageDemandeInformationFormations();
 
-        try {
-            URL url = new URL(hostTechnico + "/formationsCatalogue");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
-            Gson gson = new Gson();
-            this.listeFormations = new ArrayList<>();
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            } else {
-                InputStreamReader in = new InputStreamReader(conn.getInputStream());
-                BufferedReader br = new BufferedReader(in);
-                String output;
-                while ((output = br.readLine()) != null) {
-                    FormationDTO formation = gson.fromJson(output, FormationDTO.class);
-                    this.listeFormations.add(formation);
-                }
-            }
-            conn.disconnect();
-        } catch (IOException ex) {
-            Logger.getLogger(gestionCommerciale.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (listeFormations.size() > 0) {
-            for (int i = 0; i < listeFormations.size(); i++) {
-                FormationDTO formation = listeFormations.get(i);
-                int nbPersonnes = formation.getNbpersonne();
-                int capaciteMin = formation.getCapacitemin();
-                Calendar calendier = new GregorianCalendar();
-                calendier.add(formation.getDateformation().getDate(), 30);
-                Date dateJour30 = calendier.getTime();
-                Date jour = new Date();
-                if (nbPersonnes < capaciteMin && jour == dateJour30) {
-                    compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Négatif", formation.getNbpersonne());
-                } else {
-                    compteRendu = new CompteRenduDTO(formation.getIntitule(), formation.getDateformation(), formation.getNomclient(), "Positif", formation.getNbpersonne());
-                }
-            }
-        } else {
-            throw new ListeFormationsVideException();
-        }
-        return compteRendu;
     }
 
     /**

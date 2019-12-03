@@ -177,12 +177,11 @@ public class GestionFormation implements GestionFormationLocal {
     
     /**
      * Recuperer les informations liées à une Formation
-     * @param f Object Formation
      * @return 
      */
     @Override
-    public Formation recupererInformationFormation(Formation f) {
-        return this.formationFacade.find(f.getIdformation());
+    public List<Formation> recupererInformationFormation() {
+        return this.formationFacade.findAll();
     }
     
     
