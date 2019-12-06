@@ -125,17 +125,15 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                 if (testFormateur) {
                     Formationcatalogue fc = this.formationF.findByCode(code);
                     Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
-                    Formateurcompetent formateur = new Formateurcompetent(formateurkey);
-                    if (formateurs.contains(formateur)) {
-                        throw new LienFormateurFormationException();
+                    Formateurcompetent formateur = this.formateurF.findByKey(formateurkey);   
+                    if (formateur == null) {
+                        formateur = new Formateurcompetent(formateurkey);
+                        this.formateurF.create(formateur);
+                    } else {
+                        formateurs.add(formateur);
+                        formateur.getFormationcatalogueCollection().add(fc);
+                        return true;
                     }
-                    this.formateurF.create(formateur);
-                    formateurs.add(formateur);
-                    formateur.getFormationcatalogueCollection().add(fc);
-                    fc.setFormateurcompetentCollection(formateurs);
-                    this.formationF.edit(fc);
-                    conn.disconnect();
-                    return true;
                 }
             }
         } catch (MalformedURLException ex) {
@@ -164,13 +162,16 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             } else {
-                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+               InputStreamReader in = new InputStreamReader(conn.getInputStream());
                 BufferedReader br = new BufferedReader(in);
                 String output;
+                Type typeMyType = new TypeToken<ArrayList<FormateurDTO>>() {
+                }.getType();
+                
                 while ((output = br.readLine()) != null) {
-                    FormateurDTO formateur = gson.fromJson(output, FormateurDTO.class);
-                    listeFormateurs.add(formateur);
+                    FormateurDTO listeFormateurDTO = gson.fromJson(output, FormateurDTO.class);
                 }
+                
                 boolean testFormateur = false;
                 for (FormateurDTO f : listeFormateurs) {
                     if (f.getIdFormateur() == formateurkey) {
@@ -180,14 +181,14 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                 if (testFormateur) {
                     Formationcatalogue fc = this.formationF.findByCode(code);
                     Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
-                    Formateurcompetent formateur = new Formateurcompetent(formateurkey);
-                    if (!formateurs.contains(formateur)) {
-                        throw new LienFormateurFormationNotFoundException();
-                    }
+                    Formateurcompetent formateur = this.formateurF.findByKey(formateurkey);
+                    if (formateur == null) {
+                        throw new FormateurNotFoundException();
+                    } else {
                     formateurs.remove(formateur);
-                    fc.setFormateurcompetentCollection(formateurs);
-                    this.formationF.edit(fc);
+                    formateur.getFormationcatalogueCollection().remove(fc);
                     return true;
+                    }
                 }
             }
         } catch (MalformedURLException ex) {
@@ -255,13 +256,13 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                     Salleadequate salle = this.salleF.findByKey(sallekey);
                     System.out.println("salle " + salle.toString());
                     if (salle == null) {
-                        throw new SalleNotFoundException();
+                        salle = new Salleadequate(sallekey);
+                        this.salleF.create(salle);
                     } else {
                         sallesAdequates.add(salle);
                         salle.getFormationcatalogueCollection().add(formationCatalogue);
                         return true;
                     }
-
                 }
             }
         } catch (MalformedURLException ex) {
@@ -291,10 +292,13 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                 InputStreamReader in = new InputStreamReader(conn.getInputStream());
                 BufferedReader br = new BufferedReader(in);
                 String output;
+                Type typeMyType = new TypeToken<ArrayList<SalleDTO>>() {
+                }.getType();
+                
                 while ((output = br.readLine()) != null) {
-                    SalleDTO salle = gson.fromJson(output, SalleDTO.class);
-                    listeSalles.add(salle);
+                    listeSalles = gson.fromJson(output, typeMyType);
                 }
+                
                 boolean testSalle = false;
                 for (SalleDTO s : listeSalles) {
                     if (s.getIdsalle() == sallekey) {
@@ -304,14 +308,14 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                 if (testSalle) {
                     Formationcatalogue fc = this.formationF.findByCode(code);
                     Collection<Salleadequate> salles = fc.getSalleadequateCollection();
-                    Salleadequate salle = new Salleadequate(sallekey);
-                    if (!salles.contains(salle)) {
-                        throw new LienSalleFormationNotFoundException();
+                    Salleadequate salle = this.salleF.findByKey(sallekey);
+                    if (salle == null) {
+                        throw new SalleNotFoundException();
+                    } else {
+                        salles.remove(salle);
+                        salle.getFormationcatalogueCollection().remove(fc);
+                        return true;
                     }
-                    salles.remove(salle);
-                    fc.setSalleadequateCollection(salles);
-                    this.formationF.edit(fc);
-                    return true;
                 }
             }
         } catch (MalformedURLException ex) {

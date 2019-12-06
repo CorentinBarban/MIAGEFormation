@@ -30,4 +30,5 @@ public interface FormateurcompetentFacadeLocal {
 
     int count();
     
+    Formateurcompetent findByKey(Integer formateurKey);
 }
