@@ -5,7 +5,10 @@
  */
 package com.barban.corentin.RH.services;
 
+import DTO.FormateurDTO;
 import com.barban.corentin.RH.business.gestionRHLocal;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
@@ -14,11 +17,20 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ServiceRH implements ServiceRHLocal {
-    
-    private gestionRHLocal gestionRH;
 
+    @EJB
+    private gestionRHLocal gestionRH;
+    
+    
     @Override
     public boolean verifierExistenceFormateur(Integer idFormateur){
         return this.gestionRH.verifierExistenceFormateur(idFormateur);
     }
+
+    @Override
+    public List<FormateurDTO> listerFormateurs() {
+        return this.gestionRH.listerFormateurs();
+    }
+    
+    
 }

@@ -6,7 +6,6 @@
 package com.barban.corentin.technicocommercial.rest;
 
 import Exceptions.FormateurNotFoundException;
-import Exceptions.FormationCatalogueNotFoundException;
 import Exceptions.LienFormateurFormationException;
 import com.barban.corentin.technicoCommercial.services.ServiceTechnicoCommercialLocal;
 import com.google.gson.Gson;
@@ -16,7 +15,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;

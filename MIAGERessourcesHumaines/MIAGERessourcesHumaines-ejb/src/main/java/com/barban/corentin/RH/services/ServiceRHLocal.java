@@ -5,6 +5,8 @@
  */
 package com.barban.corentin.RH.services;
 
+import DTO.FormateurDTO;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -15,5 +17,7 @@ import javax.ejb.Local;
 public interface ServiceRHLocal {
     
     boolean verifierExistenceFormateur(Integer idFormateur);
+
+    List<FormateurDTO> listerFormateurs();
     
 }

@@ -5,9 +5,11 @@
  */
 package com.barban.corentin.patrimoine.services;
 
+import DTO.SalleDTO;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import com.barban.corentin.patrimoine.business.gestionPatrimoineLocal;
+import java.util.List;
 
 /**
  *
@@ -27,6 +29,11 @@ public class ServicePatrimoine implements ServicePatrimoineLocal {
     @Override
     public boolean verifierExistenceSalle(Integer salleKey) {
         return this.gestionPatrimoine.validerExistenceSalle(salleKey);
+    }
+
+    @Override
+    public List<SalleDTO> listerSalles() {
+        return this.gestionPatrimoine.listerSalles();
     }
 
    

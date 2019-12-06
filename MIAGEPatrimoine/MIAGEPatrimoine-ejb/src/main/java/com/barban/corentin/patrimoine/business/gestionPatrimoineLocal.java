@@ -41,4 +41,6 @@ public interface gestionPatrimoineLocal {
      * @return booléen de réponse
      */
     boolean validerExistenceSalle(Integer salleKey);
+
+    List<SalleDTO> listerSalles();
 }

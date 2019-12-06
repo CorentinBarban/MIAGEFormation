@@ -6,6 +6,7 @@
 package com.barban.corentin.technicoCommercial.repositories;
 
 import com.barban.corentin.technicoCommercial.entities.Salleadequate;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,17 @@ public class SalleadequateFacade extends AbstractFacade<Salleadequate> implement
 
     public SalleadequateFacade() {
         super(Salleadequate.class);
+    }
+    
+    @Override
+    public Salleadequate findByKey(Integer salleKey) {
+        Salleadequate result = null;
+        List<Salleadequate> salleadequate = em.createNamedQuery("Salleadequate.findBySallekey")
+                .setParameter("sallekey", salleKey).getResultList();
+        if (!salleadequate.isEmpty()) {
+            result = salleadequate.get(0);
+        }
+        return result;
     }
     
 }

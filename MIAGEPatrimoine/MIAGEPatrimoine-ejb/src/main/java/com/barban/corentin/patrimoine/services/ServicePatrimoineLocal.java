@@ -5,6 +5,8 @@
  */
 package com.barban.corentin.patrimoine.services;
 
+import DTO.SalleDTO;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -15,4 +17,6 @@ import javax.ejb.Local;
 public interface ServicePatrimoineLocal {
     
      boolean verifierExistenceSalle(Integer salleKey);
+
+    List<SalleDTO> listerSalles();
 }

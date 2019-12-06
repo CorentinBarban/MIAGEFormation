@@ -5,6 +5,7 @@
  */
 package com.barban.corentin.patrimoine.business;
 
+import DTO.FormateurDTO;
 import DTO.SalleDTO;
 import Exceptions.SalleNotFoundException;
 import com.barban.corentin.patrimoine.entities.CalendrierSalle;
@@ -88,4 +89,19 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
         return s != null;
     }
 
+    @Override
+    public List<SalleDTO> listerSalles() {
+        List<Salle> salle = this.salleFacade.findAll();
+        List<SalleDTO> sallesDTO = new ArrayList<>();
+        for (Salle salle1 : salle) {
+            SalleDTO s = new SalleDTO();
+            s.setIdsalle(salle1.getIdsalle());
+            s.setNom(salle1.getNom());
+            sallesDTO.add(s);
+        }
+        
+        return sallesDTO;
+    }
+    
+    
 }

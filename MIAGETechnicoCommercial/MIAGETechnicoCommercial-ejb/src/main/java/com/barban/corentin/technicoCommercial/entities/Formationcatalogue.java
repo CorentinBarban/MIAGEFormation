@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -67,7 +68,7 @@ public class Formationcatalogue implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "TARIFFORFAITAIRE")
     private Double tarifforfaitaire;
-    @ManyToMany(mappedBy = "formationcatalogueCollection")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "formationcatalogueCollection")
     private Collection<Salleadequate> salleadequateCollection;
     @JoinTable(name = "FORMATIONCATALOGUE_FORMATEUR", joinColumns = {
         @JoinColumn(name = "FORMATIONCATALOGUEKEY", referencedColumnName = "IDFORMATIONCATALOGUE")}, inverseJoinColumns = {

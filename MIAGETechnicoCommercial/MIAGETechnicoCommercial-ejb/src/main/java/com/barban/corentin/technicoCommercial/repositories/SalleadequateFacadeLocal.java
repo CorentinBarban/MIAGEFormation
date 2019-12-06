@@ -30,4 +30,5 @@ public interface SalleadequateFacadeLocal {
 
     int count();
     
+    Salleadequate findByKey(Integer salleKey);
 }

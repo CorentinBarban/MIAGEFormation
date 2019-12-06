@@ -8,8 +8,8 @@
   <name>MIAGERessourcesHumaines</name>
   <modules>
     <module>MIAGERessourcesHumaines-ear</module>
-    <module>MIAGERessourcesHumaines-web</module>
     <module>MIAGERessourcesHumaines-ejb</module>
+    <module>MIAGERessourcesHumaines-web</module>
   </modules>
   <dependencies>
         <dependency>

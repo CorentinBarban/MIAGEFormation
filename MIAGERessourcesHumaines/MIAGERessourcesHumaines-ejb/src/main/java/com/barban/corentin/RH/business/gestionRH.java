@@ -94,4 +94,25 @@ public class gestionRH implements gestionRHLocal {
         }
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<FormateurDTO> listerFormateurs() {
+        List<Formateur> formateur = this.formateurFacade.findAll();
+        List<FormateurDTO> formateursDTO = new ArrayList<>();
+        for (Formateur formateur1 : formateur) {
+            FormateurDTO f = new FormateurDTO();
+            f.setIdFormateur(formateur1.getIdformateur());
+            f.setNom(formateur1.getNom());
+            f.setPrenom(formateur1.getPrenom());
+            formateursDTO.add(f);
+        }
+        
+        return formateursDTO;
+    }
+    
+    
+
 }
