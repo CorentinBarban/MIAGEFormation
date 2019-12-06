@@ -40,7 +40,7 @@ public interface gestionTechnicoCommercialeLocal {
      * @return la formation créée
      * @throws FormationCatalogueException 
      */
-    Formationcatalogue ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException ; 
+    FormationDTO ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException ; 
  
     /**
      * Supprimer une formation du catalogue

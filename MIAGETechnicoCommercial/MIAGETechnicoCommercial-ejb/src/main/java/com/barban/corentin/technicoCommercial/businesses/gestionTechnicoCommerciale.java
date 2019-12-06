@@ -58,13 +58,14 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
     final String hostRH = "http://localhost:8085/MIAGERessourcesHumaines-web/webresources";
     
     @Override
-    public Formationcatalogue ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException {
+    public FormationDTO ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException {
         if (this.formationF.findByCode(code) != null) {
             throw new FormationCatalogueException();
         }
         Formationcatalogue fc = new Formationcatalogue(code, intitule, niveau, typeduree, capacitemin, capacitemax, tarifforfaitaire);
-        Formationcatalogue retour = this.formationF.create(fc);        
-        return retour;
+        Formationcatalogue retour = this.formationF.create(fc);   
+        FormationDTO fDTO = new FormationDTO(retour.getIntitule(), retour.getCode(), retour.getNiveau(), retour.getTypeduree(), retour.getCapacitemin(), retour.getCapacitemax(), retour.getTarifforfaitaire());
+        return fDTO;
     }
     
     @Override

@@ -9,6 +9,7 @@ import DTO.FormateurDTO;
 import DTO.FormationDTO;
 import DTO.SalleDTO;
 import Exceptions.FormateurNotFoundException;
+import Exceptions.FormationCatalogueException;
 import Exceptions.FormationCatalogueNotFoundException;
 import Exceptions.LienFormateurFormationException;
 import Exceptions.LienFormateurFormationNotFoundException;
@@ -36,6 +37,22 @@ public class ServiceTechnicoCommercial implements ServiceTechnicoCommercialLocal
     @Override
     public FormationDTO consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException {
             return this.gestionTC.consulterFormationCatalogue(code);
+    }
+    
+    @Override
+    public FormationDTO ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueNotFoundException, FormationCatalogueException {
+            return this.gestionTC.ajouterFormationCatalogue(code, intitule, niveau, typeduree, capacitemin, capacitemax, tarifforfaitaire);
+    }
+    
+    /**
+     *
+     * @param code
+     * @return
+     * @throws FormationCatalogueNotFoundException
+     */
+    @Override
+    public boolean supprimerFormationCatalogue(String code) throws FormationCatalogueNotFoundException {
+            return this.gestionTC.supprimerFormationCatalogue(code);
     }
     
     @Override
@@ -112,4 +129,6 @@ public class ServiceTechnicoCommercial implements ServiceTechnicoCommercialLocal
         }
         return false;
     }
+    
+    
 }

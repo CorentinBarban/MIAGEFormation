@@ -9,6 +9,7 @@ import DTO.FormateurDTO;
 import DTO.FormationDTO;
 import DTO.SalleDTO;
 import Exceptions.FormateurNotFoundException;
+import Exceptions.FormationCatalogueException;
 import Exceptions.FormationCatalogueNotFoundException;
 import Exceptions.LienFormateurFormationException;
 import java.util.List;
@@ -20,6 +21,23 @@ import javax.ejb.Local;
  */
 @Local
 public interface ServiceTechnicoCommercialLocal {
+    
+    /**
+     *
+     * @param code
+     * @param intitule
+     * @param niveau
+     * @param typeduree
+     * @param capacitemin
+     * @param capacitemax
+     * @param tarifforfaitaire
+     * @return
+     * @throws FormationCatalogueNotFoundException
+     * @throws FormationCatalogueException
+     */
+    FormationDTO ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueNotFoundException, FormationCatalogueException;
+    
+    boolean supprimerFormationCatalogue(String code) throws FormationCatalogueNotFoundException;
     
     FormationDTO consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException;
     

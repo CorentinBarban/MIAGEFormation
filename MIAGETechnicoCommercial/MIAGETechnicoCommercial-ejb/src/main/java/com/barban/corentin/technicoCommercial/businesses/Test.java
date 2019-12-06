@@ -5,6 +5,7 @@
  */
 package com.barban.corentin.technicoCommercial.businesses;
 
+import DTO.FormationDTO;
 import Exceptions.FormationCatalogueException;
 import com.barban.corentin.technicoCommercial.entities.Formationcatalogue;
 import java.util.logging.Level;
@@ -35,7 +36,7 @@ public class Test {
 
     void testCreateFormationCatalogue() {
         try {
-            Formationcatalogue fc = gestionTC.ajouterFormationCatalogue("toto", "apprendre les blagues", "primaire", "court", 6, 12, 12.5);
+            FormationDTO fc = gestionTC.ajouterFormationCatalogue("toto", "apprendre les blagues", "primaire", "court", 6, 12, 12.5);
             System.out.println(fc.toString());
         } catch (FormationCatalogueException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);

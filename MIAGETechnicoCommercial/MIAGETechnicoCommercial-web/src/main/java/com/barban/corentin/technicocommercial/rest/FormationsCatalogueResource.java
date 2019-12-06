@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package com.barban.corentin.technicocommercial.rest;
+import Exceptions.FormateurNotFoundException;
+import Exceptions.FormationCatalogueException;
+import Exceptions.FormationCatalogueNotFoundException;
+import Exceptions.LienFormateurFormationException;
 import com.barban.corentin.technicoCommercial.services.ServiceTechnicoCommercialLocal;
 import com.google.gson.Gson;
 import java.util.logging.Level;
@@ -19,6 +23,10 @@ import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -53,6 +61,19 @@ public class FormationsCatalogueResource {
         return this.gson.toJson(this.serviceTC.listerCatalogueFormations());
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public String postJson(@QueryParam("code") String code, @QueryParam("intitule") String intitule, @QueryParam("niveau") String niveau, @QueryParam("typeduree") String typeduree, @QueryParam("capacitemin") Integer capacitemin, @QueryParam("capacitemax") Integer capacitemax, @QueryParam("tarifforfaitaire") Double tarifforfaitaire) throws FormationCatalogueNotFoundException, FormationCatalogueException {
+        return this.serviceTC.ajouterFormationCatalogue(code, intitule, niveau, typeduree, capacitemin, capacitemax, tarifforfaitaire).toString();
+    }
+    
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public boolean deleteJson(@PathParam("code") String code) throws FormationCatalogueNotFoundException {
+        return this.serviceTC.supprimerFormationCatalogue(code);
+    }
+            
+    
     /**
      * PUT method for updating or creating an instance of FormationsCatalogueResource
      * @param content representation for the resource
