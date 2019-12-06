@@ -22,9 +22,19 @@ import com.barban.corentin.technicoCommercial.entities.Salleadequate;
 import com.barban.corentin.technicoCommercial.repositories.FormateurcompetentFacadeLocal;
 import com.barban.corentin.technicoCommercial.repositories.FormationcatalogueFacadeLocal;
 import com.barban.corentin.technicoCommercial.repositories.SalleadequateFacadeLocal;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -43,6 +53,9 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
     
     @EJB
     private SalleadequateFacadeLocal salleF;
+    
+    final String hostPatrimoine = "http://localhost:8085/MIAGEPatrimoine-web/webresources";
+    final String hostRH = "http://localhost:8085/MIAGERessourcesHumaines-web/webresources";
     
     @Override
     public Formationcatalogue ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException {
@@ -77,39 +90,106 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
     
     @Override
     public boolean ajouterFormateurAFormation(String code, int formateurkey) throws FormationCatalogueNotFoundException, FormateurNotFoundException, LienFormateurFormationException {
-        if (this.formationF.findByCode(code) == null) {
-            throw new FormationCatalogueNotFoundException();
+        try {
+            if (this.formationF.findByCode(code) == null) {
+                throw new FormationCatalogueNotFoundException();
+            }
+            URL url = new URL(hostRH + "/formateurs");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            Gson gson = new Gson();
+            ArrayList<FormateurDTO> listeFormateurs = new ArrayList<>();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(in);
+                String output;
+                while ((output = br.readLine()) != null) {
+                    FormateurDTO formateur = gson.fromJson(output, FormateurDTO.class);
+                    listeFormateurs.add(formateur);
+                }
+                boolean testFormateur = false;
+                for (FormateurDTO f : listeFormateurs) {
+                    if (f.getIdFormateur() == formateurkey) {
+                        testFormateur = true;
+                    }
+                }
+                if (testFormateur) {
+                Formationcatalogue fc = this.formationF.findByCode(code);
+                Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
+                Formateurcompetent formateur = new Formateurcompetent(formateurkey);
+                if (formateurs.contains(formateur)) {
+                    throw new LienFormateurFormationException();
+                }
+                this.formateurF.create(formateur);
+                formateurs.add(formateur);
+                fc.setFormateurcompetentCollection(formateurs);
+                this.formationF.edit(fc);
+                conn.disconnect();
+                return true;
+                }
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ProtocolException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //ajouter la verification via interrogation a gestion RH
-        Formationcatalogue fc = this.formationF.findByCode(code);
-        Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
-        Formateurcompetent formateur = new Formateurcompetent(formateurkey);
-        if (formateurs.contains(formateur)) {
-            throw new LienFormateurFormationException();
-        }
-        this.formateurF.create(formateur);
-        formateurs.add(formateur);
-        fc.setFormateurcompetentCollection(formateurs);
-        this.formationF.edit(fc);
-        return true;
+        return false;
     }
     
     @Override
     public boolean supprimerFormateurDeFormation(String code, int formateurkey) throws FormationCatalogueNotFoundException, FormateurNotFoundException, LienFormateurFormationNotFoundException {
-        if (this.formationF.findByCode(code) == null) {
-            throw new FormationCatalogueNotFoundException();
+        try {
+            if (this.formationF.findByCode(code) == null) {
+                throw new FormationCatalogueNotFoundException();
+            }
+            URL url = new URL(hostRH + "/formateurs");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            Gson gson = new Gson();
+            ArrayList<FormateurDTO> listeFormateurs = new ArrayList<>();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(in);
+                String output;
+                while ((output = br.readLine()) != null) {
+                    FormateurDTO formateur = gson.fromJson(output, FormateurDTO.class);
+                    listeFormateurs.add(formateur);
+                }
+                boolean testFormateur = false;
+                for (FormateurDTO f : listeFormateurs) {
+                    if (f.getIdFormateur() == formateurkey) {
+                        testFormateur = true;
+                    }
+                }
+                if (testFormateur) {
+                    Formationcatalogue fc = this.formationF.findByCode(code);
+                    Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
+                    Formateurcompetent formateur = new Formateurcompetent(formateurkey);
+                    if (!formateurs.contains(formateur)) {
+                        throw new LienFormateurFormationNotFoundException();
+                    }
+                    formateurs.remove(formateur);
+                    fc.setFormateurcompetentCollection(formateurs);
+                    this.formationF.edit(fc);
+                    return true;
+                }
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //ajouter la verification via interrogation a gestion RH
-        Formationcatalogue fc = this.formationF.findByCode(code);
-        Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
-        Formateurcompetent formateur = new Formateurcompetent(formateurkey);
-        if (!formateurs.contains(formateur)) {
-            throw new LienFormateurFormationNotFoundException();
-        }
-        formateurs.remove(formateur);
-        fc.setFormateurcompetentCollection(formateurs);
-        this.formationF.edit(fc);
-        return true;
+        return false;
     }
     
     @Override
@@ -130,38 +210,102 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
     
     @Override
     public boolean ajouterSalleAFormation(String code, int sallekey) throws FormationCatalogueNotFoundException, SalleNotFoundException, LienSalleFormationException {
-        if (this.formationF.find(code) == null) {
-            throw new FormationCatalogueNotFoundException();
+        try {
+            if (this.formationF.find(code) == null) {
+                throw new FormationCatalogueNotFoundException();
+            }
+            URL url = new URL(hostPatrimoine + "/salles");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            Gson gson = new Gson();
+            ArrayList<SalleDTO> listeSalles = new ArrayList<>();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(in);
+                String output;
+                while ((output = br.readLine()) != null) {
+                    SalleDTO salle = gson.fromJson(output, SalleDTO.class);
+                    listeSalles.add(salle);
+                }
+                boolean testSalle = false;
+                for (SalleDTO s : listeSalles) {
+                    if (s.getIdsalle() == sallekey) {
+                        testSalle = true;
+                    }
+                }
+                if (testSalle) {
+                    Formationcatalogue fc = this.formationF.findByCode(code);
+                    Collection<Salleadequate> salles = fc.getSalleadequateCollection();
+                    Salleadequate salle = new Salleadequate(sallekey);
+                    if (salles.contains(salle)) {
+                        throw new LienSalleFormationException();
+                    }
+                    salles.add(salle);
+                    fc.setSalleadequateCollection(salles);
+                    this.formationF.edit(fc);
+                    return true;
+                }
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //ajouter la verification via interrogation a gestion Patrimoine
-        Formationcatalogue fc = this.formationF.findByCode(code);
-        Collection<Salleadequate> salles = fc.getSalleadequateCollection();
-        Salleadequate salle = new Salleadequate(sallekey);
-        if (salles.contains(salle)) {
-            throw new LienSalleFormationException();
-        }
-        salles.add(salle);
-        fc.setSalleadequateCollection(salles);
-        this.formationF.edit(fc);
-        return true;
+        return false;
     }
     
     @Override
     public boolean supprimerSalleDeFormation(String code, int sallekey) throws FormationCatalogueNotFoundException, SalleNotFoundException, LienSalleFormationNotFoundException {
-        if (this.formationF.findByCode(code) == null) {
-            throw new FormationCatalogueNotFoundException();
+        try {
+            if (this.formationF.findByCode(code) == null) {
+                throw new FormationCatalogueNotFoundException();
+            }
+            URL url = new URL(hostPatrimoine + "/salles");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            Gson gson = new Gson();
+            ArrayList<SalleDTO> listeSalles = new ArrayList<>();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                BufferedReader br = new BufferedReader(in);
+                String output;
+                while ((output = br.readLine()) != null) {
+                    SalleDTO salle = gson.fromJson(output, SalleDTO.class);
+                    listeSalles.add(salle);
+                }
+                boolean testSalle = false;
+                for (SalleDTO s : listeSalles) {
+                    if (s.getIdsalle() == sallekey) {
+                        testSalle = true;
+                    }
+                }
+                if (testSalle) {
+                    Formationcatalogue fc = this.formationF.findByCode(code);
+                    Collection<Salleadequate> salles = fc.getSalleadequateCollection();
+                    Salleadequate salle = new Salleadequate(sallekey);
+                    if (!salles.contains(salle)) {
+                        throw new LienSalleFormationNotFoundException();
+                    }
+                    salles.remove(salle);
+                    fc.setSalleadequateCollection(salles);
+                    this.formationF.edit(fc);
+                    return true;
+                }
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(gestionTechnicoCommerciale.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //ajouter la verification via interrogation a gestion Patrimoine
-        Formationcatalogue fc = this.formationF.findByCode(code);
-        Collection<Salleadequate> salles = fc.getSalleadequateCollection();
-        Salleadequate salle = new Salleadequate(sallekey);
-        if (!salles.contains(salle)) {
-            throw new LienSalleFormationNotFoundException();
-        }
-        salles.remove(salle);
-        fc.setSalleadequateCollection(salles);
-        this.formationF.edit(fc);
-        return true;
+        return false;
     }
     
     @Override

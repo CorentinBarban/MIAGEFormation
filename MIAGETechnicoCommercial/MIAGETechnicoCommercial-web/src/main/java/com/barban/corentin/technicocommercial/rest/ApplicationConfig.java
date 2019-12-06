@@ -30,7 +30,9 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.barban.corentin.technicocommercial.rest.FormateursResource.class);
+        resources.add(com.barban.corentin.technicocommercial.rest.FormationCatalogueFormateurResource.class);
         resources.add(com.barban.corentin.technicocommercial.rest.FormationCatalogueResource.class);
+        resources.add(com.barban.corentin.technicocommercial.rest.FormationCatalogueSalleResource.class);
         resources.add(com.barban.corentin.technicocommercial.rest.FormationsCatalogueResource.class);
         resources.add(com.barban.corentin.technicocommercial.rest.SallesResource.class);
     }

@@ -8,7 +8,13 @@ package com.barban.corentin.technicoCommercial.services;
 import DTO.FormateurDTO;
 import DTO.FormationDTO;
 import DTO.SalleDTO;
+import Exceptions.FormateurNotFoundException;
 import Exceptions.FormationCatalogueNotFoundException;
+import Exceptions.LienFormateurFormationException;
+import Exceptions.LienFormateurFormationNotFoundException;
+import Exceptions.LienSalleFormationException;
+import Exceptions.LienSalleFormationNotFoundException;
+import Exceptions.SalleNotFoundException;
 import com.barban.corentin.technicoCommercial.businesses.gestionTechnicoCommerciale;
 import com.barban.corentin.technicoCommercial.businesses.gestionTechnicoCommercialeLocal;
 import java.util.List;
@@ -57,6 +63,53 @@ public class ServiceTechnicoCommercial implements ServiceTechnicoCommercialLocal
         return null;
     }
     
+    @Override
+    public boolean ajouterFormateurDansFormation(String code, int formateurkey) throws FormateurNotFoundException, LienFormateurFormationException {
+        try {
+            return this.gestionTC.ajouterFormateurAFormation(code, formateurkey);
+        } catch (FormationCatalogueNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     
+    @Override
+    public boolean supprimerFormateurDeFormation(String code, int formateurkey) throws FormateurNotFoundException, LienFormateurFormationException {
+        try {
+            return this.gestionTC.supprimerFormateurDeFormation(code, formateurkey);
+        } catch (FormationCatalogueNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LienFormateurFormationNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     
+    @Override
+    public boolean ajouterSalleDansFormation(String code, int sallekey) throws FormateurNotFoundException, LienFormateurFormationException {
+        try {
+            return this.gestionTC.ajouterSalleAFormation(code, sallekey);
+        }   catch (FormationCatalogueNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SalleNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LienSalleFormationException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;   
+    }
+    
+    @Override
+    public boolean supprimerSalleDeFormation(String code, int sallekey) throws FormateurNotFoundException, LienFormateurFormationException {
+        try {
+            return this.gestionTC.supprimerSalleDeFormation(code, sallekey);
+        }   catch (FormationCatalogueNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SalleNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LienSalleFormationNotFoundException ex) {
+            Logger.getLogger(ServiceTechnicoCommercial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }
