@@ -93,6 +93,7 @@ public class ListennerDemandeCompteRendu implements MessageListener {
             for (Formation formation : listFormations) {
                 FormationDTO f = new FormationDTO();
                 f.setDateformation(formation.getDateformation());
+                System.out.println("formation" + formation.getFormationcomposeCollection().toString());
                 f.setDateDemandeformation(formation.getFormationcomposeCollection().iterator().next().getStockagedemandeformation().getDatedemandeformation());
                 int nbPersonnes = 0;
                 List<String> listeClient = new ArrayList();

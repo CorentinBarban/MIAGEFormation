@@ -51,7 +51,8 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
         if(existenceFormation == true){
             // Recuperer la liste de formateur pressentis
             List<FormateurDTO> listeFormateur = this.gestionCommerciale.recupererListeFormateurCompetent(codeFormation);
-           // Recuperer la liste de salles pressenties
+                
+            // Recuperer la liste de salles pressenties
             List<SalleDTO> listeSalles = this.gestionCommerciale.recupererListeSallesAdequates(codeFormation);
             
             FormationDTO formationCatalogue = this.gestionCommerciale.recupererInformationFormationCatalogue(codeFormation);

@@ -144,9 +144,13 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
             if (object.getObject() instanceof SallesDTO) {
                 SallesDTO salles = (SallesDTO) object.getObject();
                 this.listeSalles = salles.getHashMapDateSalle();
+                System.out.println("Salles Dispo" + salles.getHashMapDateSalle().toString());
             } else if (object.getObject() instanceof FormateursDTO) {
+                
+                
                 FormateursDTO formateurs = (FormateursDTO) object.getObject();
                 this.listeFormateurs = formateurs.getListeFormateur();
+                System.out.println("Formateurs Dispo " + formateurs.getListeFormateur().toString());
             }
 
             if (this.listeFormateurs != null && this.listeSalles != null) {

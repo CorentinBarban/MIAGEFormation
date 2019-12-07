@@ -40,7 +40,6 @@ public class SenderReservationFormateurJMS implements MessageListener {
     
     public SenderReservationFormateurJMS() {
         
-        
     }
     
     /**

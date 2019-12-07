@@ -95,12 +95,10 @@ public class SenderDemandeFormationJMS implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
-        String messageText = null;
         if (message instanceof TextMessage) {
             try {
                 TextMessage textMessage = (TextMessage) message;
-                messageText = textMessage.getText();
-                System.out.println("messageText = " + messageText);
+                System.out.println("messageText = " + textMessage.getText());
             } catch (JMSException ex) {
                 Logger.getLogger(SenderDemandeFormationJMS.class.getName()).log(Level.SEVERE, null, ex);
             }

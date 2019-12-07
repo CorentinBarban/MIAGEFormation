@@ -78,6 +78,7 @@ public class ListennerDemandeReservationFormateur implements MessageListener {
 
             ObjectMessage object = (ObjectMessage) message;
             if (object.getObject() instanceof FormateurDTO) {
+                System.out.println("Demande de ressource Formateur");
                 FormateurDTO f = (FormateurDTO) object.getObject();
                 this.gestionRH.modifierStatutFormateur(f.getIdFormateur(), f.getStatut(), f.getDate());
                 ObjectMessage response = this.session.createObjectMessage(f);

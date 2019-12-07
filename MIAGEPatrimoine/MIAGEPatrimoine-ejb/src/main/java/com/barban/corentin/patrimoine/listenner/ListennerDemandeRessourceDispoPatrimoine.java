@@ -88,7 +88,9 @@ public class ListennerDemandeRessourceDispoPatrimoine implements MessageListener
         try {
             ObjectMessage object = (ObjectMessage) message;
             if (object.getObject() instanceof List) {
+                System.out.println("Demande Ressources patrimoine");
                 List<SalleDTO> listeSalle = (List<SalleDTO>) object.getObject();
+                System.out.println("Liste Salle pressentie " + listeSalle.toString());
                 HashMap<SalleDTO,List<Date>> listeSallesDispo = this.gestionPatrimoine.listerSalleDisponible(listeSalle);
                 SallesDTO s = new SallesDTO();
                 
