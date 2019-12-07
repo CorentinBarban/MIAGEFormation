@@ -62,11 +62,12 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
         this.stockageDemandeFormation = sf;
         this.demandeFormationDTO = df;
     }
-    
+
     /**
      * Envoyer une demande de ressources
+     *
      * @param listDemandeFormateurDispo
-     * @param listDemandeSalleDispo 
+     * @param listDemandeSalleDispo
      */
     public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
 
@@ -120,21 +121,22 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
         }
 
     }
-    
+
     /**
      * Creation d'une chaine de caractere random
-     * @return 
+     *
+     * @return
      */
     private String createRandomString() {
         Random random = new Random(System.currentTimeMillis());
         long randomLong = random.nextLong();
         return Long.toHexString(randomLong);
     }
-    
-    
+
     /**
      * Attente de la réponse de demande de ressources
-     * @param message 
+     *
+     * @param message
      */
     @Override
     public void onMessage(Message message) {
@@ -144,13 +146,10 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
             if (object.getObject() instanceof SallesDTO) {
                 SallesDTO salles = (SallesDTO) object.getObject();
                 this.listeSalles = salles.getHashMapDateSalle();
-                System.out.println("Salles Dispo" + salles.getHashMapDateSalle().toString());
             } else if (object.getObject() instanceof FormateursDTO) {
-                
-                
+
                 FormateursDTO formateurs = (FormateursDTO) object.getObject();
                 this.listeFormateurs = formateurs.getListeFormateur();
-                System.out.println("Formateurs Dispo " + formateurs.getListeFormateur().toString());
             }
 
             if (this.listeFormateurs != null && this.listeSalles != null) {
@@ -183,7 +182,7 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
         } else {
             joursConsecutif = 5;
         }
-        
+
         HashMap<FormateurDTO, List<List<Date>>> listDateConsecutiveFormateur = new HashMap<>();
         HashMap<SalleDTO, List<List<Date>>> listDateConsecutiveSalle = new HashMap<>();
         HashMap<FormateurDTO, SalleDTO> hashmapRessourceChoisie = new HashMap<>();
@@ -213,18 +212,18 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
                         FormateurDTO f = new FormateurDTO();
                         f.setIdFormateur(key.getIdFormateur());
                         f.setDate(listDatePossibleFormateur.get(0));
-                        
+
                         SalleDTO s = new SalleDTO();
                         s.setIdsalle(keyS.getIdsalle());
                         s.setDate(listDatePossibleFormateur.get(0));
-                        if(this.formation.getStatut().equals("PLANIFIEE")){
+                        if (this.formation.getStatut().equals("PLANIFIEE")) {
                             f.setStatut("PLANIFIEE");
                             s.setStatut("PLANIFIEE");
-                        }else{
+                        } else {
                             f.setStatut("PRESSENTI");
                             s.setStatut("PRESSENTIE");
                         }
-                        
+
                         hashmapRessourceChoisie.put(f, s);
                         return hashmapRessourceChoisie;
                     }
