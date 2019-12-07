@@ -4,10 +4,8 @@
  * and open the template in the editor.
  */
 package com.barban.corentin.technicocommercial.rest;
-import Exceptions.FormateurNotFoundException;
 import Exceptions.FormationCatalogueException;
 import Exceptions.FormationCatalogueNotFoundException;
-import Exceptions.LienFormateurFormationException;
 import com.barban.corentin.technicoCommercial.services.ServiceTechnicoCommercialLocal;
 import com.google.gson.Gson;
 import java.util.logging.Level;

@@ -125,15 +125,15 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                 if (testFormateur) {
                     Formationcatalogue fc = this.formationF.findByCode(code);
                     Collection<Formateurcompetent> formateurs = fc.getFormateurcompetentCollection();
-                    Formateurcompetent formateur = this.formateurF.findByKey(formateurkey);   
+                    Formateurcompetent formateur = this.formateurF.findByKey(formateurkey);
                     if (formateur == null) {
                         formateur = new Formateurcompetent(formateurkey);
                         this.formateurF.create(formateur);
-                    } else {
-                        formateurs.add(formateur);
-                        formateur.getFormationcatalogueCollection().add(fc);
-                        return true;
                     }
+                    formateurs.add(formateur);
+                    formateur.getFormationcatalogueCollection().add(fc);
+                    return true;
+
                 }
             }
         } catch (MalformedURLException ex) {
@@ -162,16 +162,16 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             } else {
-               InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                InputStreamReader in = new InputStreamReader(conn.getInputStream());
                 BufferedReader br = new BufferedReader(in);
                 String output;
                 Type typeMyType = new TypeToken<ArrayList<FormateurDTO>>() {
                 }.getType();
-                
+
                 while ((output = br.readLine()) != null) {
-                    FormateurDTO listeFormateurDTO = gson.fromJson(output, FormateurDTO.class);
+                    listeFormateurs = gson.fromJson(output, typeMyType);
                 }
-                
+
                 boolean testFormateur = false;
                 for (FormateurDTO f : listeFormateurs) {
                     if (f.getIdFormateur() == formateurkey) {
@@ -185,9 +185,9 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                     if (formateur == null) {
                         throw new FormateurNotFoundException();
                     } else {
-                    formateurs.remove(formateur);
-                    formateur.getFormationcatalogueCollection().remove(fc);
-                    return true;
+                        formateurs.remove(formateur);
+                        formateur.getFormationcatalogueCollection().remove(fc);
+                        return true;
                     }
                 }
             }
@@ -258,11 +258,11 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                     if (salle == null) {
                         salle = new Salleadequate(sallekey);
                         this.salleF.create(salle);
-                    } else {
-                        sallesAdequates.add(salle);
-                        salle.getFormationcatalogueCollection().add(formationCatalogue);
-                        return true;
                     }
+                    sallesAdequates.add(salle);
+                    salle.getFormationcatalogueCollection().add(formationCatalogue);
+                    return true;
+
                 }
             }
         } catch (MalformedURLException ex) {
@@ -294,11 +294,11 @@ public class gestionTechnicoCommerciale implements gestionTechnicoCommercialeLoc
                 String output;
                 Type typeMyType = new TypeToken<ArrayList<SalleDTO>>() {
                 }.getType();
-                
+
                 while ((output = br.readLine()) != null) {
                     listeSalles = gson.fromJson(output, typeMyType);
                 }
-                
+
                 boolean testSalle = false;
                 for (SalleDTO s : listeSalles) {
                     if (s.getIdsalle() == sallekey) {
