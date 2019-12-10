@@ -6,17 +6,16 @@
 package com.barban.corentin.client;
 
 import DTO.FormationDTO;
-import com.google.gson.reflect.TypeToken;
-import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**
@@ -61,9 +60,9 @@ public class CréerDemande extends javax.swing.JFrame {
         TF_codeClient = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        SP_nbPersonnes = new javax.swing.JSpinner();
         BTN_valider = new javax.swing.JButton();
         BTN_retour = new javax.swing.JButton();
+        TF_nbPersonnes = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,14 +97,12 @@ public class CréerDemande extends javax.swing.JFrame {
             }
         });
 
+        TF_nbPersonnes.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(97, 97, 97))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -120,14 +117,17 @@ public class CréerDemande extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BTN_valider)
                         .addGap(48, 48, 48)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(BTN_retour)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(TF_nom, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(CB_formation, javax.swing.GroupLayout.Alignment.TRAILING, 0, 194, Short.MAX_VALUE)
-                        .addComponent(TF_codeClient)
-                        .addComponent(SP_nbPersonnes)))
+                    .addComponent(TF_nom, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(CB_formation, javax.swing.GroupLayout.Alignment.TRAILING, 0, 194, Short.MAX_VALUE)
+                    .addComponent(TF_codeClient)
+                    .addComponent(TF_nbPersonnes, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(100, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(97, 97, 97))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +149,7 @@ public class CréerDemande extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(SP_nbPersonnes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TF_nbPersonnes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BTN_retour)
@@ -167,7 +167,7 @@ public class CréerDemande extends javax.swing.JFrame {
     }//GEN-LAST:event_BTN_retourActionPerformed
 
     private void BTN_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_validerActionPerformed
-        if (this.TF_codeClient.getText().isBlank() || this.CB_formation.getSelectedItem().toString().isBlank() || this.TF_nom.getText().isBlank() || (int) this.SP_nbPersonnes.getValue() == 0) {
+        if (this.TF_codeClient.getText().isBlank() || this.CB_formation.getSelectedItem().toString().isBlank() || this.TF_nom.getText().isBlank() || Integer.getInteger(this.TF_nbPersonnes.getText()) == 0) {
             JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.");
         }
         else {
@@ -179,12 +179,21 @@ public class CréerDemande extends javax.swing.JFrame {
                     intituleF = f.getIntitule();
                 }
             }
-            String adresse = "http://localhost:8080/MIAGECommercial-web/webresources/demandeFormation?nomClient=\'" + this.TF_nom.getText() + "\'&codeFormation=\'" + codeF + "\'&intitule=\'" + intituleF + "\'&codeClient=\'" + this.TF_codeClient.getText() + "\'&nbPersonnes=" + String.valueOf(this.SP_nbPersonnes.getValue());
-                System.out.println(adresse);
+            String adresse = "http://localhost:8080/MIAGECommercial-web/webresources/demandeFormation";
             URL url = new URL(adresse);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("PUT");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write("nomClient=" + this.TF_nom.getText() + "&codeFormation=" + codeF + "&intitule=" + intituleF + "&codeClient=" + this.TF_codeClient.getText() + "&nbPersonnes=" + this.TF_nbPersonnes.getText());
+            writer.flush();
+            writer.close();
+            os.close();
             conn.connect();
+            
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             } else {
@@ -240,8 +249,8 @@ public class CréerDemande extends javax.swing.JFrame {
     private javax.swing.JButton BTN_retour;
     private javax.swing.JButton BTN_valider;
     private javax.swing.JComboBox<String> CB_formation;
-    private javax.swing.JSpinner SP_nbPersonnes;
     private javax.swing.JTextField TF_codeClient;
+    private javax.swing.JFormattedTextField TF_nbPersonnes;
     private javax.swing.JTextField TF_nom;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
