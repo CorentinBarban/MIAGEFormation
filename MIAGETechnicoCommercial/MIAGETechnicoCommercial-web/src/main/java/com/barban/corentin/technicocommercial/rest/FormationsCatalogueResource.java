@@ -65,11 +65,11 @@ public class FormationsCatalogueResource {
         return this.serviceTC.ajouterFormationCatalogue(code, intitule, niveau, typeduree, capacitemin, capacitemax, tarifforfaitaire).toString();
     }
     
-    @DELETE
+    /*@DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public boolean deleteJson(@PathParam("code") String code) throws FormationCatalogueNotFoundException {
         return this.serviceTC.supprimerFormationCatalogue(code);
-    }
+    }*/
             
     
     /**

@@ -20,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
@@ -64,6 +65,12 @@ public class FormationCatalogueResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
+    }
+    
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public boolean deleteJson(@PathParam("code") String code) throws FormationCatalogueNotFoundException {
+        return this.serviceTC.supprimerFormationCatalogue(code);
     }
     
     private ServiceTechnicoCommercialLocal lookupServiceTechnicoCommercialLocal() {
