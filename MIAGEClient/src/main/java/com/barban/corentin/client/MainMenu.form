@@ -171,12 +171,18 @@
         <Property name="text" type="java.lang.String" value="G&#xe9;rer les salles ad&#xe9;quates de la formation"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_sallesFActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_formateursF">
       <Properties>
         <Property name="text" type="java.lang.String" value="G&#xe9;rer les formateurs comp&#xe9;tents pour la formation"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_formateursFActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>

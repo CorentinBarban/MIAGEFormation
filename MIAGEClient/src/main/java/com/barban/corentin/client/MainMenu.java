@@ -232,9 +232,19 @@ public class MainMenu extends javax.swing.JFrame {
 
         BTN_sallesF.setText("Gérer les salles adéquates de la formation");
         BTN_sallesF.setEnabled(false);
+        BTN_sallesF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_sallesFActionPerformed(evt);
+            }
+        });
 
         BTN_formateursF.setText("Gérer les formateurs compétents pour la formation");
         BTN_formateursF.setEnabled(false);
+        BTN_formateursF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_formateursFActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Actions commerciales :");
@@ -315,6 +325,18 @@ public class MainMenu extends javax.swing.JFrame {
         af.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BTN_addFActionPerformed
+
+    private void BTN_sallesFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_sallesFActionPerformed
+        GérerRessourcesFormation grf = new GérerRessourcesFormation(true, this.tableFormations.getValueAt(this.tableFormations.getSelectedRow(), 0).toString());
+        grf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BTN_sallesFActionPerformed
+
+    private void BTN_formateursFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_formateursFActionPerformed
+        GérerRessourcesFormation grf = new GérerRessourcesFormation(false, this.tableFormations.getValueAt(this.tableFormations.getSelectedRow(), 0).toString());
+        grf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BTN_formateursFActionPerformed
 
     /**
      * @param args the command line arguments

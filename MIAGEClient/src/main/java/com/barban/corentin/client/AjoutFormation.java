@@ -194,6 +194,9 @@ public class AjoutFormation extends javax.swing.JFrame {
         else if (Integer.parseInt(this.TF_Capacitemax.getText()) <= 0 || Integer.parseInt(this.TF_Capacitemin.getText()) <= 0 || Double.parseDouble(this.TF_Tarifforfaitaire.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Les capacités et le tarif doivent être supérieurs à 0.");
         }
+        else if (this.TF_Code.getText().length() > 8) {
+            JOptionPane.showMessageDialog(this, "Le code de la formation doit faire au maximum 8 caractères.");
+        }
         else {
             try {
                 Integer.parseInt(this.TF_Capacitemin.getText());
