@@ -35,16 +35,6 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu() {
         initComponents();
         chargerCatalogue();
-        DefaultTableModel tm = (DefaultTableModel) tableFormations.getModel();
-        tm.setNumRows(listeFormations.size());
-        for (int i=0; i < this.listeFormations.size(); i++) {
-            tm.setValueAt(this.listeFormations.get(i).getCode(), i, 0);
-            tm.setValueAt(this.listeFormations.get(i).getIntitule(), i, 1);
-            tm.setValueAt(this.listeFormations.get(i).getNiveau(), i, 2);
-            tm.setValueAt(this.listeFormations.get(i).getTypeduree(), i, 3);
-            tm.setValueAt(this.listeFormations.get(i).getTarifforfaitaire(), i, 4);
-        }
-        tableFormations.setModel(tm);
     }
 
     private void chargerCatalogue() {
@@ -67,6 +57,35 @@ public class MainMenu extends javax.swing.JFrame {
                 while ((output = br.readLine()) != null) {
                     this.listeFormations = gson.fromJson(output, typeMyType);
                 }
+                DefaultTableModel tm = (DefaultTableModel) tableFormations.getModel();
+                tm.setNumRows(listeFormations.size());
+                for (int i=0; i < this.listeFormations.size(); i++) {
+                    tm.setValueAt(this.listeFormations.get(i).getCode(), i, 0);
+                    tm.setValueAt(this.listeFormations.get(i).getIntitule(), i, 1);
+                    tm.setValueAt(this.listeFormations.get(i).getNiveau(), i, 2);
+                    tm.setValueAt(this.listeFormations.get(i).getTypeduree(), i, 3);
+                    tm.setValueAt(this.listeFormations.get(i).getTarifforfaitaire(), i, 4);
+                }
+                tableFormations.setModel(tm);
+            }
+            conn.disconnect();
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void deleteFormationFromCatalogue() {
+        try {
+            String toDelete = this.tableFormations.getValueAt(this.tableFormations.getSelectedRow(), 0).toString();
+            URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + toDelete );
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            conn.connect();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            } else {
+                chargerCatalogue();
             }
             conn.disconnect();
         } catch (IOException ex) {
@@ -86,7 +105,13 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableFormations = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        BTN_demandeF = new javax.swing.JButton();
+        BTN_addF = new javax.swing.JButton();
+        BTN_supprF = new javax.swing.JButton();
+        BTN_sallesF = new javax.swing.JButton();
+        BTN_formateursF = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,56 +198,123 @@ public class MainMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableFormations.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableFormationsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableFormations);
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel1.setText("Catalogue des formations disponibles");
 
-        jButton1.setText("Demander une formation");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BTN_demandeF.setText("Demander une formation");
+        BTN_demandeF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BTN_demandeFActionPerformed(evt);
             }
         });
+
+        BTN_addF.setText("Ajouter une formation au catalogue");
+        BTN_addF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_addFActionPerformed(evt);
+            }
+        });
+
+        BTN_supprF.setText("Supprimer la formation sélectionnée");
+        BTN_supprF.setEnabled(false);
+        BTN_supprF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_supprFActionPerformed(evt);
+            }
+        });
+
+        BTN_sallesF.setText("Gérer les salles adéquates de la formation");
+        BTN_sallesF.setEnabled(false);
+
+        BTN_formateursF.setText("Gérer les formateurs compétents pour la formation");
+        BTN_formateursF.setEnabled(false);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Actions commerciales :");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Actions technico-commerciales :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(143, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(166, 166, 166))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel1)))
-                .addContainerGap())
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1)
+                .addContainerGap(364, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BTN_addF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BTN_supprF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BTN_formateursF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BTN_sallesF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BTN_demandeF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_addF)
+                        .addGap(18, 18, 18)
+                        .addComponent(BTN_supprF)
+                        .addGap(18, 18, 18)
+                        .addComponent(BTN_sallesF)
+                        .addGap(18, 18, 18)
+                        .addComponent(BTN_formateursF)
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_demandeF)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BTN_demandeFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_demandeFActionPerformed
         CréerDemande create = new CréerDemande(listeFormations);
         create.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BTN_demandeFActionPerformed
+
+    private void tableFormationsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFormationsMouseClicked
+        if (tableFormations.getSelectedRow() > -1) {
+            this.BTN_formateursF.setEnabled(true);
+            this.BTN_sallesF.setEnabled(true);
+            this.BTN_supprF.setEnabled(true);
+        }
+    }//GEN-LAST:event_tableFormationsMouseClicked
+
+    private void BTN_supprFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_supprFActionPerformed
+        this.deleteFormationFromCatalogue();
+    }//GEN-LAST:event_BTN_supprFActionPerformed
+
+    private void BTN_addFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_addFActionPerformed
+        AjoutFormation af = new AjoutFormation();
+        af.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BTN_addFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -260,8 +352,14 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton BTN_addF;
+    private javax.swing.JButton BTN_demandeF;
+    private javax.swing.JButton BTN_formateursF;
+    private javax.swing.JButton BTN_sallesF;
+    private javax.swing.JButton BTN_supprF;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableFormations;
     // End of variables declaration//GEN-END:variables

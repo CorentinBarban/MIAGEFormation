@@ -167,45 +167,48 @@ public class CréerDemande extends javax.swing.JFrame {
     }//GEN-LAST:event_BTN_retourActionPerformed
 
     private void BTN_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_validerActionPerformed
-        if (this.TF_codeClient.getText().isBlank() || this.CB_formation.getSelectedItem().toString().isBlank() || this.TF_nom.getText().isBlank() || Integer.getInteger(this.TF_nbPersonnes.getText()) == 0) {
+        if (this.TF_codeClient.getText().isBlank() || this.CB_formation.getSelectedItem().toString().isBlank() || this.TF_nom.getText().isBlank() || this.TF_nbPersonnes.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.");
+        }
+        else if (Integer.parseInt(this.TF_nbPersonnes.getText()) <= 0) {
+            JOptionPane.showMessageDialog(this, "Le nombre de personnes inscrites doit être supérieur à 0.");
         }
         else {
             try {
-            String codeF = this.CB_formation.getSelectedItem().toString();
-            String intituleF = null;
-            for (FormationDTO f : this.listeFormations) {
-                if (f.getCode().equals(codeF)) {
-                    intituleF = f.getIntitule();
+                String codeF = this.CB_formation.getSelectedItem().toString();
+                String intituleF = null;
+                for (FormationDTO f : this.listeFormations) {
+                    if (f.getCode().equals(codeF)) {
+                        intituleF = f.getIntitule();
+                    }
                 }
-            }
-            String adresse = "http://localhost:8080/MIAGECommercial-web/webresources/demandeFormation";
-            URL url = new URL(adresse);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PUT");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
+                String adresse = "http://localhost:8080/MIAGECommercial-web/webresources/demandeFormation";
+                URL url = new URL(adresse);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
 
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write("nomClient=" + this.TF_nom.getText() + "&codeFormation=" + codeF + "&intitule=" + intituleF + "&codeClient=" + this.TF_codeClient.getText() + "&nbPersonnes=" + this.TF_nbPersonnes.getText());
-            writer.flush();
-            writer.close();
-            os.close();
-            conn.connect();
-            
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            } else {
-                MainMenu main = new MainMenu();
-                JOptionPane.showMessageDialog(main, "La demande a bien été effectuée.");
-                main.setVisible(true);
-                this.dispose();
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                writer.write("nomClient=" + this.TF_nom.getText() + "&codeFormation=" + codeF + "&intitule=" + intituleF + "&codeClient=" + this.TF_codeClient.getText() + "&nbPersonnes=" + this.TF_nbPersonnes.getText());
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                } else {
+                    MainMenu main = new MainMenu();
+                    JOptionPane.showMessageDialog(main, "La demande a bien été effectuée.");
+                    main.setVisible(true);
+                    this.dispose();
+                }
+                conn.disconnect();
+            } catch (IOException ex) {
+                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conn.disconnect();
-        } catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
         }
     }//GEN-LAST:event_BTN_validerActionPerformed
 
