@@ -74,7 +74,11 @@ public class DemandeFormationResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(@QueryParam("nomClient") String nomClient, @QueryParam("codeFormation") String codeFormation, @QueryParam("intitule") String intitule, @QueryParam("codeClient") Integer codeClient, @QueryParam("nbPersonnes") Integer nbPersonnes) throws FormationCatalogueNotFoundException, ParseException {
-
+        System.out.println("nom " + nomClient);
+        System.out.println("codeFormation " + codeFormation);
+        System.out.println("intitule " + intitule);
+        System.out.println("code client " + codeClient);
+        System.out.println("nbPersonne " + nbPersonnes);
         this.serviceGestionCommerciale.demanderFormation(nomClient, codeFormation, intitule, codeClient, nbPersonnes);
 
     }

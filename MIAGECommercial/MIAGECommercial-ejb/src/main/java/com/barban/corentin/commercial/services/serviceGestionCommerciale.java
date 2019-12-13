@@ -45,7 +45,15 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
     public void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient,Integer nbPersonnes) throws FormationCatalogueNotFoundException{
         //Mémorisation de la demande de formation
         Date dateDemande = new Date();
+//        this.gestionCommerciale.memoriserDemandeFormation(nomClient, dateDemande, codeFormation, intitule, codeclient);
+        System.out.println("nom " + nomClient);
+        System.out.println("dateDemande " + dateDemande);
+        System.out.println("codeFormation " + codeFormation);
+        System.out.println("intitule " + intitule);
+        System.out.println("code client " + codeclient);
+        System.out.println("nbPersonne " + nbPersonnes);
         this.gestionCommerciale.memoriserDemandeFormation(nomClient, dateDemande, codeFormation, intitule, codeclient);
+
         //Validation de la demande de formation
         boolean existenceFormation = this.gestionCommerciale.validerExistenceFormation(codeFormation);
         if(existenceFormation == true){

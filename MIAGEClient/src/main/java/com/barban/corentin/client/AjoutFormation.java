@@ -211,7 +211,7 @@ public class AjoutFormation extends javax.swing.JFrame {
 
     private void ajouterFormation() {
         try {
-            URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue?code=" + this.TF_Code.getText() + "&intitule=" + this.TF_Intitule.getText() + "&niveau=" + this.TF_Niveau.getText() + "&typeduree=" + this.TF_Typeduree.getText() + "&capacitemin=" + this.TF_Capacitemin.getText() + "&capacitemax=" + this.TF_Capacitemax.getText() + "&tarifforfaitaire=" + this.TF_Tarifforfaitaire.getText());
+            URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue?code=" + this.TF_Code.getText() + "&intitule=" + this.TF_Intitule.getText() + "&niveau=" + this.TF_Niveau.getText() + "&typeduree=" + this.TF_Typeduree.getText() + "&capacitemin=" + this.TF_Capacitemin.getText() + "&capacitemax=" + this.TF_Capacitemax.getText() + "&tarifforfaitaire=" + this.TF_Tarifforfaitaire.getText());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.connect();

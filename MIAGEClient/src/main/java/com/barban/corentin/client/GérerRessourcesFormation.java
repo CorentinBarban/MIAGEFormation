@@ -66,7 +66,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
             
             try {
                 // Deuxième GET pour récupérer les salles déjà adéquates pour la formation
-                URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/salles");
+                URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/salles");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
@@ -87,7 +87,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
                 conn.disconnect();
                 
                 // Premier get pour récupérer toutes les salles
-                url = new URL("http://localhost:8080/MIAGEPatrimoine-web/webresources/salles");
+                url = new URL("http://localhost:8085/MIAGEPatrimoine-web/webresources/salles");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
@@ -121,7 +121,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
             
             try {
                 // Premier GET pour récupérer les salles déjà adéquates pour la formation
-                URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/formateurs");
+                URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/formateurs");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
@@ -142,7 +142,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
                 conn.disconnect();
                 
                 // Deuxième get pour récupérer toutes les salles
-                url = new URL("http://localhost:8080/MIAGERessourcesHumaines-web/webresources/formateurs");
+                url = new URL("http://localhost:8085/MIAGERessourcesHumaines-web/webresources/formateurs");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
@@ -477,7 +477,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
             try {
                 if (!this.sallesOld.isEmpty()) {
                     for (SalleDTO s : this.sallesOld) {
-                        URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/salle/" + s.getIdsalle().toString());
+                        URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/salle/" + s.getIdsalle().toString());
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("DELETE");
                         conn.connect();
@@ -490,7 +490,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
                 }
                 if (!this.sallesOfFormation.isEmpty()) {
                     for (SalleDTO s : this.sallesOfFormation) {
-                        URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/salle/" + s.getIdsalle().toString());
+                        URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/salle/" + s.getIdsalle().toString());
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("POST");
                         conn.connect();
@@ -511,7 +511,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
             try {
                 if (!this.formateursOld.isEmpty()) {
                     for (FormateurDTO f : this.formateursOld) {
-                        URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/formateur/" + f.getIdFormateur());
+                        URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/formateur/" + f.getIdFormateur());
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("DELETE");
                         conn.connect();
@@ -524,7 +524,7 @@ public class GérerRessourcesFormation extends javax.swing.JFrame {
                 }
                 if (!this.formateursOfFormation.isEmpty()) {
                     for (FormateurDTO f : this.formateursOfFormation) {
-                        URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/formateur/" + f.getIdFormateur());
+                        URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + this.codeF + "/formateur/" + f.getIdFormateur());
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("POST");
                         conn.connect();

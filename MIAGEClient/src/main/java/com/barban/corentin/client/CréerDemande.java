@@ -6,17 +6,28 @@
 package com.barban.corentin.client;
 
 import DTO.FormationDTO;
-import java.io.BufferedWriter;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static jdk.internal.net.http.common.Log.headers;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -25,9 +36,10 @@ import javax.swing.JOptionPane;
 public class CréerDemande extends javax.swing.JFrame {
 
     private List<FormationDTO> listeFormations;
-    
+
     /**
      * Creates new form CréerDemande
+     *
      * @param formations
      */
     public CréerDemande(List<FormationDTO> formations) {
@@ -42,7 +54,7 @@ public class CréerDemande extends javax.swing.JFrame {
             this.CB_formation.addItem(f.getCode());
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,11 +181,9 @@ public class CréerDemande extends javax.swing.JFrame {
     private void BTN_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_validerActionPerformed
         if (this.TF_codeClient.getText().isBlank() || this.CB_formation.getSelectedItem().toString().isBlank() || this.TF_nom.getText().isBlank() || this.TF_nbPersonnes.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.");
-        }
-        else if (Integer.parseInt(this.TF_nbPersonnes.getText()) <= 0) {
+        } else if (Integer.parseInt(this.TF_nbPersonnes.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Le nombre de personnes inscrites doit être supérieur à 0.");
-        }
-        else {
+        } else {
             try {
                 String codeF = this.CB_formation.getSelectedItem().toString();
                 String intituleF = null;
@@ -182,37 +192,78 @@ public class CréerDemande extends javax.swing.JFrame {
                         intituleF = f.getIntitule();
                     }
                 }
-                String adresse = "http://localhost:8080/MIAGECommercial-web/webresources/demandeFormation";
-                URL url = new URL(adresse);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("PUT");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
 
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write("nomClient=" + this.TF_nom.getText() + "&codeFormation=" + codeF + "&intitule=" + intituleF + "&codeClient=" + this.TF_codeClient.getText() + "&nbPersonnes=" + this.TF_nbPersonnes.getText());
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
-
-                if (conn.getResponseCode() != 200) {
-                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-                } else {
-                    MainMenu main = new MainMenu();
-                    JOptionPane.showMessageDialog(main, "La demande a bien été effectuée.");
-                    main.setVisible(true);
-                    this.dispose();
-                }
-                conn.disconnect();
-            } catch (IOException ex) {
-                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                Map<String, Object> fields = new HashMap<>();
+                fields.put("nomClient", this.TF_nom.getText());
+                fields.put("codeFormation", codeF);
+                fields.put("intitule", intituleF);
+                fields.put("codeClient", this.TF_codeClient.getText());
+                fields.put("nbPersonnes", this.TF_nbPersonnes.getText());
+//                Unirest.put("http://localhost:8085/MIAGECommercial-web/webresources/demandeFormation").fields(fields).asJson();
+               Unirest.put(("http://localhost:8085/MIAGECommercial-web/webresources/demandeFormation?nomClient=" + this.TF_nom.getText() + "&codeFormation=" + codeF + "&intitule=" + intituleF + "&codeClient=" + this.TF_codeClient.getText() + "&nbPersonnes=" + this.TF_nbPersonnes.getText()).replaceAll("\\s", "%20"))
+                        .header("cache-control", "no-cache")
+                        .asString();
+//                try ( CloseableHttpClient httpclient = HttpClients.createDefault()) {
+//                    HttpPut httpPut = new HttpPut("http://localhost:8085/MIAGECommercial-web/webresources/demandeFormation");
+//                    httpPut.setHeader("Accept", "application/json");
+//                    httpPut.setHeader("Content-type", "application/json");
+//                    JSONObject json = new JSONObject();
+//
+//                    System.out.println("nomClient" + this.TF_nom.getText());
+//                    System.out.println("codeFormation" + codeF);
+//                    System.out.println("intitule" + intituleF);
+//                    System.out.println("codeClient" + Integer.parseInt(this.TF_codeClient.getText()));
+//                    System.out.println("nbPersonnes" + Integer.parseInt(this.TF_nbPersonnes.getText()));
+//                   
+//
+//                    StringEntity se = new StringEntity(json.toString());
+//                    httpPut.setEntity(se);
+//
+//                    ResponseHandler<String> responseHandler = response -> {
+//                        int status = response.getStatusLine().getStatusCode();
+//                        if (status >= 200 && status < 300) {
+//                            HttpEntity entity = response.getEntity();
+//                            return entity != null ? EntityUtils.toString(entity) : null;
+//                        } else {
+//                            throw new ClientProtocolException("Unexpected response status: " + status);
+//                        }
+//                    };
+//                    String responseBody = httpclient.execute(httpPut, responseHandler);
+//                    System.out.println("----------------------------------------");
+//                    System.out.println(responseBody);
+//                }
+//                String adresse = "http://localhost:8085/MIAGECommercial-web/webresources/demandeFormation";
+//                URL url = new URL(adresse);
+//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//                conn.setRequestMethod("PUT");
+//                conn.setRequestProperty("Content-type", "none");
+//                conn.setDoInput(true);
+//                conn.setDoOutput(true);
+//
+//                OutputStream os = conn.getOutputStream();
+//                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+//                writer.write("nomClient=" + this.TF_nom.getText() + "&codeFormation=" + codeF + "&intitule=" + intituleF + "&codeClient=" + this.TF_codeClient.getText() + "&nbPersonnes=" + this.TF_nbPersonnes.getText());
+//                writer.flush();
+//                writer.close();
+//                os.close();
+//                conn.connect();
+//                if (conn.getResponseCode() != 200) {
+//                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+//                } else {
+//                    MainMenu main = new MainMenu();
+//                    JOptionPane.showMessageDialog(main, "La demande a bien été effectuée.");
+//                    main.setVisible(true);
+//                    this.dispose();
+//                }
+//                conn.disconnect();
+//            } catch (IOException ex) {
+//                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnirestException ex) {
+                Logger.getLogger(CréerDemande.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_BTN_validerActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */

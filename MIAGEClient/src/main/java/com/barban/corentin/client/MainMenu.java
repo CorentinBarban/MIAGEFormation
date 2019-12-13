@@ -39,7 +39,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void chargerCatalogue() {
         try {
-            URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue");
+            URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
@@ -77,7 +77,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void deleteFormationFromCatalogue() {
         try {
             String toDelete = this.tableFormations.getValueAt(this.tableFormations.getSelectedRow(), 0).toString();
-            URL url = new URL("http://localhost:8080/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + toDelete );
+            URL url = new URL("http://localhost:8085/MIAGETechnicoCommercial-web/webresources/formationsCatalogue/" + toDelete );
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
             conn.connect();
