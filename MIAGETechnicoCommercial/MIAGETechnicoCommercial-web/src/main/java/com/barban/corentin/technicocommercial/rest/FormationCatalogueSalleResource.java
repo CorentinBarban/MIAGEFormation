@@ -48,12 +48,12 @@ public class FormationCatalogueSalleResource {
     }
 
     /**
-     *
-     * @param code
-     * @param sallekey
-     * @return
-     * @throws FormateurNotFoundException
-     * @throws LienFormateurFormationException
+     * Post JSON 
+     * @param code code 
+     * @param sallekey key de la salle 
+     * @return boolean 
+     * @throws FormateurNotFoundException formateur non trouvé 
+     * @throws LienFormateurFormationException lien formateur formation non trouvé 
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,12 +62,12 @@ public class FormationCatalogueSalleResource {
     }
     
     /**
-     *
-     * @param code
-     * @param sallekey
-     * @return
-     * @throws FormateurNotFoundException
-     * @throws LienFormateurFormationException
+     * delete JSON 
+     * @param code code
+     * @param sallekey salle key 
+     * @return boolean 
+     * @throws FormateurNotFoundException formateur non trouvé 
+     * @throws LienFormateurFormationException lien formateur formation non trouvé 
      */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)

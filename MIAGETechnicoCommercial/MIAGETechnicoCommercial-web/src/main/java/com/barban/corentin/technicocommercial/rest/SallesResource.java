@@ -64,6 +64,10 @@ public class SallesResource {
     public void putJson(String content) {
     }
 
+    /**
+     *  lookup Service Technico Commercial Local
+     * @return 
+     */
     private ServiceTechnicoCommercialLocal lookupServiceTechnicoCommercialLocal() {
         try {
             javax.naming.Context c = new InitialContext();

@@ -45,10 +45,10 @@ public class ServiceTechnicoCommercial implements ServiceTechnicoCommercialLocal
     }
     
     /**
-     *
-     * @param code
-     * @return
-     * @throws FormationCatalogueNotFoundException
+     * Supprimer Formation catalogue 
+     * @param code code 
+     * @return true si supprimé 
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
      */
     @Override
     public boolean supprimerFormationCatalogue(String code) throws FormationCatalogueNotFoundException {

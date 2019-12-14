@@ -63,6 +63,10 @@ public class FormateursResource {
     public void putJson(String content) {
     }
 
+    /**
+     * look up technico commercial local
+     * @return technico commercial local
+     */
     private ServiceTechnicoCommercialLocal lookupServiceTechnicoCommercialLocal() {
         try {
             javax.naming.Context c = new InitialContext();

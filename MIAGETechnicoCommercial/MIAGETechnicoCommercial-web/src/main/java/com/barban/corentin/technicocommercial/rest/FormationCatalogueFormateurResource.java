@@ -52,12 +52,12 @@ public class FormationCatalogueFormateurResource {
 
     /**
      * Retrieves representation of an instance of com.barban.corentin.technicocommercial.rest.FormationCatalogueFormateurResource
-     * @param code
-     * @param formateurkey
+     * @param code code 
+     * @param formateurkey formateur key 
      * @return an instance of java.lang.String
-     * @throws Exceptions.FormationCatalogueNotFoundException
-     * @throws Exceptions.FormateurNotFoundException
-     * @throws Exceptions.LienFormateurFormationException
+     * @throws Exceptions.FormationCatalogueNotFoundException formateur catalogue non trouvé 
+     * @throws Exceptions.FormateurNotFoundException formateur non trouvé 
+     * @throws Exceptions.LienFormateurFormationException lien formateur formation non trouvé 
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -66,13 +66,13 @@ public class FormationCatalogueFormateurResource {
     }
 
     /**
-     *
-     * @param code
-     * @param formateurkey
-     * @return
-     * @throws FormationCatalogueNotFoundException
-     * @throws FormateurNotFoundException
-     * @throws LienFormateurFormationException
+     * Delete JSON
+     * @param code code 
+     * @param formateurkey key formateur
+     * @return true si bien supprimé 
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
+     * @throws FormateurNotFoundException formateur non trouvé
+     * @throws LienFormateurFormationException lien formateur formation non trouvé 
      */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)

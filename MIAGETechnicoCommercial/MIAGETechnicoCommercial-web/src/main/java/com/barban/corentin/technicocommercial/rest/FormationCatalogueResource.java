@@ -48,9 +48,9 @@ public class FormationCatalogueResource {
 
     /**
      * Retrieves representation of an instance of com.barban.corentin.technicocommercial.rest.FormationCatalogueResource
-     * @param code
+     * @param code code 
      * @return an instance of java.lang.String
-     * @throws Exceptions.FormationCatalogueNotFoundException
+     * @throws Exceptions.FormationCatalogueNotFoundException formation catalogue non trouvé 
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)

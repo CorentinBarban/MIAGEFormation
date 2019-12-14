@@ -50,40 +50,77 @@ public class Formateurcompetent implements Serializable {
     public Formateurcompetent() {
     }
 
+    /**
+     * constructeur formateur competent à partir du formateur key 
+     * @param formateurkey key formateur 
+     */
     public Formateurcompetent( int formateurkey) {
         this.formateurkey = formateurkey;
     }
     
+    /**
+     * constructeur formateur competent à partir de l'id formateur competent
+     * @param idformateurcompetent  id formateur competent
+     */
     public Formateurcompetent(Integer idformateurcompetent) {
         this.idformateurcompetent = idformateurcompetent;
     }
 
+    /**
+     * onstructeur formateur competent à partir de l'id formateur competent et formateur key 
+     * @param idformateurcompetent  id formateur competent
+     * @param formateurkey key formateur
+     */
     public Formateurcompetent(Integer idformateurcompetent, int formateurkey) {
         this.idformateurcompetent = idformateurcompetent;
         this.formateurkey = formateurkey;
     }
 
+    /**
+     * get id formateur competent 
+     * @return id formateur competent 
+     */
     public Integer getIdformateurcompetent() {
         return idformateurcompetent;
     }
 
+    /**
+     * set id formateur competent
+     * @param idformateurcompetent id formateur competent 
+     */
     public void setIdformateurcompetent(Integer idformateurcompetent) {
         this.idformateurcompetent = idformateurcompetent;
     }
 
+    /**
+     * get formateur key
+     * @return  formateur key
+     */
     public int getFormateurkey() {
         return formateurkey;
     }
 
+    /**
+     * set formateur key
+     * @param formateurkey  formateur key
+     */
     public void setFormateurkey(int formateurkey) {
         this.formateurkey = formateurkey;
     }
 
+    /**
+     * get la collection de formation du catalogue
+     * @return la collection de formation du catalogue
+     */
     @XmlTransient
     public Collection<Formationcatalogue> getFormationcatalogueCollection() {
         return formationcatalogueCollection;
     }
 
+    /**
+     * set  la collection de formation du catalogue
+     * @param formationcatalogueCollection la collection de formation du catalogue
+     */
     public void setFormationcatalogueCollection(Collection<Formationcatalogue> formationcatalogueCollection) {
         this.formationcatalogueCollection = formationcatalogueCollection;
     }

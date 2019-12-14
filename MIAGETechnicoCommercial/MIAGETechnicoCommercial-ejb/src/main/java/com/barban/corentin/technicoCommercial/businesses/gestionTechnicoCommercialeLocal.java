@@ -30,91 +30,91 @@ public interface gestionTechnicoCommercialeLocal {
     
     /**
      * Ajouter une formation au catalogue
-     * @param code
-     * @param intitule
-     * @param niveau
-     * @param typeduree
-     * @param capacitemin
-     * @param capacitemax
-     * @param tarifforfaitaire
+     * @param code code 
+     * @param intitule intitule
+     * @param niveau niveau
+     * @param typeduree type de durée
+     * @param capacitemin capacité minimum
+     * @param capacitemax capacité maximim
+     * @param tarifforfaitaire tarif forfaitaire
      * @return la formation créée
-     * @throws FormationCatalogueException 
+     * @throws FormationCatalogueException formation catalogue existante 
      */
     FormationDTO ajouterFormationCatalogue(String code, String intitule, String niveau, String typeduree, Integer capacitemin, Integer capacitemax, Double tarifforfaitaire) throws FormationCatalogueException ; 
  
     /**
      * Supprimer une formation du catalogue
-     * @param code
+     * @param code code
      * @return booléen de vérification
-     * @throws FormationCatalogueNotFoundException 
+     * @throws FormationCatalogueNotFoundException  formation catalogue non trouvé
      */
     boolean supprimerFormationCatalogue(String code) throws FormationCatalogueNotFoundException ;
     
     /**
      * Rechercher une formation dans le catalogue
-     * @param code
+     * @param code code
      * @return la formation trouvée
-     * @throws FormationCatalogueNotFoundException 
+     * @throws FormationCatalogueNotFoundException  formation catalogue non trouvé
      */
     FormationDTO consulterFormationCatalogue(String code) throws FormationCatalogueNotFoundException ; 
 
     /**
      * Ajouter un formateur compétent pour une formation
-     * @param formateurkey
-     * @param code
+     * @param formateurkey key formateur
+     * @param code code
      * @return booléen de vérification
-     * @throws LienFormateurFormationException 
-     * @throws FormationCatalogueNotFoundException
-     * @throws FormateurNotFoundException
+     * @throws LienFormateurFormationException Lien formateur et formation non trouvé
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
+     * @throws FormateurNotFoundException formateur non trouvé
      */
     boolean ajouterFormateurAFormation(String code, int formateurkey) throws FormationCatalogueNotFoundException, FormateurNotFoundException, LienFormateurFormationException ;
    
     /**
      * Supprimer un formateur d'une formation
-     * @param formateurkey
-     * @param code
+     * @param formateurkey key formateur
+     * @param code code 
      * @return booléen de vérification
-     * @throws LienFormateurFormationNotFoundException 
-     * @throws FormationCatalogueNotFoundException
-     * @throws FormateurNotFoundException
+     * @throws LienFormateurFormationNotFoundException  Lien formateur et formation non trouvé
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
+     * @throws FormateurNotFoundException formateur non trouvé
      */
     boolean supprimerFormateurDeFormation(String code, int formateurkey) throws FormationCatalogueNotFoundException, FormateurNotFoundException, LienFormateurFormationNotFoundException ;
    
     /**
      * Lister les formateurs compétents pour une formation donnée
-     * @param code
+     * @param code code
      * @return la liste des formateurs compétents pour la formation donnée
-     * @throws FormationCatalogueNotFoundException
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
      */
     List<FormateurDTO> rechercherFormateursDeFormation(String code) throws FormationCatalogueNotFoundException ;
 
         /**
      * Ajouter une salle adéquate pour une formation
-     * @param sallekey
-     * @param code
+     * @param sallekey key salle
+     * @param code code 
      * @return booléen de vérification
-     * @throws LienSalleFormationException 
-     * @throws FormationCatalogueNotFoundException
-     * @throws SalleNotFoundException
+     * @throws LienSalleFormationException Lien formateur et formation non trouvé
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
+     * @throws SalleNotFoundException salle non trouvé 
      */
     boolean ajouterSalleAFormation(String code, int sallekey) throws FormationCatalogueNotFoundException, SalleNotFoundException, LienSalleFormationException ;
    
     /**
      * Supprimer une salle d'une formation
-     * @param sallekey
-     * @param code
+     * @param sallekey key salle 
+     * @param code code 
      * @return booléen de vérification
-     * @throws LienSalleFormationNotFoundException 
-     * @throws FormationCatalogueNotFoundException
-     * @throws SalleNotFoundException
+     * @throws LienSalleFormationNotFoundException Lien formateur et formation non trouvé
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
+     * @throws SalleNotFoundException salle non trouvé 
      */
     boolean supprimerSalleDeFormation(String code, int sallekey) throws FormationCatalogueNotFoundException, SalleNotFoundException, LienSalleFormationNotFoundException ;
    
     /**
      * Lister les salles adéquates pour une formation donnée
-     * @param code
+     * @param code code 
      * @return la liste des salles adéquates pour la formation donnée
-     * @throws FormationCatalogueNotFoundException
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
      */
     List<SalleDTO> rechercherSallesDeFormation(String code) throws FormationCatalogueNotFoundException ;
 

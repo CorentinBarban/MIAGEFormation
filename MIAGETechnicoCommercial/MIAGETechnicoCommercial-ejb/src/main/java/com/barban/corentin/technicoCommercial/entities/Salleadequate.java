@@ -68,27 +68,50 @@ public class Salleadequate implements Serializable {
         this.sallekey = sallekey;
     }
 
+    /**
+     * get id salle adequat 
+     * @return id salle adequat
+     */
     public Integer getIdsalleadequat() {
         return idsalleadequat;
     }
 
+    /**
+     * set id salle adequat 
+     * @param idsalleadequat id salle adequat
+     */
     public void setIdsalleadequat(Integer idsalleadequat) {
         this.idsalleadequat = idsalleadequat;
     }
 
+    /**
+     * get salle key
+     * @return salle key
+     */
     public int getSallekey() {
         return sallekey;
     }
 
+    /**
+     * set salle key
+     * @param sallekey salle key
+     */
     public void setSallekey(int sallekey) {
         this.sallekey = sallekey;
     }
 
     @XmlTransient
+    /**
+     * get collection de catalogue formation
+     */
     public Collection<Formationcatalogue> getFormationcatalogueCollection() {
         return formationcatalogueCollection;
     }
 
+    /**
+     * set collection de catalogue formation
+     * @param formationcatalogueCollection  collection de catalogue formation
+     */
     public void setFormationcatalogueCollection(Collection<Formationcatalogue> formationcatalogueCollection) {
         this.formationcatalogueCollection = formationcatalogueCollection;
     }
