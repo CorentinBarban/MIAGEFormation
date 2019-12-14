@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Formationcompose.findByDemandeformationkey", query = "SELECT f FROM Formationcompose f WHERE f.formationcomposePK.demandeformationkey = :demandeformationkey")
     , @NamedQuery(name = "Formationcompose.findByNbparticipants", query = "SELECT f FROM Formationcompose f WHERE f.nbparticipants = :nbparticipants")
     , @NamedQuery(name = "Formationcompose.sumNbparticipant", query = "SELECT sum(f.nbparticipants), f.formationcomposePK.formationkey FROM Formationcompose f GROUP BY f.formationcomposePK.formationkey")})
-public class Formationcompose implements Serializable { 
+public class Formationcompose implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -46,42 +46,89 @@ public class Formationcompose implements Serializable {
     public Formationcompose() {
     }
 
+    /**
+     * constructeur de formation compose à partir de la primary key
+     *
+     * @param formationcomposePK   primary key formation compose 
+     */
     public Formationcompose(FormationcomposePK formationcomposePK) {
         this.formationcomposePK = formationcomposePK;
     }
 
+    /**
+     * constructeur de formation compose à partir de la key formation et la key
+     * demande formation
+     *
+     * @param formationkey key de la formation
+     * @param demandeformationkey demande de formation key 
+     */
     public Formationcompose(int formationkey, int demandeformationkey) {
         this.formationcomposePK = new FormationcomposePK(formationkey, demandeformationkey);
     }
 
+    /**
+     * get formation compose primary key
+     *
+     * @return formation compose primary key
+     */
     public FormationcomposePK getFormationcomposePK() {
         return formationcomposePK;
     }
 
+    /**
+     * set formation compose primary key
+     *
+     * @param formationcomposePK formation compose primary key
+     */
     public void setFormationcomposePK(FormationcomposePK formationcomposePK) {
         this.formationcomposePK = formationcomposePK;
     }
 
+    /**
+     * get nombre de participants
+     *
+     * @return nombre de participantsv
+     */
     public Integer getNbparticipants() {
         return nbparticipants;
     }
 
+    /**
+     *set nombre de participants
+     * @param nbparticipants nombre de participants
+     */
     public void setNbparticipants(Integer nbparticipants) {
         this.nbparticipants = nbparticipants;
     }
 
+    /** 
+     * get Formation 
+     * @return Formation
+     */
     public Formation getFormation() {
         return formation;
     }
 
+    /**
+     * set formation 
+     * @param formation Formation
+     */
     public void setFormation(Formation formation) {
         this.formation = formation;
     }
 
+    /**
+     *  get stockage demande formation 
+     * @return stockage demande formation 
+     */
     public Stockagedemandeformation getStockagedemandeformation() {
         return stockagedemandeformation;
     }
 
+    /**
+     * set stockage demande formation 
+     * @param stockagedemandeformation stockage demande formation 
+     */
     public void setStockagedemandeformation(Stockagedemandeformation stockagedemandeformation) {
         this.stockagedemandeformation = stockagedemandeformation;
     }
@@ -110,6 +157,5 @@ public class Formationcompose implements Serializable {
     public String toString() {
         return "Formationcompose{" + "formationcomposePK=" + formationcomposePK + ", nbparticipants=" + nbparticipants + ", formation=" + formation + ", stockagedemandeformation=" + stockagedemandeformation + '}';
     }
-    
-    
+
 }

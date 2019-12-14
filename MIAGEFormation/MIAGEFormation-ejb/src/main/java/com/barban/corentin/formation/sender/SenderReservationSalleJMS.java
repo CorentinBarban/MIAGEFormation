@@ -45,7 +45,7 @@ public class SenderReservationSalleJMS implements MessageListener {
     /**
      * Demander une resservation d'une salle
      * 
-     * @param SalleReservee 
+     * @param SalleReservee Salle Reservee
      */
     public void sendMessageDemandeReservation(SalleDTO SalleReservee) {
 
@@ -84,6 +84,10 @@ public class SenderReservationSalleJMS implements MessageListener {
 
     }
 
+    /**
+     * créer un string aléatoirement
+     * @return un string aléatoirement
+     */
     private String createRandomString() {
         Random random = new Random(System.currentTimeMillis());
         long randomLong = random.nextLong();
@@ -92,7 +96,7 @@ public class SenderReservationSalleJMS implements MessageListener {
     
     /**
      * Attente de la confirmation de reservation
-     * @param message 
+     * @param message message
      */
     @Override
     public void onMessage(Message message) {

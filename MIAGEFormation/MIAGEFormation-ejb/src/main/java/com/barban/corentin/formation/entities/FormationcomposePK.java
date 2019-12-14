@@ -30,23 +30,44 @@ public class FormationcomposePK implements Serializable {
     public FormationcomposePK() {
     }
 
+    /**
+     * Constructeur formation compose à partion formation key et demande formation key
+     * @param formationkey formation key formation
+     * @param demandeformationkey demande formation key
+     */
     public FormationcomposePK(int formationkey, int demandeformationkey) {
         this.formationkey = formationkey;
         this.demandeformationkey = demandeformationkey;
     }
 
+    /**
+     * get la key de la formation 
+     * @return key de la formation 
+     */
     public int getFormationkey() {
         return formationkey;
     }
 
+    /**
+     * set  la key de la formation 
+     * @param formationkey key de la formation 
+     */
     public void setFormationkey(int formationkey) {
         this.formationkey = formationkey;
     }
 
+    /**
+     * get la key de demande formation
+     * @return key de demande formation 
+     */
     public int getDemandeformationkey() {
         return demandeformationkey;
     }
 
+    /**
+     * set la key de demande formation
+     * @param demandeformationkey key de demande formation 
+     */
     public void setDemandeformationkey(int demandeformationkey) {
         this.demandeformationkey = demandeformationkey;
     }

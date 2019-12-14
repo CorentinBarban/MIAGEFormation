@@ -37,10 +37,10 @@ public class GestionFormation implements GestionFormationLocal {
     
     /**
      * Ajouter une nouvelle formation
-     * @param demandeformation
-     * @param nbParticipants
-     * @param statut
-     * @return 
+     * @param demandeformation demande de formation
+     * @param nbParticipants nombre de participants
+     * @param statut statut
+     * @return la nouvelle formation 
      */
     @Override
     public Formation ajouterFormation(Stockagedemandeformation demandeformation, int nbParticipants,String statut) {
@@ -53,10 +53,10 @@ public class GestionFormation implements GestionFormationLocal {
     
     /**
      * Liee une demande de formation avec une formation 
-     * @param formation
-     * @param demandeFormation
-     * @param nbParticipants
-     * @return 
+     * @param formation formation   
+     * @param demandeFormation demande de formation
+     * @param nbParticipants nombre de participants
+     * @return  demande de formation avec une formation 
      */
     @Override
     public Formationcompose ajouterFormationCompose(Formation formation, Stockagedemandeformation demandeFormation, int nbParticipants) {
@@ -71,11 +71,11 @@ public class GestionFormation implements GestionFormationLocal {
     /**
      * Stocker une demande de formation lorsque le commercial fait la demande
      *
-     * @param codeFormation
-     * @param intitule
-     * @param codeClient
-     * @param nbPersonneTotale
-     * @return
+     * @param codeFormation code de la formation
+     * @param intitule intitule
+     * @param codeClient code client
+     * @param nbPersonneTotale nombre de personne totale 
+     * @return  une demande de formation 
      */
     @Override
     public Stockagedemandeformation stockerDemandeFormation(String codeFormation, String intitule, Integer codeClient, Integer nbPersonneTotale, String nomClient) {
@@ -93,7 +93,7 @@ public class GestionFormation implements GestionFormationLocal {
     /**
      * Fournir l'etat d'une formation (en attente, en projet, planifiée)
      *
-     * @return
+     * @return  l'etat d'une formation
      */
     @Override
     public String demanderEtatFormation(Integer idFormation) {
@@ -101,8 +101,8 @@ public class GestionFormation implements GestionFormationLocal {
     }
     
     /**
-     * 
-     * @return 
+     * Retourne les compte rendu
+     * @return les compte rendus 
      */
     @Override
     public List<CompteRenduDTO> retournerCompteRendus() {
@@ -122,7 +122,7 @@ public class GestionFormation implements GestionFormationLocal {
     /**
      * Ajouter une salle à une formation
      * @param f Object Formation
-     * @param idSalle 
+     * @param idSalle  id de la salle
      */
     @Override
     public void ajouterSalleFormation(Formation f, int idSalle) {
@@ -143,7 +143,7 @@ public class GestionFormation implements GestionFormationLocal {
      * Compter le nombre personne presentes sur une formation
      * @param codeFormation Code de la formation
      * @param capaciteMax Capacite max de la formation
-     * @return 
+     * @return le nombre personne presentes sur une formation
      */
     @Override
     public HashMap<Formation, Integer> compterEffectifFormation(String codeFormation, int capaciteMax) {
@@ -177,7 +177,7 @@ public class GestionFormation implements GestionFormationLocal {
     
     /**
      * Recuperer les informations liées à une Formation
-     * @return 
+     * @return  les informations liées à une Formation
      */
     @Override
     public List<Formation> recupererInformationFormation() {

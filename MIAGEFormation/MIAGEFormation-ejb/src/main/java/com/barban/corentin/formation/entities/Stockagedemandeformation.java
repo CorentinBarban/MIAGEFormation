@@ -71,71 +71,145 @@ public class Stockagedemandeformation implements Serializable {
     public Stockagedemandeformation() {
     }
 
+    /**
+     * Constructeur sockage demande formation à partir de l'id demande formation
+     * @param iddemandeformation id demande formation 
+     */
     public Stockagedemandeformation(Integer iddemandeformation) {
         this.iddemandeformation = iddemandeformation;
     }
 
+    /**
+     * get Id demande formation
+     *
+     * @return id demande formation
+     */
     public Integer getIddemandeformation() {
         return iddemandeformation;
     }
 
+    /**
+     * Set id demande formation
+     *
+     * @param iddemandeformation id demande formation
+     */
     public void setIddemandeformation(Integer iddemandeformation) {
         this.iddemandeformation = iddemandeformation;
     }
 
+    /**
+     * get date demande formation
+     *
+     * @return date demande formation
+     */
     public Date getDatedemandeformation() {
         return datedemandeformation;
     }
 
+    /**
+     * set date demande formation
+     *
+     * @param datedemandeformation date demande formation
+     */
     public void setDatedemandeformation(Date datedemandeformation) {
         this.datedemandeformation = datedemandeformation;
     }
 
+    /**
+     * get Code formation catalogue
+     *
+     * @return Code formation catalogue
+     */
     public String getCodeformationcatalogue() {
         return codeformationcatalogue;
     }
 
+    /**
+     * set code formation catalogue
+     *
+     * @param codeformationcatalogue Code formation catalogue
+     */
     public void setCodeformationcatalogue(String codeformationcatalogue) {
         this.codeformationcatalogue = codeformationcatalogue;
     }
 
+    /**
+     * get l intitule de la formation
+     *
+     * @return l intitule de la formation
+     */
     public String getIntituleformation() {
         return intituleformation;
     }
 
+    /**
+     * set l'intitule de la formation 
+     * @param intituleformation l intitule de la formation
+     */
     public void setIntituleformation(String intituleformation) {
         this.intituleformation = intituleformation;
     }
 
+    /**
+     * get le code client
+     * @return  code client
+     */
     public Integer getCodeclient() {
         return codeclient;
     }
 
+    /**
+     * set le code client 
+     * @param codeclient code client
+     */
     public void setCodeclient(Integer codeclient) {
         this.codeclient = codeclient;
     }
 
+    /**
+     * get le nombre de personne dans la formation 
+     * @return  le nombre de personne dans la formation 
+     */
     public Integer getNbpersonne() {
         return nbpersonne;
     }
 
+    /**
+     * set le nombre de personne dans la formation
+     * @param nbpersonne le nombre de personne dans la formation 
+     */
     public void setNbpersonne(Integer nbpersonne) {
         this.nbpersonne = nbpersonne;
     }
 
+    /**
+     * get le nom du client 
+     * @return le nom du client 
+     */
     public String getNomclient() {
         return nomclient;
     }
 
+    /**
+     * set le nom du client 
+     * @param nomclient le nom du client 
+     */
     public void setNomclient(String nomclient) {
         this.nomclient = nomclient;
     }
 
     @XmlTransient
+    /**
+     * get Formation compose collection 
+     */
     public Collection<Formationcompose> getFormationcomposeCollection() {
         return formationcomposeCollection;
     }
 
+    /**
+     * set formation compte collection 
+     * @param formationcomposeCollection   formation compte collection 
+     */
     public void setFormationcomposeCollection(Collection<Formationcompose> formationcomposeCollection) {
         this.formationcomposeCollection = formationcomposeCollection;
     }
@@ -164,5 +238,5 @@ public class Stockagedemandeformation implements Serializable {
     public String toString() {
         return "com.barban.corentin.formation.entities.Stockagedemandeformation[ iddemandeformation=" + iddemandeformation + " ]";
     }
-    
+
 }

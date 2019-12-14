@@ -22,8 +22,8 @@ public class ServiceFormation implements ServiceFormationLocal {
     
     /**
      * Demander l'état d'une formation
-     * @param idFormation
-     * @return 
+     * @param idFormation id de la formation
+     * @return l'état d'une formation
      */
     @Override
     public String demanderEtatFormation(Integer idFormation) {

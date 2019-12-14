@@ -63,55 +63,107 @@ public class Formation implements Serializable {
     public Formation() {
     }
 
+    /**
+     * constructeur formation ) partir id formation
+     * @param idformation id de la formation 
+     */
     public Formation(Integer idformation) {
         this.idformation = idformation;
     }
 
+    /**
+     * get id de la formation
+     * @return id de la formation
+     */
     public Integer getIdformation() {
         return idformation;
     }
 
+    /**
+     * Set if de la formation
+     * @param idformation id de la formation
+     */
     public void setIdformation(Integer idformation) {
         this.idformation = idformation;
     }
 
+    /**
+     * Get la key de la salle
+     * @return key de la salle 
+     */
     public Integer getKeysalle() {
         return keysalle;
     }
 
+    /**
+     * set la key de la salle
+     * @param keysalle la key de la salle
+     */
     public void setKeysalle(Integer keysalle) {
         this.keysalle = keysalle;
     }
 
+    /**
+     * get key formateur
+     * @return  key formateur
+     */
     public Integer getKeyformateur() {
         return keyformateur;
     }
 
+    /**
+     * set key formateur
+     * @param keyformateur  key formateur
+     */
     public void setKeyformateur(Integer keyformateur) {
         this.keyformateur = keyformateur;
     }
 
+    /**
+     * get date de la formation
+     * @return date de la formation
+     */
     public Date getDateformation() {
         return dateformation;
     }
 
+    /**
+     * set de la date formation 
+     * @param dateformation date de la formation
+     */
     public void setDateformation(Date dateformation) {
         this.dateformation = dateformation;
     }
 
+    /**
+     * get le statut 
+     * @return statut
+     */
     public String getStatut() {
         return statut;
     }
 
+    /**
+     * set le statut
+     * @param statut statut
+     */
     public void setStatut(String statut) {
         this.statut = statut;
     }
 
+    /** 
+     * get la formation qui compose la collection
+     * @return  la formation qui compose la collection
+     */
     @XmlTransient
     public Collection<Formationcompose> getFormationcomposeCollection() {
         return formationcomposeCollection;
     }
 
+    /**
+     * set la formation qui compose la collection
+     * @param formationcomposeCollection  la formation qui compose la collection
+     */
     public void setFormationcomposeCollection(Collection<Formationcompose> formationcomposeCollection) {
         this.formationcomposeCollection = formationcomposeCollection;
     }

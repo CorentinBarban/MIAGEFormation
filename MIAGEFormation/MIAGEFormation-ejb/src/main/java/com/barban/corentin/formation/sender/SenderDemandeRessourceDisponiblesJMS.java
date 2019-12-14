@@ -66,8 +66,8 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     /**
      * Envoyer une demande de ressources
      *
-     * @param listDemandeFormateurDispo
-     * @param listDemandeSalleDispo
+     * @param listDemandeFormateurDispo list Demande Formateur Dispo
+     * @param listDemandeSalleDispo list Demande Salle Dispo
      */
     public void sendMessageDemandeRessource(List<FormateurDTO> listDemandeFormateurDispo, List<SalleDTO> listDemandeSalleDispo) {
 
@@ -125,7 +125,7 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     /**
      * Creation d'une chaine de caractere random
      *
-     * @return
+     * @return une chaine de caractere random
      */
     private String createRandomString() {
         Random random = new Random(System.currentTimeMillis());
@@ -136,7 +136,7 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     /**
      * Attente de la réponse de demande de ressources
      *
-     * @param message
+     * @param message message
      */
     @Override
     public void onMessage(Message message) {
@@ -173,7 +173,7 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
      * Chercher la date ideal entre les formateurs disponibles et les salles
      * disponibles
      *
-     * @return
+     * @return la date ideal entre les formateurs disponibles et les salles disponibles
      */
     private HashMap<FormateurDTO, SalleDTO> trouverDateIdeale(String typeFormation) {
         int joursConsecutif;
@@ -236,9 +236,9 @@ public class SenderDemandeRessourceDisponiblesJMS implements MessageListener {
     /**
      * Obtenir la liste de toutes les n dates consecutives
      *
-     * @param dates
-     * @param nbconsecutive
-     * @return
+     * @param dates dates 
+     * @param nbconsecutive nb consecutive
+     * @return la liste de toutes les n dates consecutives
      */
     public List<List<Date>> consecutiveDates(List<Date> dates, Integer nbconsecutive) {
         List<List<Date>> listJoursConsecutif = new ArrayList();

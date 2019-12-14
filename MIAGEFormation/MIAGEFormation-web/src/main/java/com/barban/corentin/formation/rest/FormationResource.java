@@ -65,6 +65,10 @@ public class FormationResource {
     public void putJson(String content) {
     }
 
+    /**
+     * look up service formation local
+     * @return 
+     */
     private com.barban.corentin.formation.services.ServiceFormationLocal lookupserviceFormationLocal() {
         try {
             javax.naming.Context c = new InitialContext();

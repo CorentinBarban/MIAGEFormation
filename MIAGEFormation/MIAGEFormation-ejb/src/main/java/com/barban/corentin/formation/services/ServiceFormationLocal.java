@@ -16,8 +16,8 @@ public interface ServiceFormationLocal {
     
     /**
      * Demander l'état d'une formation
-     * @param idFormation
-     * @return 
+     * @param idFormation id de la formation
+     * @return l'état d'une formation 
      */
     String demanderEtatFormation(Integer idFormation);
     

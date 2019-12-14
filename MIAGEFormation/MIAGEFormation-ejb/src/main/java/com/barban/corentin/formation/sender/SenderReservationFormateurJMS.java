@@ -45,7 +45,7 @@ public class SenderReservationFormateurJMS implements MessageListener {
     /**
      * Demander une resservation d'un formation
      * 
-     * @param formateurReserve 
+     * @param formateurReserve formateur Reserve
      */
     public void sendMessageDemandeReservation(FormateurDTO formateurReserve) {
 

@@ -83,7 +83,7 @@ public class ListennerDemandeCompteRendu implements MessageListener {
      * Attente de l'arrivé d'un message Gestion de la demande avec les
      * formations deja existantes
      *
-     * @param message
+     * @param message message
      */
     @Override
     public void onMessage(Message message) {
