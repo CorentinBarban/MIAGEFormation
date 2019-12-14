@@ -21,10 +21,18 @@ public class SallesDTO implements Serializable{
     public SallesDTO() {
     }
 
+    /**
+     * get la liste des salles
+     * @return la liste des salles
+     */
     public HashMap<SalleDTO, List<Date>> getHashMapDateSalle() {
         return HashMapDateSalle;
     }
 
+    /**
+     * set la liste des salles
+     * @param HashMapDateSalle la liste des salles
+     */
     public void setHashMapDateSalle(HashMap<SalleDTO, List<Date>> HashMapDateSalle) {
         this.HashMapDateSalle = HashMapDateSalle;
     }

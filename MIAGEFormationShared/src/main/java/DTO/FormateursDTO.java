@@ -21,10 +21,18 @@ public class FormateursDTO implements Serializable{
     public FormateursDTO() {
     }
 
+    /**
+     * get la liste des formateurs 
+     * @return a liste des formateurs 
+     */
     public HashMap<FormateurDTO, List<Date>> getListeFormateur() {
         return listeFormateur;
     }
 
+    /**
+     * set la liste des formateur 
+     * @param listeFormateur a liste des formateurs 
+     */
     public void setListeFormateur(HashMap<FormateurDTO, List<Date>> listeFormateur) {
         this.listeFormateur = listeFormateur;
     }
