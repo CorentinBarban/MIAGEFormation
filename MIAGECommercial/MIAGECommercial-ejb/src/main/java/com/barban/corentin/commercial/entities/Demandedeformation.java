@@ -22,6 +22,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Class demande formation
  *
  * @author Corentin
  */
@@ -62,11 +63,25 @@ public class Demandedeformation implements Serializable {
     public Demandedeformation() {
     }
 
+    /**
+     * Demande de formation
+     *
+     * @param iddemandeformation id de la demande de formation
+     */
     public Demandedeformation(Integer iddemandeformation) {
         this.iddemandeformation = iddemandeformation;
     }
-    
-    public Demandedeformation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient){
+
+    /**
+     * Demande de formation
+     *
+     * @param nomClient nom du client   
+     * @param dateDemande date de la demande
+     * @param codeFormation code de la formation
+     * @param intituleFormation intitule de la formation
+     * @param codeclient code du client 
+     */
+    public Demandedeformation(String nomClient, Date dateDemande, String codeFormation, String intituleFormation, int codeclient) {
         this.nomclient = nomClient;
         this.datededemande = dateDemande;
         this.codeformation = codeFormation;
@@ -74,50 +89,103 @@ public class Demandedeformation implements Serializable {
         this.codeclient = codeclient;
     }
 
+    /**
+     * Get ID demandeFormation
+     *
+     * @return id demande formation
+     */
     public Integer getIddemandeformation() {
         return iddemandeformation;
     }
 
+    /**
+     * Set ID demandeFormation
+     *
+     * @param iddemandeformation id de la demande de formation 
+     */
     public void setIddemandeformation(Integer iddemandeformation) {
         this.iddemandeformation = iddemandeformation;
     }
 
+    /**
+     * Get nom client
+     *
+     * @return nom du client
+     */
     public String getNomclient() {
         return nomclient;
     }
 
+    /**
+     * Set nom client
+     *
+     * @param nomclient nom du client 
+     */
     public void setNomclient(String nomclient) {
         this.nomclient = nomclient;
     }
 
+    /**
+     * Get date de demande
+     *
+     * @return date de demande
+     */
     public Date getDatededemande() {
         return datededemande;
     }
 
+    /**
+     *set Date de demande
+     * @param datededemande date de la demande 
+     */
     public void setDatededemande(Date datededemande) {
         this.datededemande = datededemande;
     }
 
+    /**
+     * get code formation
+     * @return code de la formation
+     */
     public String getCodeformation() {
         return codeformation;
     }
 
+    /**
+     * set code formation
+     * @param codeformation code formation 
+     */
     public void setCodeformation(String codeformation) {
         this.codeformation = codeformation;
     }
 
+    /**
+     * get intitule de la formation
+     * @return intitule de la mortation
+     */
     public String getIntituleformation() {
         return intituleformation;
     }
 
+    /**
+     * set l'intitule d'une formation
+     * @param intituleformation intitule de la formation 
+     */
     public void setIntituleformation(String intituleformation) {
         this.intituleformation = intituleformation;
     }
 
+    /**
+     * Get code client
+     * @return code client
+     */
     public Integer getCodeclient() {
         return codeclient;
     }
 
+    /**
+     * set code client
+     * @param codeclient code du client 
+     */
     public void setCodeclient(Integer codeclient) {
         this.codeclient = codeclient;
     }
@@ -146,5 +214,5 @@ public class Demandedeformation implements Serializable {
     public String toString() {
         return "com.barban.corentin.commercial.entities.Demandedeformation[ iddemandeformation=" + iddemandeformation + " ]";
     }
-    
+
 }

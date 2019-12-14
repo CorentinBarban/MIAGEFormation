@@ -83,6 +83,10 @@ public class SenderDemandeFormationJMS implements MessageListener {
 
     }
 
+    /**
+     * Créer un string aléatoire 
+     * @return string aléatoire 
+     */
     private String createRandomString() {
         Random random = new Random(System.currentTimeMillis());
         long randomLong = random.nextLong();
@@ -91,7 +95,7 @@ public class SenderDemandeFormationJMS implements MessageListener {
     
     /**
      * Attente de la message de confirmation de la prise en compte de demande de formation
-     * @param message 
+     * @param message message
      */
     @Override
     public void onMessage(Message message) {

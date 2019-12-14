@@ -89,6 +89,10 @@ public class SenderDemandeCompteRendu implements MessageListener {
 
     }
 
+    /**
+     * Return un entier aléatoire 
+     * @return un entier aléatoire
+     */
     private String createRandomString() {
         Random random = new Random(System.currentTimeMillis());
         long randomLong = random.nextLong();
@@ -99,7 +103,7 @@ public class SenderDemandeCompteRendu implements MessageListener {
      * Attente de la message de confirmation de la prise en compte de demande de
      * formation
      *
-     * @param message
+     * @param message message
      */
     @Override
     public void onMessage(Message message) {
@@ -130,6 +134,10 @@ public class SenderDemandeCompteRendu implements MessageListener {
         }
     }
 
+    /**
+     * return gestion commercial local
+     * @return gestion commercial local 
+     */
     private gestionCommercialeLocal lookupgestionCommercialeLocal() {
         try {
             Context c = new InitialContext();

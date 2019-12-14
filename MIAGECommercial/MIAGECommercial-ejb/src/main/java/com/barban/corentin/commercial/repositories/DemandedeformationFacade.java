@@ -20,11 +20,18 @@ public class DemandedeformationFacade extends AbstractFacade<Demandedeformation>
     @PersistenceContext(unitName = "com.barban.corentin_MIAGECommercial-ejb_ejb_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    /**
+     * Return l'entity manager
+     * @return entity manager
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * demande la formation
+     */
     public DemandedeformationFacade() {
         super(Demandedeformation.class);
     }

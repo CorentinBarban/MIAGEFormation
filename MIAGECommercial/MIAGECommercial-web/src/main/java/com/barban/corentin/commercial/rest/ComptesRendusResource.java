@@ -64,6 +64,10 @@ public class ComptesRendusResource {
     public void putJson(String content) {
     }
 
+    /**
+     * Cherche la gestion commerciale local
+     * @return la gestion commerciale local
+     */
     private serviceGestionCommercialeLocal lookupserviceGestionCommercialeLocal() {
         try {
             javax.naming.Context c = new InitialContext();

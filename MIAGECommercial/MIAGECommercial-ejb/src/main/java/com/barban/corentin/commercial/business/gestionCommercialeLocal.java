@@ -15,7 +15,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
+ * Interface gestion comerciale loacl
  * @author maths
  */
 @Local

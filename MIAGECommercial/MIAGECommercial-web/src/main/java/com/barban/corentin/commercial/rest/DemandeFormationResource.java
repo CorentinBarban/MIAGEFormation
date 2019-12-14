@@ -64,11 +64,11 @@ public class DemandeFormationResource {
      * PUT method for updating or creating an instance of
      * DemandeFormationResource
      *
-     * @param nomClient
-     * @param codeFormation
-     * @param intitule
-     * @param codeClient
-     * @param nbPersonnes
+     * @param nomClient nom du client 
+     * @param codeFormation code de la formation
+     * @param intitule intitule de la formation
+     * @param codeClient code du client 
+     * @param nbPersonnes nombre de personnes 
      * @throws Exceptions.FormationCatalogueNotFoundException
      */
     @PUT
@@ -83,6 +83,10 @@ public class DemandeFormationResource {
 
     }
 
+    /**
+     * Cherche la gestion commerciale local 
+     * @return  gestion commerciale local 
+     */
     private serviceGestionCommercialeLocal lookupserviceGestionCommercialeLocal() {
         try {
             javax.naming.Context c = new InitialContext();

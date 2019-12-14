@@ -42,10 +42,10 @@ public class gestionCommerciale implements gestionCommercialeLocal {
 
     final String hostTechnico = "http://localhost:8085/MIAGETechnicoCommercial-web/webresources";
 
-    /**
-     * Méthode permettant de récupérer le catalogue de formations.
-     *
-     */
+   /**
+    * Méthode permettant de récupérer le catalogue de formations.
+    * 
+    */
     @Override
     public void recupererCatalogueFormations() {
         try {
@@ -89,11 +89,11 @@ public class gestionCommerciale implements gestionCommercialeLocal {
         Demandedeformation dfObjet = this.demandedeformationFacade.create(demandeFormation);
     }
 
+   
     /**
      * Méthode permettant de générer des comptes rendus, positifs ou négatifs.
-     *
-     * @return Une objet CompteRenduDTO représentant un compte rendu
-     * @throws ListeFormationsVideException
+     * 
+     * @throws ListeFormationsVideException ListeFormationsVideException liste formation vide 
      */
     @Override
     public void editerComptesRendus() throws ListeFormationsVideException {
@@ -177,7 +177,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * une formation
      *
      * @param code Code de la formation
-     * @return
+     * @return liste des formateurs compétent pour une formation 
      */
     @Override
     public List<FormateurDTO> recupererListeFormateurCompetent(String code) {
@@ -212,7 +212,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
      * formation
      *
      * @param code Code de la formation
-     * @return
+     * @return lite des salles adequates pour une formation 
      */
     @Override
     public List<SalleDTO> recupererListeSallesAdequates(String code) {
@@ -245,7 +245,7 @@ public class gestionCommerciale implements gestionCommercialeLocal {
     /**
      * Obtenir la capacité min d'une formation
      * @param codeFormation Code de la formation
-     * @return 
+     * @return la capacité min d'une formation
      */
     @Override
     public FormationDTO recupererInformationFormationCatalogue(String codeFormation) {

@@ -5,7 +5,6 @@
  */
 package com.barban.corentin.commercial.services;
 
-import DTO.CompteRenduDTO;
 import DTO.DemandeFormationDTO;
 import DTO.FormateurDTO;
 import DTO.FormationDTO;
@@ -39,7 +38,7 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
      * @param intitule Intitule de la formation
      * @param codeclient Code du client
      * @param nbPersonnes Nombre de personnes demandées pour la formation
-     * @throws FormationCatalogueNotFoundException 
+     * @throws FormationCatalogueNotFoundException formation catalogue non trouvé
      */
     @Override
     public void demanderFormation(String nomClient,String codeFormation, String intitule ,Integer codeclient,Integer nbPersonnes) throws FormationCatalogueNotFoundException{
@@ -86,6 +85,9 @@ public class serviceGestionCommerciale implements serviceGestionCommercialeLocal
         }        
     }
 
+    /**
+     * demande l'édition des comptes rendus 
+     */
     @Override
     public void demandeEditionComptesRendus() {
         try {
