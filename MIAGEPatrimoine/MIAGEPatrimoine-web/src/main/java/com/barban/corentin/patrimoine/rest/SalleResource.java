@@ -46,9 +46,10 @@ public class SalleResource {
     public SalleResource() {
         this.gson = new Gson();
     }
-
+   
     /**
-     * Retrieves representation of an instance of com.toulouse.miage.m1.CorentinBarban.LaTEM.SalleResource
+     *  Retrieves representation of an instance of com.toulouse.miage.m1.CorentinBarban.LaTEM.SalleResource
+     * @param id id
      * @return an instance of java.lang.String
      */
     @GET
@@ -67,6 +68,10 @@ public class SalleResource {
     public void putJson(String content) {
     }
 
+    /**
+     * Cherche le service patrimoine
+     * @return  le service patrimoine
+     */
     private ServicePatrimoineLocal lookupServicePatrimoineLocal() {
         try {
             javax.naming.Context c = new InitialContext();

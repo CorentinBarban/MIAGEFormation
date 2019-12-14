@@ -58,40 +58,76 @@ public class Salle implements Serializable {
     public Salle() {
     }
 
+    /** 
+     * constructeur de la salle à partir de son id
+     * @param idsalle id de la salle
+     */
     public Salle(Integer idsalle) {
         this.idsalle = idsalle;
     }
 
+    /**
+     * get id salle
+     * @return id de la salle
+     */
     public Integer getIdsalle() {
         return idsalle;
     }
 
+    /**
+     * set id salle
+     * @param idsalle id de la salle
+     */
     public void setIdsalle(Integer idsalle) {
         this.idsalle = idsalle;
     }
 
+    /**
+     * get nom 
+     * @return nom
+     */
     public String getNom() {
         return nom;
     }
 
+    /**
+     * set nom
+     * @param nom nom
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
+    /**
+     * get les équipements de la salle 
+     * @return les équipements de la salle 
+     */
     @XmlTransient
     public Collection<Equipement> getEquipementCollection() {
         return equipementCollection;
     }
 
+    /**
+     * set les équipements de la salle 
+     * @param equipementCollection les équipements de la salle 
+     */
     public void setEquipementCollection(Collection<Equipement> equipementCollection) {
         this.equipementCollection = equipementCollection;
     }
 
+    /**
+     * get les calendriers de la salle
+     * @return les calendriers de la salle
+     */
     @XmlTransient
     public Collection<CalendrierSalle> getCalendrierSalleCollection() {
         return calendrierSalleCollection;
     }
 
+    /**
+     * set les calendriers de la salle
+     * @param calendrierSalleCollection les calendriers de la salle
+     */
     public void setCalendrierSalleCollection(Collection<CalendrierSalle> calendrierSalleCollection) {
         this.calendrierSalleCollection = calendrierSalleCollection;
     }

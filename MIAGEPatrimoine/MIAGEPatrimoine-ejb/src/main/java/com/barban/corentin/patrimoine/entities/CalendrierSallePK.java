@@ -30,23 +30,44 @@ public class CalendrierSallePK implements Serializable {
     public CalendrierSallePK() {
     }
 
+    /**
+     * constructeur de calendrier salle primary key à partir de key calendrier et salle key 
+     * @param calendrierkey calendrier key
+     * @param sallekey salle key 
+     */
     public CalendrierSallePK(int calendrierkey, int sallekey) {
         this.calendrierkey = calendrierkey;
         this.sallekey = sallekey;
     }
 
+    /**
+     * get calendrier key 
+     * @return calendrier key 
+     */
     public int getCalendrierkey() {
         return calendrierkey;
     }
 
+    /**
+     * set calendrier key
+     * @param calendrierkey calendrier key 
+     */
     public void setCalendrierkey(int calendrierkey) {
         this.calendrierkey = calendrierkey;
     }
 
+    /**
+     * get salle key
+     * @return salle key
+     */
     public int getSallekey() {
         return sallekey;
     }
 
+    /**
+     * set salle key 
+     * @param sallekey salle key
+     */
     public void setSallekey(int sallekey) {
         this.sallekey = sallekey;
     }

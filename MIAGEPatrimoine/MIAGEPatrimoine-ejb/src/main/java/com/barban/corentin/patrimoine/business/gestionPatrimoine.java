@@ -36,7 +36,7 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
      * @param idSalle identifiant d'une salle
      * @param statut statut à modifier
      * @param date date de la modification
-     * @throws Exceptions.SalleNotFoundException
+     * @throws Exceptions.SalleNotFoundException salle non trouvé 
      */
     @Override
     public void editerStatutSalle(Integer idSalle, String statut, Date date) throws SalleNotFoundException {
@@ -58,7 +58,7 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
      * Lister toutes les dates pour lesquelles les salle sont disponibles
      *
      * @param listSallesDemandees Liste des salles pressenties
-     * @return
+     * @return les dates pour lesquelles les salle sont disponibles
      */
     @Override
     public HashMap<SalleDTO, List<Date>> listerSalleDisponible(List<SalleDTO> listSallesDemandees) {
@@ -81,7 +81,7 @@ public class gestionPatrimoine implements gestionPatrimoineLocal {
     /**
      * Verfier l'existance d'une salle
      * @param salleKey Identifiant d'une salle
-     * @return
+     * @return true si elle existe sinon false
      */
     @Override
     public boolean validerExistenceSalle(Integer salleKey) {

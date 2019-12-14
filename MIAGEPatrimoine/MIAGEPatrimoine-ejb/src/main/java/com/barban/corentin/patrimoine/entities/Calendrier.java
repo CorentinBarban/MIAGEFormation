@@ -52,31 +52,59 @@ public class Calendrier implements Serializable {
     public Calendrier() {
     }
 
+    /**
+     * constructeur du calendrier à partir de son id
+     * @param idcalendrier id du calendrier 
+     */
     public Calendrier(Integer idcalendrier) {
         this.idcalendrier = idcalendrier;
     }
 
+    /**
+     * get id du calendrier
+     * @return id du calendrier
+     */
     public Integer getIdcalendrier() {
         return idcalendrier;
     }
 
+    /**
+     * set id du calendrier
+     * @param idcalendrier id du calendrier 
+     */
     public void setIdcalendrier(Integer idcalendrier) {
         this.idcalendrier = idcalendrier;
     }
 
+    /**
+     * get date du calendrier
+     * @return date du calendrier
+     */
     public Date getDatecalendrier() {
         return datecalendrier;
     }
 
+    /**
+     * set date du calendrier
+     * @param datecalendrier  date du calendrier
+     */
     public void setDatecalendrier(Date datecalendrier) {
         this.datecalendrier = datecalendrier;
     }
 
+    /**
+     * get le calenddrier d'une collection de salle
+     * @return le calenddrier d'une collection de salle
+     */
     @XmlTransient
     public Collection<CalendrierSalle> getCalendrierSalleCollection() {
         return calendrierSalleCollection;
     }
 
+    /**
+     * set  le calendrier d'une collection de salle
+     * @param calendrierSalleCollection le calendrier d'une collection de salle
+     */
     public void setCalendrierSalleCollection(Collection<CalendrierSalle> calendrierSalleCollection) {
         this.calendrierSalleCollection = calendrierSalleCollection;
     }

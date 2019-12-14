@@ -49,31 +49,59 @@ public class Equipement implements Serializable {
     public Equipement() {
     }
 
+    /**
+     * constructeur equipement à partir de son id
+     * @param idequipement id equipement 
+     */
     public Equipement(Integer idequipement) {
         this.idequipement = idequipement;
     }
 
+    /**
+     * get id équipement
+     * @return id équipement
+     */
     public Integer getIdequipement() {
         return idequipement;
     }
 
+    /**
+     * set id équipement
+     * @param idequipement id équipement
+     */
     public void setIdequipement(Integer idequipement) {
         this.idequipement = idequipement;
     }
 
+    /**
+     * get nom équipement
+     * @return  nom équipement
+     */
     public String getNomequipement() {
         return nomequipement;
     }
 
+    /**
+     * set nom équipement
+     * @param nomequipement  nom équipement
+     */
     public void setNomequipement(String nomequipement) {
         this.nomequipement = nomequipement;
     }
 
+   
     @XmlTransient
+    /**
+     * get la collection de salle qui possède l'équipement
+     */
     public Collection<Salle> getSalleCollection() {
         return salleCollection;
     }
 
+    /**
+     * set la collection de salle qui possède l'équipement
+     * @param salleCollection collection de salle  
+     */
     public void setSalleCollection(Collection<Salle> salleCollection) {
         this.salleCollection = salleCollection;
     }

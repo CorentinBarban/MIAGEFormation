@@ -24,14 +24,14 @@ public interface gestionPatrimoineLocal {
      * @param idSalle Identifiant d'une salle
      * @param statut Statut
      * @param date date pour la modification
-     * @throws SalleNotFoundException 
+     * @throws SalleNotFoundException salle non trouvé 
      */
     void editerStatutSalle(Integer idSalle, String statut, Date date) throws SalleNotFoundException;
 
     /**
      * Lister les salle disponibles parmis celles demandées pour une date données
-     * @param listSallesDemandees 
-     * @return 
+     * @param listSallesDemandees  liste des salles disponibles 
+     * @return les salle disponibles parmis celles demandées pour une date données
      */
     HashMap<SalleDTO,List<Date>>listerSalleDisponible(List<SalleDTO> listSallesDemandees);
     

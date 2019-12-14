@@ -24,7 +24,7 @@ public class ServicePatrimoine implements ServicePatrimoineLocal {
     /**
      * Verifier l'existence d'une salle
      * @param salleKey Identifiant d'une salle
-     * @return 
+     * @return un boolean 
      */
     @Override
     public boolean verifierExistenceSalle(Integer salleKey) {

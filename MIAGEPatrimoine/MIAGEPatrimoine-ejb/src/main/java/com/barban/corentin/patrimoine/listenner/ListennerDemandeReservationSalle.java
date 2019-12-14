@@ -54,6 +54,9 @@ public class ListennerDemandeReservationSalle implements MessageListener {
         this.setupMessageQueueConsumer();
     }
 
+    /**
+     * préparation à la récupération du message dans les files
+     */
     private void setupMessageQueueConsumer() {
         try {
             this.context = new InitialContext();
