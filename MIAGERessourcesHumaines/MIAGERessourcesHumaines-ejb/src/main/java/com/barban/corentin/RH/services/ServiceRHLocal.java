@@ -16,6 +16,11 @@ import javax.ejb.Local;
 @Local
 public interface ServiceRHLocal {
     
+    /**
+     * vérifier l'existance du formateur
+     * @param idFormateur id formateur 
+     * @return true si le formateur existe sinon false 
+     */
     boolean verifierExistenceFormateur(Integer idFormateur);
 
     List<FormateurDTO> listerFormateurs();

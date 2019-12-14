@@ -33,10 +33,10 @@ public class gestionRH implements gestionRHLocal {
     /**
      * Editer le statut d'un formateur pour une date donnée
      *
-     * @param idFormateur
-     * @param statut
-     * @param date
-     * @throws FormateurNotFoundException
+     * @param idFormateur id formateur
+     * @param statut statut
+     * @param date date 
+     * @throws FormateurNotFoundException formateur non trouvé 
      */
     @Override
     public void modifierStatutFormateur(Integer idFormateur, String statut, Date date) throws FormateurNotFoundException {
@@ -57,8 +57,8 @@ public class gestionRH implements gestionRHLocal {
     /**
      * Lister toutes les dates pour lesquelles les formateurs sont disponibles
      *
-     * @param listFormateurDemandees
-     * @return
+     * @param listFormateurDemandees liste des formateurs demandées 
+     * @return les dates pour lesquelles les formateurs sont disponibles
      */
     @Override
     public HashMap<FormateurDTO, List<Date>> fournirPlanningFormateur(List<FormateurDTO> listFormateurDemandees) {
@@ -80,8 +80,8 @@ public class gestionRH implements gestionRHLocal {
     /**
      * Renvoie si le formateur existe
      *
-     * @param IdFormateur
-     * @return
+     * @param IdFormateur id formateur 
+     * @return true si le formateur existe sinon false
      */
     @Override
     public boolean verifierExistenceFormateur(Integer IdFormateur) {
@@ -95,8 +95,8 @@ public class gestionRH implements gestionRHLocal {
     }
 
     /**
-     *
-     * @return
+     * Recupere la liste des formateurs
+     * @return la liste des formateurs
      */
     @Override
     public List<FormateurDTO> listerFormateurs() {

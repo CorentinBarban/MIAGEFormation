@@ -66,6 +66,9 @@ public class ListennerDemandeRessourceDispoRH implements MessageListener {
         this.setupMessageQueueConsumer();
     }
 
+    /**
+     * préparation à la récupération du message dans les files
+     */
     private void setupMessageQueueConsumer() {
         try {
             this.context = new InitialContext();
@@ -84,6 +87,10 @@ public class ListennerDemandeRessourceDispoRH implements MessageListener {
         }
     }
 
+    /**
+     * action réalisé à la reception du message 
+     * @param message message
+     */
     @Override
     public void onMessage(Message message) {
         try {

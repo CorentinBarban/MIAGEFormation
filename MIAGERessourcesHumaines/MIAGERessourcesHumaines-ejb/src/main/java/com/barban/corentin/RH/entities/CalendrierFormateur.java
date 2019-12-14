@@ -47,42 +47,90 @@ public class CalendrierFormateur implements Serializable {
     public CalendrierFormateur() {
     }
 
+    /**
+     * constructeur du calendrier formateur à partir de la primary key
+     *
+     * @param calendrierFormateurPK calendrier formateur primary key
+     */
     public CalendrierFormateur(CalendrierFormateurPK calendrierFormateurPK) {
         this.calendrierFormateurPK = calendrierFormateurPK;
     }
 
+    /**
+     * constructeur calendrier formateur à partir de la calendrier key et
+     * formateur key
+     *
+     * @param calendrierkey calendrier key 
+     * @param formateurkey formateur key
+     */
     public CalendrierFormateur(int calendrierkey, int formateurkey) {
         this.calendrierFormateurPK = new CalendrierFormateurPK(calendrierkey, formateurkey);
     }
 
+    /**
+     * get la primary key du calendrier formateur
+     *
+     * @return la primary key du calendrier formateur
+     */
     public CalendrierFormateurPK getCalendrierFormateurPK() {
         return calendrierFormateurPK;
     }
 
+    /**
+     * set la primary ky du calendrier formateur
+     *
+     * @param calendrierFormateurPK la primary key du calendrier formateur
+     */
     public void setCalendrierFormateurPK(CalendrierFormateurPK calendrierFormateurPK) {
         this.calendrierFormateurPK = calendrierFormateurPK;
     }
 
+    /**
+     * get statut
+     *
+     * @return statut
+     */
     public String getStatut() {
         return statut;
     }
 
+    /**
+     * set statut
+     *
+     * @param statut statut
+     */
     public void setStatut(String statut) {
         this.statut = statut;
     }
 
+    /**
+     * get calendrier
+     * @return calendrier
+     */
     public Calendrier getCalendrier() {
         return calendrier;
     }
 
+    /**
+     * set calendrier
+     * @param calendrier calendrier
+     */
     public void setCalendrier(Calendrier calendrier) {
         this.calendrier = calendrier;
     }
 
+    /**
+     * get formateur
+     * @return formateur
+     */
     public Formateur getFormateur() {
         return formateur;
     }
 
+    /**
+     * set formateur 
+     * @param formateur formateur
+     */
     public void setFormateur(Formateur formateur) {
         this.formateur = formateur;
     }
@@ -111,5 +159,5 @@ public class CalendrierFormateur implements Serializable {
     public String toString() {
         return "com.barban.corentin.RH.entities.CalendrierFormateur[ calendrierFormateurPK=" + calendrierFormateurPK + " ]";
     }
-    
+
 }

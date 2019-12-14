@@ -62,43 +62,83 @@ public class Formateur implements Serializable {
     public Formateur() {
     }
 
+    /**
+     * constructeur formateur à partir de son id
+     * @param idformateur id formateur 
+     */
     public Formateur(Integer idformateur) {
         this.idformateur = idformateur;
     }
 
+    /**
+     * get id formateur
+     * @return  id formateur
+     */
     public Integer getIdformateur() {
         return idformateur;
     }
 
+    /**
+     * set id formateur
+     * @param idformateur  id formateur
+     */
     public void setIdformateur(Integer idformateur) {
         this.idformateur = idformateur;
     }
 
+    /**
+     * get nom formateur
+     * @return nom formateur
+     */
     public String getNom() {
         return nom;
     }
 
+    /**
+     * set nom formateur
+     * @param nom nom formateur
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
+    /**
+     * get prenom formateur
+     * @return prenom formateur
+     */
     public String getPrenom() {
         return prenom;
     }
 
+    /**
+     * set prenom formateur
+     * @param prenom prenom formateur
+     */
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
 
+    /**
+     * get la liste des competences
+     * @return liste des competences
+     */
     @XmlTransient
     public Collection<Competence> getCompetenceCollection() {
         return competenceCollection;
     }
 
+    /**
+     * set la liste des competences
+     * @param competenceCollection liste des competences
+     */
     public void setCompetenceCollection(Collection<Competence> competenceCollection) {
         this.competenceCollection = competenceCollection;
     }
 
+    /**
+     * get la collection de calendrier formateur 
+     * @return la collection de calendrier formateur 
+     */
     @XmlTransient
     public Collection<CalendrierFormateur> getCalendrierFormateurCollection() {
         return calendrierFormateurCollection;

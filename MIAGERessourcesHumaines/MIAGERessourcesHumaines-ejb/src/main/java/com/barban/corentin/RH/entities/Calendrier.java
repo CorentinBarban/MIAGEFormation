@@ -52,31 +52,66 @@ public class Calendrier implements Serializable {
     public Calendrier() {
     }
 
+    /**
+     * constructeur calendrier à partir de son id
+     *
+     * @param idcalendrier id caldendrier
+     */
     public Calendrier(Integer idcalendrier) {
         this.idcalendrier = idcalendrier;
     }
 
+    /**
+     * get id du calendrier
+     *
+     * @return id du calendrier
+     */
     public Integer getIdcalendrier() {
         return idcalendrier;
     }
 
+    /**
+     * set id du calendrier
+     *
+     * @param idcalendrier id du calendrier
+     */
     public void setIdcalendrier(Integer idcalendrier) {
         this.idcalendrier = idcalendrier;
     }
 
+    /**
+     * get date du calendrier
+     *
+     * @return date du calendrier
+     */
     public Date getDatecalendrier() {
         return datecalendrier;
     }
 
+    /**
+     * set date du calendrier
+     *
+     * @param datecalendrier date du calendrier
+     */
     public void setDatecalendrier(Date datecalendrier) {
         this.datecalendrier = datecalendrier;
     }
 
+    /**
+     * get la liste des calendriers formateur
+     *
+     * @return la liste des calendriers formateur
+     */
     @XmlTransient
     public Collection<CalendrierFormateur> getCalendrierFormateurCollection() {
         return calendrierFormateurCollection;
     }
 
+    /**
+     * set la liste des calendriers formateur
+     *
+     * @param calendrierFormateurCollection la liste des calendriers formateur
+     */
     public void setCalendrierFormateurCollection(Collection<CalendrierFormateur> calendrierFormateurCollection) {
         this.calendrierFormateurCollection = calendrierFormateurCollection;
     }
@@ -105,5 +140,5 @@ public class Calendrier implements Serializable {
     public String toString() {
         return "com.barban.corentin.RH.entities.Calendrier[ idcalendrier=" + idcalendrier + " ]";
     }
-    
+
 }

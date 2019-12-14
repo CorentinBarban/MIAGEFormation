@@ -30,23 +30,44 @@ public class CalendrierFormateurPK implements Serializable {
     public CalendrierFormateurPK() {
     }
 
+    /**
+     * constrcuteur calendrier formateur pk en focntion de calendrier key et formateur key
+     * @param calendrierkey calendrier key
+     * @param formateurkey formateur key
+     */
     public CalendrierFormateurPK(int calendrierkey, int formateurkey) {
         this.calendrierkey = calendrierkey;
         this.formateurkey = formateurkey;
     }
 
+    /** 
+     * get calendrier key 
+     * @return calendrier key 
+     */ 
     public int getCalendrierkey() {
         return calendrierkey;
     }
 
+    /**
+     * set calendrier key 
+     * @param calendrierkey calendrier key 
+     */
     public void setCalendrierkey(int calendrierkey) {
         this.calendrierkey = calendrierkey;
     }
 
+    /**
+     * get formateur key
+     * @return  formateur key
+     */
     public int getFormateurkey() {
         return formateurkey;
     }
 
+    /**
+     * set formateur key
+     * @param formateurkey formateur key
+     */
     public void setFormateurkey(int formateurkey) {
         this.formateurkey = formateurkey;
     }

@@ -49,31 +49,66 @@ public class Competence implements Serializable {
     public Competence() {
     }
 
+    /**
+     * constructeur competence à partir de l'id competence
+     *
+     * @param idcompetence id competence
+     */
     public Competence(Integer idcompetence) {
         this.idcompetence = idcompetence;
     }
 
+    /**
+     * get id competence
+     *
+     * @return id competence
+     */
     public Integer getIdcompetence() {
         return idcompetence;
     }
 
+    /**
+     * set id competence
+     *
+     * @param idcompetence id competence
+     */
     public void setIdcompetence(Integer idcompetence) {
         this.idcompetence = idcompetence;
     }
 
+    /**
+     * get nom competence
+     *
+     * @return  nom competence
+     */
     public String getNomcompetence() {
         return nomcompetence;
     }
 
+    /**
+     * set nom competence
+     *
+     * @param nomcompetence  nom competence
+     */
     public void setNomcompetence(String nomcompetence) {
         this.nomcompetence = nomcompetence;
     }
 
+    /**
+     * get la liste des formateurs
+     *
+     * @return la liste des formateurs
+     */
     @XmlTransient
     public Collection<Formateur> getFormateurCollection() {
         return formateurCollection;
     }
 
+    /**
+     * set la liste des formateurs
+     *
+     * @param formateurCollection la liste des formateurs
+     */
     public void setFormateurCollection(Collection<Formateur> formateurCollection) {
         this.formateurCollection = formateurCollection;
     }
@@ -102,5 +137,5 @@ public class Competence implements Serializable {
     public String toString() {
         return "com.barban.corentin.RH.entities.Competence[ idcompetence=" + idcompetence + " ]";
     }
-    
+
 }
